@@ -2,7 +2,7 @@
 
 # Paradox
 
-<img alt="Endpoint Badge" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fghloc.vercel.app%2Fapi%2FPuzzleLoader%2FParadox%2Fbadge%3Fbranch%3Dmaster%26filter%3D.java%2524%252C.patch%2524&style=flat&label=LOC&color=blue">
+<img alt="Endpoint Badge" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fghloc.vercel.app%2Fapi%2FPuzzlesHQ%2FParadox%2Fbadge%3Fbranch%3Dmaster%26filter%3D.java%2524%252C.patch%2524&style=flat&label=LOC&color=blue">
 
 A server plugin loader for Cosmic Reach
 

@@ -1,11 +1,11 @@
 --- a/finalforeach/cosmicreach/entities/player/PlayerEntity.java
 +++ b/finalforeach/cosmicreach/entities/player/PlayerEntity.java
-@@ -18,7 +_,7 @@
+@@ -19,7 +_,7 @@
  	private final transient Vector3 tmpPos = new Vector3();
  
  	protected PlayerEntity() {
 -		super("base:entity_player");
 +      	super(ENTITY_TYPE_ID);
  		this.maxHitpoints = this.hitpoints = 3.0F;
+ 		this.fallDamage = PlayerFallDamage.INSTANCE;
  		Threads.runOnMainThread(
- 			() -> {
