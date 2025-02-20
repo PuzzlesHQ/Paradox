@@ -8,7 +8,7 @@
  
  public class BlockState implements IBlockState, Serializable {
  	private static final Pattern idAndParamsPattern = Pattern.compile("[\\[\\]]");
-@@ -395,6 +_,7 @@
+@@ -396,6 +_,7 @@
  		return this.tags == null ? false : ArrayUtils.contains(this.tags, tagName, false);
  	}
  
@@ -16,7 +16,7 @@
  	public void initialize(Block block) {
  		this.block = block;
  		this.blockId = block.getStringId();
-@@ -414,7 +_,7 @@
+@@ -415,7 +_,7 @@
  		if (this.stateGenerators != null) {
  			for (String s : this.stateGenerators) {
  				BlockStateGenerator blockstategenerator = BlockStateGenerator.getInstance(s);

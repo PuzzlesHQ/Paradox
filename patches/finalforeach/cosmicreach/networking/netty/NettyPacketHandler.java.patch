@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/networking/netty/NettyPacketHandler.java
 +++ b/finalforeach/cosmicreach/networking/netty/NettyPacketHandler.java
-@@ -1,9 +_,11 @@
+@@ -1,13 +_,13 @@
  package finalforeach.cosmicreach.networking.netty;
  
  import com.badlogic.gdx.utils.Array;
@@ -8,10 +8,13 @@
  import finalforeach.cosmicreach.GameSingletons;
  import finalforeach.cosmicreach.networking.GamePacket;
  import finalforeach.cosmicreach.networking.NetworkIdentity;
-+import finalforeach.cosmicreach.networking.packets.entities.DropItemPacket;
  import finalforeach.cosmicreach.networking.packets.meta.TransactionPacket;
  import finalforeach.cosmicreach.networking.server.ServerSingletons;
  import finalforeach.cosmicreach.util.exceptions.UnauthenticatedPacketRecieveException;
+-import finalforeach.cosmicreach.util.logging.Logger;
+ import io.netty.buffer.ByteBuf;
+ import io.netty.channel.Channel;
+ import io.netty.channel.ChannelHandlerContext;
 @@ -17,6 +_,7 @@
  
  public abstract class NettyPacketHandler extends ChannelInboundHandlerAdapter {
@@ -20,7 +23,7 @@
  
  	@Override
  	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-@@ -26,33 +_,43 @@
+@@ -26,33 +_,42 @@
  			bytebuf = (ByteBuf)msg;
  			short short1 = bytebuf.readShort();
  			GamePacket gamepacket1 = GamePacket.getPacket(short1);
@@ -47,7 +50,6 @@
  
  			gamepacket1.receive(bytebuf);
  			NetworkIdentity networkidentity = this.getIdentity(ctx);
-+//			System.out.println("Packet: " + short1);
  			if (TransactionPacket.keepBundling && !(gamepacket1 instanceof TransactionPacket)) {
  				this.bundledPackets.add(gamepacket1);
  			} else {

@@ -12,7 +12,6 @@ public class ParadoxNetworkIdentity {
     ParadoxPlayer player;
     public ParadoxNetworkIdentity(ServerIdentity identity) {
         this.identity = identity;
-        this.player = ClassConverter.convertPlayer(identity.getPlayer());
     }
 
     /**
@@ -22,6 +21,10 @@ public class ParadoxNetworkIdentity {
      * @see ParadoxPlayer
      */
     public ParadoxPlayer getPlayer(){
+        if(player == null)
+            this.player = ClassConverter.convertPlayer(identity.getPlayer());
+        if(player == null)
+            throw new RuntimeException("Can't get player. please report this to the dev(s)");
         return player;
     }
 

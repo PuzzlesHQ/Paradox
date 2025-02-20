@@ -46,7 +46,7 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
     implementation "org.lz4:lz4-java:1.8.0"
     implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
-    implementation 'com.github.FinalForEach:Cosmic-Reach-Save-Library:1652c6aa1c'
+    implementation 'com.github.FinalForEach:Cosmic-Reach-Save-Library:136f3ea6aa'
 
 
 //    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion"

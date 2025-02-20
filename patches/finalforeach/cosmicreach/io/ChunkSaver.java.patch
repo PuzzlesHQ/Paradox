@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/io/ChunkSaver.java
 +++ b/finalforeach/cosmicreach/io/ChunkSaver.java
-@@ -13,12 +_,12 @@
+@@ -12,12 +_,12 @@
  import finalforeach.cosmicreach.savelib.crbin.CRBinSerializer;
  import finalforeach.cosmicreach.savelib.lightdata.blocklight.IBlockLightData;
  import finalforeach.cosmicreach.savelib.lightdata.skylight.ISkylightData;
@@ -14,7 +14,7 @@
  import java.io.File;
  import java.io.FileOutputStream;
  import java.io.IOException;
-@@ -26,10 +_,12 @@
+@@ -25,11 +_,13 @@
  import java.nio.charset.StandardCharsets;
  import net.jpountz.lz4.LZ4Compressor;
  import net.jpountz.lz4.LZ4Factory;
@@ -22,13 +22,14 @@
  public class ChunkSaver {
  	private static final LZ4Factory LZ4_FACTORY = LZ4Factory.fastestInstance();
  	private static final LZ4Compressor LZ4_COMPRESSOR = LZ4_FACTORY.fastCompressor();
+ 	private static final Json WORLD_INFO_JSON = new Json();
 +
 +   private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger("Cosmic Reach | Chunk Saver");
 +
  	public static volatile boolean isSaving;
  
  	private static void writeInt(ByteArray byteArr, int i) {
-@@ -59,19 +_,19 @@
+@@ -57,24 +_,23 @@
  			throw new RuntimeException(ioexception);
  		}
  	}
@@ -51,7 +52,12 @@
  		} finally {
  			isSaving = false;
  		}
-@@ -172,7 +_,7 @@
+ 	}
+-
+ 	public static void saveZone(Zone zone) {
+ 		for (Region region : zone.getRegions()) {
+ 			if (!region.isEmpty()) {
+@@ -162,7 +_,7 @@
  					}
  				}
  			} catch (Exception exception1) {

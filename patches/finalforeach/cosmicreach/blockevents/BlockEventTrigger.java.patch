@@ -1,18 +1,19 @@
 --- a/finalforeach/cosmicreach/blockevents/BlockEventTrigger.java
 +++ b/finalforeach/cosmicreach/blockevents/BlockEventTrigger.java
-@@ -7,9 +_,11 @@
- import finalforeach.cosmicreach.util.predicates.PredicateBlockEventArgs;
+@@ -7,10 +_,12 @@
+ import finalforeach.cosmicreach.util.predicates.GamePredicateBlockEventArgs;
  import java.util.function.Predicate;
  
 +
  public class BlockEventTrigger implements Serializable {
+ 	private String triggerName;
  	private IBlockAction action;
  	private Predicate<BlockEventArgs> condition;
 +	public boolean shouldAct = true;
  
  	@Override
  	public void write(Json json) {
-@@ -38,10 +_,14 @@
+@@ -43,10 +_,14 @@
  	}
  
  	public void act(BlockEventArgs args) {
