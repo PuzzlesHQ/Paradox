@@ -69,7 +69,7 @@
  
 +
  	public NettyServer() {
- 		this(47137);
+ 		this(ServerSettings.SERVER_PORT.getValue());
  	}
  
  	public void run() throws Exception {

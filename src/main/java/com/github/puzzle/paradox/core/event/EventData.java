@@ -10,6 +10,7 @@ import java.util.List;
  *
  * Modified by repletsin5
  */
+@Deprecated(since = "1.2.11", forRemoval = true)
 class EventData<T>  {
     ArrayList<T> listeners;
 

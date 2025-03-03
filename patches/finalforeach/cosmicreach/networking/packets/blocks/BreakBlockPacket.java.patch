@@ -1,15 +1,16 @@
 --- a/finalforeach/cosmicreach/networking/packets/blocks/BreakBlockPacket.java
 +++ b/finalforeach/cosmicreach/networking/packets/blocks/BreakBlockPacket.java
-@@ -43,7 +_,7 @@
+@@ -43,8 +_,8 @@
  
  	@Override
  	public void handle(NetworkIdentity identity, ChannelHandlerContext ctx) {
 -		if (identity.getSide() != NetworkSide.CLIENT) {
+ 			BlockState blockstate = this.blockPos.getBlockState();
 +		if (identity.getSide() != NetworkSide.CLIENT && com.github.puzzle.paradox.game.server.ParadoxServerSettings.canBreakBlock) {
- 			if (this.blockPos.getBlockState() == this.brokenBlockState) {
- 				if (this.brokenBlockState.hardness > 0.0F) {
- 				}
-@@ -55,7 +_,10 @@
+ 			if (blockstate != this.brokenBlockState) {
+ 				if (blockstate != null) {
+ 					identity.send(new BlockReplacePacket(this.zone, blockstate, this.blockPos));
+@@ -60,7 +_,10 @@
  					blockeventargs.zone = this.zone;
  					blockeventargs.blockPos = this.blockPos;
  					blockeventargs.setSrcIdentity(identity);

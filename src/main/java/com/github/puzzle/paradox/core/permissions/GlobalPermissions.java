@@ -60,8 +60,8 @@ public class GlobalPermissions {
     public static void loadPlayerPermissions(){
         var fileLoc = getSaveFolderLocation() + "/permissions/"  + "playerperms.crbin";
         CRBinDeserializer crBinDeserializer = CRBinDeserializer.getNew();
-        try (FileInputStream fis = new FileInputStream(fileLoc)) {
-          var data = fis.readAllBytes();
+        try (FileInputStream stream = new FileInputStream(fileLoc)) {
+          var data = stream.readAllBytes();
           crBinDeserializer.prepareForRead(ByteBuffer.wrap(data));
         } catch (IOException e) {
             throw new RuntimeException(e);

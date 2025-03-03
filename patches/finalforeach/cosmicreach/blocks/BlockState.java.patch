@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/blocks/BlockState.java
 +++ b/finalforeach/cosmicreach/blocks/BlockState.java
-@@ -25,6 +_,7 @@
+@@ -26,6 +_,7 @@
  import java.util.Map;
  import java.util.function.Predicate;
  import java.util.regex.Pattern;
@@ -8,7 +8,7 @@
  
  public class BlockState implements IBlockState, Serializable {
  	private static final Pattern idAndParamsPattern = Pattern.compile("[\\[\\]]");
-@@ -396,6 +_,7 @@
+@@ -399,6 +_,7 @@
  		return this.tags == null ? false : ArrayUtils.contains(this.tags, tagName, false);
  	}
  
@@ -16,7 +16,7 @@
  	public void initialize(Block block) {
  		this.block = block;
  		this.blockId = block.getStringId();
-@@ -415,7 +_,7 @@
+@@ -418,7 +_,7 @@
  		if (this.stateGenerators != null) {
  			for (String s : this.stateGenerators) {
  				BlockStateGenerator blockstategenerator = BlockStateGenerator.getInstance(s);

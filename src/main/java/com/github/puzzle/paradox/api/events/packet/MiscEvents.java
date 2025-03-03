@@ -1,24 +1,33 @@
-package com.github.puzzle.paradox.api.packet;
+package com.github.puzzle.paradox.api.events.packet;
 
+import com.badlogic.gdx.math.Vector3;
 import com.github.puzzle.paradox.api.ParadoxNetworkIdentity;
-import finalforeach.cosmicreach.blockentities.BlockEntity;
+import com.github.puzzle.paradox.api.player.ParadoxPlayer;
 import finalforeach.cosmicreach.networking.GamePacket;
 import finalforeach.cosmicreach.networking.packets.entities.PlayerPositionPacket;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
 
-public abstract class PacketEvents extends Event {
+public abstract class MiscEvents extends Event {
 
     GamePacket gamePacket;
     ChannelHandlerContext channel;
     ParadoxNetworkIdentity identity;
 
-    public PacketEvents(GamePacket packet,ParadoxNetworkIdentity identity,ChannelHandlerContext channel) {
+    public MiscEvents(GamePacket packet, ParadoxNetworkIdentity identity, ChannelHandlerContext channel) {
         this.gamePacket = packet;
         this.channel = channel;
         this.identity = identity;
+    }
+    /**
+     * Returns associated {@link ParadoxPlayer} with the {@link ParadoxNetworkIdentity}
+     * @author repletsin5
+     * @since API 1.0.0-Alpha
+     * @see ParadoxPlayer
+     */
+    public ParadoxPlayer getPlayer(){
+      return getIdentity().getPlayer();
     }
 
     /**
@@ -50,18 +59,38 @@ public abstract class PacketEvents extends Event {
         return identity;
     }
 
-    public static class OnPlayerPositionPacket extends PacketEvents implements ICancellableEvent {
+    public static class OnPlayerPositionPacket extends MiscEvents implements ICancellableEvent {
 
-        public OnPlayerPositionPacket(GamePacket packet,ParadoxNetworkIdentity identity,ChannelHandlerContext channel) {
+        public OnPlayerPositionPacket(GamePacket packet, ParadoxNetworkIdentity identity,ChannelHandlerContext channel) {
             super(packet,identity,channel);
         }
 
         public PlayerPositionPacket getPlayerPositionPacket(){
             return (PlayerPositionPacket)gamePacket;
         }
+
+        /**
+         * Returns associated position {@link Vector3 } the player {@link ParadoxPlayer} wants to move to
+         * @author repletsin5
+         * @since API 1.0.0-Alpha
+         * @see Vector3
+         */
+        public Vector3 getRequestedPosition(){
+            return getPlayerPositionPacket().position;
+        }
+
+        /**
+         * Returns associated players position {@link Vector3 }
+         * @author repletsin5
+         * @since API 1.0.0-Alpha
+         * @see Vector3
+         */
+        public Vector3 getCurrentPosition(){
+            return getPlayer().getPosition();
+        }
     }
 
-    public static class OnPacketAct extends PacketEvents  {
+    public static class OnPacketAct extends MiscEvents {
 
         public OnPacketAct(GamePacket packet,ParadoxNetworkIdentity identity,ChannelHandlerContext channel) {
             super(packet,identity,channel);

@@ -69,12 +69,12 @@
  		return blockstate != null && !blockstate.walkThrough;
  	}
  
-@@ -598,6 +_,8 @@
- 			this.players.add(player);
- 			Entity entity = player.getEntity();
- 			if (entity != null && !this.hasEntity(entity)) {
+@@ -600,6 +_,8 @@
+ 		}
+ 
+ 		if (entity != null && !this.hasEntity(entity)) {
 +				if(com.github.puzzle.paradox.api.Paradox.getInstance().getEventBus().post(new com.github.puzzle.paradox.api.events.EntityEvents.OnEntitySpawn(entity.getParadoxEntity())).isCanceled())
 +					return;
- 				this.addEntity(entity);
- 			}
+ 			this.addEntity(entity);
  		}
+ 	}

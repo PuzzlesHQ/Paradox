@@ -25,7 +25,7 @@
 +      	super(ENTITY_TYPE_ID);
  		this.setSize(0.3F);
  		this.randomHoverOffsetTime = MathUtils.random() * (float) (Math.PI * 2);
- 		this.addTag("projectile_immune");
+ 		this.addTag(CommonEntityTags.PROJECTILE_IMMUNE);
 @@ -112,6 +_,7 @@
  							}
  

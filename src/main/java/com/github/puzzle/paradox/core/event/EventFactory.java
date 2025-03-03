@@ -18,7 +18,8 @@ import java.lang.reflect.Proxy;
 import java.util.Collections;
 import java.util.Set;
 import java.util.function.Function;
-
+@SuppressWarnings({"removal"})
+@Deprecated(since = "1.2.11", forRemoval = true)
 public class EventFactory {
     private static final Set<ArrayBackedEvent<?>> ARRAY_BACKED_EVENTS = Collections.newSetFromMap(new MapMaker().weakKeys().makeMap());
 

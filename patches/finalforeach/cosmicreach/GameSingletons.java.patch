@@ -27,9 +27,9 @@
 -	private static WeakHashMap<Player, String> playersToUniqueIds = new WeakHashMap<>();
 +	public static WeakHashMap<Player, String> playersToUniqueIds = new WeakHashMap<>();
  	private static WeakHashMap<Player, Account> playersToAccounts = new WeakHashMap<>();
- 	private static int NUMBER_OF_PLAYERS = 0;
  	public static boolean isAllFlaggedForRemeshing;
-@@ -71,7 +_,7 @@
+ 	public static IZoneRenderer zoneRenderer;
+@@ -70,7 +_,7 @@
  	public static IClientSingletons clientSingletons;
  
  	public static void create() {
@@ -38,7 +38,7 @@
  		DynamicArrays.instantiator = new IDynamicArrayInstantiator() {
  			@Override
  			public <E> IDynamicArray<E> create(Class<E> clazz) {
-@@ -235,6 +_,7 @@
+@@ -233,6 +_,7 @@
  			uniqueIdsToPlayers.put(account.getUniqueId(), player);
  			playersToUniqueIds.put(player, account.getUniqueId());
  			playersToAccounts.put(player, account);
@@ -46,16 +46,14 @@
  		}
  	}
  
-@@ -251,7 +_,7 @@
+@@ -249,12 +_,14 @@
  					zone.getPlayers().clear();
  				}
  			}
--
 +			com.github.puzzle.paradox.api.Paradox.getInstance().removeAllPlayers();
- 			NUMBER_OF_PLAYERS = 0;
  		}
  	}
-@@ -259,6 +_,7 @@
+ 
  	public static void unregisterPlayer(Player player) {
  		synchronized (getPlayerLock()) {
  			String s = playersToUniqueIds.get(player);
@@ -63,11 +61,3 @@
  			playersToUniqueIds.remove(player);
  			uniqueIdsToPlayers.remove(s);
  			playersToAccounts.remove(player);
-@@ -270,7 +_,6 @@
- 					zone.removePlayer(player);
- 				}
- 			}
--
- 			NUMBER_OF_PLAYERS--;
- 		}
- 	}

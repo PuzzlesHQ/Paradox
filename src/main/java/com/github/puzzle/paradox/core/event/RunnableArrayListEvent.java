@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
+@SuppressWarnings({"removal"})
+@Deprecated(since = "1.2.11", forRemoval = true)
 public class RunnableArrayListEvent extends Event<Runnable> {
 
     private final Object lock = new Object();

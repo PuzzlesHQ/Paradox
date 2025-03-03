@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/networking/packets/blocks/InteractBlockPacket.java
 +++ b/finalforeach/cosmicreach/networking/packets/blocks/InteractBlockPacket.java
-@@ -86,7 +_,8 @@
+@@ -91,7 +_,8 @@
  					blockeventargs.zone = zone;
  					blockeventargs.blockPos = this.blockPos;
  					blockeventargs.setSrcIdentity(identity);

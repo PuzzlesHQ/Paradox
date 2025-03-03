@@ -9,6 +9,8 @@ import java.lang.reflect.Array;
 import java.util.Objects;
 import java.util.function.Function;
 
+@SuppressWarnings("DeprecatedIsStillUsed")
+@Deprecated(since = "1.2.11", forRemoval = true)
 public class ArrayBackedEvent<T> extends Event<T> {
     private final Function<T[], T> invokerFactory;
     private final Object lock = new Object();

@@ -54,6 +54,7 @@ public abstract class EntityEvents extends Event {
         public float getDamageDealt() {
             return damageDealt;
         }
+
         /**
          * Do not use, not implemented
          */

@@ -1,6 +1,6 @@
 package com.github.puzzle.paradox.game.player;
 
-import com.github.puzzle.paradox.api.packet.PacketEvents;
+import com.github.puzzle.paradox.api.events.packet.MiscEvents;
 import com.github.puzzle.paradox.api.player.ParadoxPlayer;
 import com.github.puzzle.paradox.game.server.ParadoxServerSettings;
 import finalforeach.cosmicreach.blocks.BlockPosition;
@@ -54,7 +54,7 @@ public class PlayerChecks {
 
     public static class PositionChecks {
         @SubscribeEvent
-        public void OnPlayerPosition(PacketEvents.OnPlayerPositionPacket event){
+        public void OnPlayerPosition(MiscEvents.OnPlayerPositionPacket event){
             //TODO
             event.setCanceled(false);
         }
