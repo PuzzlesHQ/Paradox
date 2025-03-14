@@ -1,14 +1,19 @@
 --- a/finalforeach/cosmicreach/networking/server/ServerSingletons.java
 +++ b/finalforeach/cosmicreach/networking/server/ServerSingletons.java
-@@ -2,7 +_,6 @@
+@@ -2,11 +_,7 @@
  
  import com.badlogic.gdx.math.Vector3;
  import com.badlogic.gdx.utils.ObjectMap;
 -import finalforeach.cosmicreach.BlockEntityScreenInfo;
- import finalforeach.cosmicreach.GameSingletons;
- import finalforeach.cosmicreach.Threads;
- import finalforeach.cosmicreach.TickRunner;
-@@ -36,6 +_,8 @@
+-import finalforeach.cosmicreach.GameSingletons;
+-import finalforeach.cosmicreach.Threads;
+-import finalforeach.cosmicreach.TickRunner;
+-import finalforeach.cosmicreach.ZoneLoaders;
++import finalforeach.cosmicreach.*;
+ import finalforeach.cosmicreach.accounts.Account;
+ import finalforeach.cosmicreach.blockentities.BlockEntity;
+ import finalforeach.cosmicreach.blockentities.IBlockEntityWithContainer;
+@@ -40,6 +_,8 @@
  
  public class ServerSingletons {
  	public static NettyServer SERVER;
@@ -17,7 +22,7 @@
  	private static ObjectMap<NetworkIdentity, Account> netIdsToAccounts = new ObjectMap<>();
  	private static ObjectMap<Account, NetworkIdentity> accountsToNetIds = new ObjectMap<>();
  	private static ObjectMap<String, Account> uniqueIdsToAccounts = new ObjectMap<>();
-@@ -135,6 +_,7 @@
+@@ -145,6 +_,7 @@
  			World world = GameSingletons.world;
  
  			for (Zone zone : world.getZones()) {
@@ -25,7 +30,7 @@
  				zone.update(deltaTime);
  			}
  
-@@ -144,6 +_,7 @@
+@@ -154,6 +_,7 @@
  			}
  		});
  		registerBlockEntityOpeners();
@@ -33,7 +38,7 @@
  		GameSingletons.postCreate();
  	}
  
-@@ -175,7 +_,7 @@
+@@ -189,7 +_,7 @@
  	public static Player getPlayer(NetworkIdentity identity) {
  		Account account = getAccount(identity);
  		return account == null ? null : GameSingletons.getPlayerFromUniqueId(account.getUniqueId());
@@ -42,7 +47,7 @@
  
  	public static ServerIdentity getConnection(Player player) {
  		Account account = GameSingletons.getAccountFromPlayer(player);
-@@ -185,4 +_,9 @@
+@@ -199,4 +_,9 @@
  	public static Account getAccountByUniqueId(String playerUniqueId) {
  		return uniqueIdsToAccounts.get(playerUniqueId);
  	}

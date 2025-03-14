@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/worldgen/ZoneGenerator.java
 +++ b/finalforeach/cosmicreach/worldgen/ZoneGenerator.java
-@@ -14,7 +_,7 @@
+@@ -15,7 +_,7 @@
  import java.util.Random;
  
  public abstract class ZoneGenerator {

@@ -148,7 +148,8 @@ public class CosmicReachProvider implements IGameProvider {
     public static String DEFAULT_PACKAGE = "finalforeach.cosmicreach.server";
 
     static @Nullable File searchForCosmicReach() {
-        if (ClassLoader.getPlatformClassLoader().getDefinedPackage(DEFAULT_PACKAGE) == null) {File jarFile;
+        if (ClassLoader.getPlatformClassLoader().getDefinedPackage(DEFAULT_PACKAGE) == null) {
+            File jarFile;
             jarFile = lookForJarVariations(".");
             if (jarFile != null) return toCrJar(jarFile);
             jarFile = lookForJarVariations("../");

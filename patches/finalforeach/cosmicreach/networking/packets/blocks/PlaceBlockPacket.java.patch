@@ -1,21 +1,20 @@
 --- a/finalforeach/cosmicreach/networking/packets/blocks/PlaceBlockPacket.java
 +++ b/finalforeach/cosmicreach/networking/packets/blocks/PlaceBlockPacket.java
-@@ -43,7 +_,7 @@
+@@ -46,7 +_,7 @@
  
  	@Override
  	public void handle(NetworkIdentity identity, ChannelHandlerContext ctx) {
--		if (identity.getSide() != NetworkSide.CLIENT) {
-+		if (identity.getSide() != NetworkSide.CLIENT && com.github.puzzle.paradox.game.server.ParadoxServerSettings.canPlaceBlock) {
- 			BlockEventTrigger[] ablockeventtrigger = this.targetBlockState.getTrigger("onPlace");
- 			if (ablockeventtrigger != null) {
- 				BlockEventArgs blockeventargs = new BlockEventArgs();
-@@ -51,7 +_,8 @@
- 				blockeventargs.zone = this.zone;
- 				blockeventargs.blockPos = this.blockPos;
- 				blockeventargs.setSrcIdentity(identity);
--
-+				if(!com.github.puzzle.paradox.game.player.PlayerChecks.blockChecks(identity,blockPos))
-+					return;
- 				for (int i = 0; i < ablockeventtrigger.length; i++) {
- 					ablockeventtrigger[i].act(blockeventargs);
- 				}
+-		if (!identity.isClient()) {
++		if (!identity.isClient() && com.github.puzzle.paradox.game.server.ParadoxServerSettings.canPlaceBlock) {
+ 			Zone zone = identity.getZone();
+ 			Player player = identity.getPlayer();
+ 			if (player != null && zone != null) {
+@@ -65,6 +_,8 @@
+ 								itemslot.setDirty(true);
+ 								player.inventory.syncDirtySlots(0, identity);
+ 							} else {
++								if(!com.github.puzzle.paradox.game.player.PlayerChecks.blockChecks(identity,blockPos))
++									return;
+ 								BlockEventTrigger[] ablockeventtrigger = this.targetBlockState.getTrigger("onPlace");
+ 								if (ablockeventtrigger != null) {
+ 									BlockEventArgs blockeventargs = new BlockEventArgs();

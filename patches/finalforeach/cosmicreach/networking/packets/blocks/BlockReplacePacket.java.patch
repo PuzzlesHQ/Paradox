@@ -1,0 +1,13 @@
+--- a/finalforeach/cosmicreach/networking/packets/blocks/BlockReplacePacket.java
++++ b/finalforeach/cosmicreach/networking/packets/blocks/BlockReplacePacket.java
+@@ -45,6 +_,10 @@
+ 	public void handle(NetworkIdentity identity, ChannelHandlerContext ctx) {
+ 		if (!identity.isServer()) {
+ 			if (this.blockPos.chunk() != null) {
++				if(!com.github.puzzle.paradox.game.player.PlayerChecks.blockChecks(identity,blockPos))
++					return;
++				if(!com.github.puzzle.paradox.game.player.PlayerChecks.blockBreakTimingCheck(identity.getPlayer().getParadoxPlayer(), blockPos))
++					return;
+ 				BlockSetter.get().replaceBlock(this.zone, this.targetBlockState, this.blockPos);
+ 			}
+ 		}

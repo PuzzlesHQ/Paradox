@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/items/Item.java
 +++ b/finalforeach/cosmicreach/items/Item.java
-@@ -9,10 +_,10 @@
+@@ -10,10 +_,10 @@
  import java.util.HashMap;
  
  public interface Item {
@@ -12,7 +12,7 @@
  	boolean canMergeWith(Item var1);
  
  	boolean canMergeWithSwapGroup(Item var1);
-@@ -29,6 +_,7 @@
+@@ -30,6 +_,7 @@
  			throw new DuplicateIDException("Duplicate item for id: " + item.getID());
  		} else {
  			allItems.put(s, item);

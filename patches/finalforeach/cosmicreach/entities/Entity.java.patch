@@ -18,7 +18,7 @@
  	@CRBSerialized
  	public float gravityModifier = 1.0F;
  	@CRBSerialized
-@@ -271,13 +_,15 @@
+@@ -272,13 +_,15 @@
  			if (ServerSingletons.SERVER != null) {
  				ServerSingletons.SERVER.broadcast(this.zone, new HitEntityPacket(this, amount));
  			}

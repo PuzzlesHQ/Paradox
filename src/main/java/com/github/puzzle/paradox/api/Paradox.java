@@ -1,16 +1,22 @@
 package com.github.puzzle.paradox.api;
 
+import com.github.puzzle.game.commands.CommandSource;
+import com.github.puzzle.paradox.api.enums.CommandType;
 import com.github.puzzle.paradox.api.player.ParadoxPlayer;
 import com.github.puzzle.paradox.core.PuzzlePL;
 import com.github.puzzle.paradox.loader.Version;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import finalforeach.cosmicreach.entities.player.Player;
 import net.neoforged.bus.EventBus;
 import net.neoforged.bus.api.BusBuilder;
 import net.neoforged.bus.api.IEventBus;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.github.puzzle.game.commands.CommandManager.CONSOLE_DISPATCHER;
 import static finalforeach.cosmicreach.GameSingletons.playersToUniqueIds;
 
 public class Paradox  {
@@ -86,5 +92,22 @@ public class Paradox  {
      */
     public Version getAPIVersion(){
         return PuzzlePL.API_VERSION;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void registerCommand(LiteralArgumentBuilder<? extends CommandSource> command,@NotNull CommandType type){
+        switch (type){
+            case CONSOLE -> {
+              CONSOLE_DISPATCHER.register((LiteralArgumentBuilder<CommandSource>) command);
+            }
+            case CHAT -> {
+                PuzzlePL.clientDispatcher.register((LiteralArgumentBuilder<CommandSource>)command);
+            }
+            case CHAT_CONSOLE -> {
+                PuzzlePL.clientDispatcher.register((LiteralArgumentBuilder<CommandSource>)command);
+                CONSOLE_DISPATCHER.register((LiteralArgumentBuilder<CommandSource>) command);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + type);
+        }
     }
 }

@@ -15,7 +15,7 @@
  	NettyServer nettyServer;
  
  	public ServerHandler(NettyServer nettyServer) {
-@@ -32,11 +_,11 @@
+@@ -32,10 +_,11 @@
  	public void handlerAdded(ChannelHandlerContext ctx) {
  		String s = ((InetSocketAddress)ctx.channel().remoteAddress()).getAddress().getHostAddress();
  		if (ServerSingletons.BANNED_IP_LIST.hasAddress(s)) {
@@ -24,18 +24,16 @@
  			new DisconnectPacket("You are banned on this server.").setupAndSend(ctx);
  			ctx.close();
  		} else {
--			Logger.info("Handler added");
 +      		LOGGER.info("Handler added");
  			this.nettyServer.addContext(ctx);
  			new ProtocolSyncPacket(RuntimeInfo.version).setupAndSend(ctx);
  		}
-@@ -44,14 +_,15 @@
- 
- 	@Override
+@@ -45,12 +_,14 @@
  	public void handlerRemoved(ChannelHandlerContext ctx) {
--		Logger.info("Handler removed");
  		Account account = this.nettyServer.getAccount(ctx);
  		if (account != null) {
+-			Logger.info("Player disconnected: " + account.getUsername());
++			LOGGER.info("Player disconnected: " + account.getUsername());
  			this.nettyServer.broadcastToAll(new RemovedPlayerPacket(account));
  		}
  

@@ -44,7 +44,7 @@
  	private Zone() {
  		this.randomTicks = new RandomTicks(this);
  	}
-@@ -551,7 +_,7 @@
+@@ -549,7 +_,7 @@
  	public boolean calculateSpawn() {
  		Vector2 vector2 = new Vector2();
  		this.zoneGenerator.getSpawnPoint(vector2, this.totalSpawnAttempts++);
@@ -53,23 +53,23 @@
  		this.spawnPoint = new Vector3(vector2.x, 100.0F, vector2.y);
  		return true;
  	}
-@@ -567,13 +_,13 @@
- 			if (--i < -150 || blockstate == Block.WATER.getDefaultBlockState()) {
- 				int b0 = 100;
- 				this.spawnPoint = new Vector3((float)j, (float)b0, (float)k);
--				Logger.info("Spawnpoint at " + this.spawnPoint + " was not valid");
+@@ -568,13 +_,13 @@
+ 				if (--i < -150 || blockstate == Block.WATER.getDefaultBlockState()) {
+ 					int b0 = 100;
+ 					this.spawnPoint = new Vector3((float)j, (float)b0, (float)k);
+-					Logger.info("Spawnpoint at " + this.spawnPoint + " was not valid");
 +				LOGGER.info("Spawnpoint at " + this.spawnPoint + " was not valid");
- 				return false;
+ 					return false;
+ 				}
  			}
- 		}
  
- 		this.spawnPoint = new Vector3((float)j, (float)(i + 1), (float)k);
--		Logger.info("Spawnpoint at " + this.spawnPoint + " was valid!");
+ 			this.spawnPoint = new Vector3((float)j, (float)(i + 1), (float)k);
+-			Logger.info("Spawnpoint at " + this.spawnPoint + " was valid!");
 +		LOGGER.info("Spawnpoint at " + this.spawnPoint + " was valid!");
- 		return blockstate != null && !blockstate.walkThrough;
+ 			return blockstate != null && !blockstate.walkThrough;
+ 		}
  	}
- 
-@@ -600,6 +_,8 @@
+@@ -602,6 +_,8 @@
  		}
  
  		if (entity != null && !this.hasEntity(entity)) {

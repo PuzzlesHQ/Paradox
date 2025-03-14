@@ -1,11 +1,20 @@
 --- a/finalforeach/cosmicreach/entities/player/PlayerEntity.java
 +++ b/finalforeach/cosmicreach/entities/player/PlayerEntity.java
-@@ -19,7 +_,7 @@
+@@ -17,7 +_,7 @@
+ 
+ public class PlayerEntity extends Entity {
+ 	public static final String ENTITY_TYPE_ID = "base:entity_player";
+-	private transient Player player;
++	public transient Player player;
+ 	public transient ITextModelInstance nameTag;
+ 	public static IEntityModel playerModel;
  	private final transient Vector3 tmpPos = new Vector3();
+@@ -31,7 +_,7 @@
+ 	}
  
  	protected PlayerEntity() {
 -		super("base:entity_player");
 +      	super(ENTITY_TYPE_ID);
  		this.maxHitpoints = this.hitpoints = 3.0F;
  		this.fallDamage = PlayerFallDamage.INSTANCE;
- 		Threads.runOnMainThread(
+ 		Threads.runOnMainThread(() -> {

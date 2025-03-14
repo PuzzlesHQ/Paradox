@@ -10,15 +10,3 @@
  			if (blockstate != this.brokenBlockState) {
  				if (blockstate != null) {
  					identity.send(new BlockReplacePacket(this.zone, blockstate, this.blockPos));
-@@ -60,7 +_,10 @@
- 					blockeventargs.zone = this.zone;
- 					blockeventargs.blockPos = this.blockPos;
- 					blockeventargs.setSrcIdentity(identity);
--
-+					if(!com.github.puzzle.paradox.game.player.PlayerChecks.blockChecks(identity,blockPos))
-+						return;
-+					if(!com.github.puzzle.paradox.game.player.PlayerChecks.blockBreakTimingCheck(identity.getPlayer().getParadoxPlayer(), blockPos))
-+						return;
- 					for (int i = 0; i < ablockeventtrigger.length; i++) {
- 						ablockeventtrigger[i].act(blockeventargs);
- 					}

@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/blockevents/actions/BlockActionExplode.java
 +++ b/finalforeach/cosmicreach/blockevents/actions/BlockActionExplode.java
-@@ -26,6 +_,8 @@
+@@ -33,6 +_,8 @@
  
  	@Override
  	public void act(BlockEventArgs args) {

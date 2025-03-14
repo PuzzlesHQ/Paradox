@@ -27,37 +27,39 @@
 +   private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger("Cosmic Reach | Chunk Saver");
 +
  	public static volatile boolean isSaving;
- 
- 	private static void writeInt(ByteArray byteArr, int i) {
-@@ -57,24 +_,23 @@
+ 	private static Object saveWorldLock = new Object();
+ 	private static Object entityRegionLock = new Object();
+@@ -59,26 +_,25 @@
  			throw new RuntimeException(ioexception);
  		}
  	}
 -
  	public static void saveWorld(World world) {
- 		try {
- 			isSaving = true;
--			Logger.info("Started saving world");
+ 		synchronized (saveWorldLock) {
+ 			try {
+ 				isSaving = true;
+-				Logger.info("Started saving world");
 +         LOGGER.info("Started saving world");
- 			saveWorldInfo(world, false);
- 			PlayerSaver.savePlayers(world);
+ 				saveWorldInfo(world, false);
+ 				PlayerSaver.savePlayers(world);
  
 +
- 			for (Zone zone : world.getZones()) {
- 				saveZone(zone);
- 			}
+ 				for (Zone zone : world.getZones()) {
+ 					saveZone(zone);
+ 				}
  
--			Logger.info("Finished saving");
+-				Logger.info("Finished saving");
 +         LOGGER.info("Finished saving");
- 		} finally {
- 			isSaving = false;
+ 			} finally {
+ 				isSaving = false;
+ 			}
  		}
  	}
 -
  	public static void saveZone(Zone zone) {
  		for (Region region : zone.getRegions()) {
  			if (!region.isEmpty()) {
-@@ -162,7 +_,7 @@
+@@ -168,7 +_,7 @@
  					}
  				}
  			} catch (Exception exception1) {

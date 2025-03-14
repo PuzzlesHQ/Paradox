@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/networking/GamePacket.java
 +++ b/finalforeach/cosmicreach/networking/GamePacket.java
-@@ -56,10 +_,10 @@
+@@ -57,10 +_,10 @@
  import finalforeach.cosmicreach.networking.packets.sounds.PlaySound3DPacket;
  import finalforeach.cosmicreach.networking.packets.sounds.SetMusicTagsPacket;
  import finalforeach.cosmicreach.networking.server.ServerIdentity;
@@ -12,7 +12,7 @@
  import finalforeach.cosmicreach.world.Zone;
  import io.netty.buffer.ByteBuf;
  import io.netty.channel.ChannelFuture;
-@@ -69,7 +_,7 @@
+@@ -70,7 +_,7 @@
  import java.nio.charset.StandardCharsets;
  import java.util.function.Supplier;
  
@@ -21,7 +21,7 @@
  	public static final Json JSON = new Json();
  	protected static final IntMap<Supplier<? extends GamePacket>> idsToPackets = new IntMap<>();
  	protected static final ObjectIntMap<Class<? extends GamePacket>> packetsToIntIds = new ObjectIntMap<>();
-@@ -133,6 +_,10 @@
+@@ -135,6 +_,10 @@
  	}
  
  	public static <T extends GamePacket> void registerPacket(Class<T> packetClass) {
@@ -32,7 +32,7 @@
  		String s = packetClass.getCanonicalName();
  		if (s == null) {
  			String s1 = "Packet class must have a canonical name";
-@@ -150,7 +_,7 @@
+@@ -152,7 +_,7 @@
  		}
  	}
  
@@ -41,7 +41,7 @@
  		try {
  			Constructor<T> constructor = packetClass.getDeclaredConstructor();
  			Supplier<T> supplier = () -> {
-@@ -168,15 +_,15 @@
+@@ -170,15 +_,15 @@
  				packetsToIntIds.put(packetClass, numId);
  				packetNamesToIntIds.put(strId, numId);
  				packetNamesToClasses.put(strId, packetClass);
@@ -59,7 +59,7 @@
  		if (this.packetID == 0) {
  			throw new RuntimeException("Cannot send packet for " + this.getClass() + " without registering it first!");
  		}
-@@ -187,7 +_,9 @@
+@@ -189,7 +_,9 @@
  	public static GamePacket getPacket(short packetId) {
  		Supplier<? extends GamePacket> supplier = idsToPackets.get(packetId);
  		if (supplier == null) {
@@ -70,11 +70,12 @@
  		} else {
  			GamePacket gamepacket = supplier.get();
  			gamepacket.packetID = packetId;
-@@ -297,12 +_,16 @@
- 
+@@ -300,14 +_,18 @@
  	public void setupAndSendToAll(Array<ServerIdentity> connections) {
- 		this.setupForSend();
--		ArrayUtils.forEach(connections, c -> this.flushToContext(c.ctx));
+ 		if (!connections.isEmpty()) {
+ 			this.setupForSend();
+-			ArrayUtils.forEach(connections, c -> this.flushToContext(c.ctx));
+ 		}
 +
 +		ArrayUtils.forEach(connections, c ->{
 +				this.flushToContext(c.ctx);
@@ -82,9 +83,10 @@
  	}
  
  	public void setupAndSendToAllExcept(Array<ServerIdentity> connections, NetworkIdentity identity) {
- 		this.setupForSend();
- 		ArrayUtils.forEach(connections, c -> {
+ 		if (!connections.isEmpty()) {
+ 			this.setupForSend();
+ 			ArrayUtils.forEach(connections, c -> {
 +
- 			if (c != identity) {
- 				this.flushToContext(c.ctx);
- 			}
+ 				if (c != identity) {
+ 					this.flushToContext(c.ctx);
+ 				}

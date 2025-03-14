@@ -5,6 +5,7 @@ import com.github.puzzle.paradox.game.command.DefaultPuzzleCommand;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import finalforeach.cosmicreach.GameSingletons;
+import finalforeach.cosmicreach.Threads;
 import finalforeach.cosmicreach.io.ChunkSaver;
 import finalforeach.cosmicreach.networking.server.ServerSingletons;
 import finalforeach.cosmicreach.server.ServerLauncher;
@@ -34,6 +35,7 @@ public class StopServer {
                 }
                 TerminalConsoleAppender.print("stopping"+ "\n");
                 ServerLauncher.isRunning = false;
+                Threads.stopAllThreads();
             }
             return 0;
         }

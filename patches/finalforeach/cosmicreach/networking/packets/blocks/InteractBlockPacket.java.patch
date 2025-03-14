@@ -1,12 +1,11 @@
 --- a/finalforeach/cosmicreach/networking/packets/blocks/InteractBlockPacket.java
 +++ b/finalforeach/cosmicreach/networking/packets/blocks/InteractBlockPacket.java
-@@ -91,7 +_,8 @@
- 					blockeventargs.zone = zone;
- 					blockeventargs.blockPos = this.blockPos;
- 					blockeventargs.setSrcIdentity(identity);
--
-+					if(!com.github.puzzle.paradox.game.player.PlayerChecks.blockChecks(identity,blockPos))
-+						return;
- 					for (int j = 0; j < ablockeventtrigger.length; j++) {
- 						ablockeventtrigger[j].act(blockeventargs);
- 					}
+@@ -59,6 +_,8 @@
+ 			Player player = identity.getPlayer();
+ 			if (this.blockPos != null) {
+ 				this.blockPos.convertToLocal(zone);
++				if(!com.github.puzzle.paradox.game.player.PlayerChecks.blockChecks(identity,blockPos))
++					return;
+ 				BlockState blockstate = this.blockPos.getBlockState();
+ 				if (blockstate != this.blockState) {
+ 					if (blockstate != null) {
