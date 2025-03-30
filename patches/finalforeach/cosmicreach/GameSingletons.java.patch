@@ -8,7 +8,7 @@
  import finalforeach.cosmicreach.accounts.Account;
  import finalforeach.cosmicreach.blockentities.BlockEntity;
  import finalforeach.cosmicreach.blockentities.BlockEntityCreator;
-@@ -43,10 +_,10 @@
+@@ -44,10 +_,10 @@
  import finalforeach.cosmicreach.util.containers.CRObjectMap;
  import finalforeach.cosmicreach.util.containers.DynamicArray;
  import finalforeach.cosmicreach.util.containers.DynamicByteArray;
@@ -20,7 +20,7 @@
  import java.util.HashMap;
  import java.util.Objects;
  import java.util.WeakHashMap;
-@@ -56,7 +_,7 @@
+@@ -57,7 +_,7 @@
  public class GameSingletons {
  	public static World world;
  	private static ObjectMap<String, Player> uniqueIdsToPlayers = new ObjectMap<>();
@@ -29,7 +29,7 @@
  	private static WeakHashMap<Player, Account> playersToAccounts = new WeakHashMap<>();
  	public static boolean isAllFlaggedForRemeshing;
  	public static IZoneRenderer zoneRenderer;
-@@ -74,7 +_,7 @@
+@@ -75,7 +_,7 @@
  	public static IClientSingletons clientSingletons;
  
  	public static void create() {
@@ -38,7 +38,7 @@
  		DynamicArrays.instantiator = new IDynamicArrayInstantiator() {
  			@Override
  			public <E> IDynamicArray<E> create(Class<E> clazz) {
-@@ -237,6 +_,7 @@
+@@ -239,6 +_,7 @@
  			uniqueIdsToPlayers.put(account.getUniqueId(), player);
  			playersToUniqueIds.put(player, account.getUniqueId());
  			playersToAccounts.put(player, account);
@@ -46,7 +46,7 @@
  		}
  	}
  
-@@ -254,12 +_,14 @@
+@@ -256,12 +_,14 @@
  					zone.getPlayers().clear();
  				}
  			}

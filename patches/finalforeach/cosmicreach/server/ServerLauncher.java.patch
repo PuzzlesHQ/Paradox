@@ -12,7 +12,7 @@
  import finalforeach.cosmicreach.GameSingletons;
  import finalforeach.cosmicreach.TickRunner;
  import finalforeach.cosmicreach.ZoneLoaders;
-@@ -9,45 +_,67 @@
+@@ -9,46 +_,67 @@
  import finalforeach.cosmicreach.io.SaveLocation;
  import finalforeach.cosmicreach.networking.netty.NettyServer;
  import finalforeach.cosmicreach.networking.server.ServerSingletons;
@@ -59,6 +59,7 @@
 -			NettyServer nettyserver = new NettyServer();
 -			ServerSingletons.SERVER = nettyserver;
 -			nettyserver.run();
+-			System.exit(0);
 -		}
 +    public static boolean isRunning = false;
 +    public static Thread rconThread;

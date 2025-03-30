@@ -132,7 +132,7 @@
  	}
  
  	public void stop() {
-@@ -130,10 +_,12 @@
+@@ -136,10 +_,12 @@
  	public void broadcastToAll(GamePacket packet) {
  		packet.setupAndSendToAll(this.authenticatedConnections);
  	}
@@ -146,7 +146,7 @@
  
  	public void addContext(ChannelHandlerContext ctx) {
  		ServerIdentity serveridentity = new ServerIdentity(this, ctx);
-@@ -156,20 +_,25 @@
+@@ -162,20 +_,25 @@
  
  	public void removeContext(ChannelHandlerContext ctx) {
  		ServerIdentity serveridentity = this.contextToIdentity.get(ctx);
