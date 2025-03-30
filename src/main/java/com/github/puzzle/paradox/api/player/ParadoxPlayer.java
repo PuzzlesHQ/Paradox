@@ -19,13 +19,14 @@ public class ParadoxPlayer {
 
 
     ParadoxPlayerEntity entity;
-
+    Vector3 lastSafePosition;
     long lastBreakTime = 0;
     ParadoxAccount account;
     public ParadoxPlayer(Player player, PlayerEntity playerEntity){
         this.player = player;
         this.entity = (ParadoxPlayerEntity) playerEntity.getParadoxEntity();
         this.account = ClassConverter.convertClass(player.getAccount());
+        this.lastSafePosition = getPosition();
     }
 
     /**
@@ -83,6 +84,31 @@ public class ParadoxPlayer {
     public Vector3 getPosition(){
         return getEntity().getPosition();
     }
+
+
+    /**
+     * Sets a Vector3 of player's position of its entity
+     * @author repletsin5
+     * @since API 1.0.0-Alpha
+     * @see Vector3
+     */
+    public void setPosition(Vector3 position){
+        player.getEntity().setPosition(position);
+    }
+    /**
+     * Returns a Vector3 of know location that of the player that has no player check issues
+     * @author repletsin5
+     * @since API 1.0.0-Alpha
+     * @see Vector3
+     * @see finalforeach.cosmicreach.entities.player.PlayerEntity
+     */
+    public Vector3 getLastSafePosition(){
+        return lastSafePosition;
+    }
+    public void setLastSafePosition(Vector3 position){
+        lastSafePosition = position;
+    }
+
 
 
     /**

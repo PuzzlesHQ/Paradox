@@ -1,11 +1,11 @@
 --- a/finalforeach/cosmicreach/networking/packets/meta/ProtocolSyncPacket.java
 +++ b/finalforeach/cosmicreach/networking/packets/meta/ProtocolSyncPacket.java
-@@ -70,7 +_,7 @@
+@@ -71,7 +_,7 @@
  
  	@Override
  	public void handle(NetworkIdentity identity, ChannelHandlerContext ctx) {
 -		Logger.info("Got " + this.getClass().getSimpleName() + " with game version: " + this.gameVersion);
 +//		Logger.info("Got " + this.getClass().getSimpleName() + " with game version: " + this.gameVersion);
- 		if (identity.getSide() == NetworkSide.SERVER) {
+ 		if (identity.isServer()) {
  			if (ctx.channel().hasAttr(PROTOCOL_SET_ATTRIB)) {
  				ServerSingletons.SERVER.kick("Client protocol packet already recieved!", identity);

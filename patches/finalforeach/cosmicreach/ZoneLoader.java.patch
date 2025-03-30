@@ -26,6 +26,6 @@
  			this.lastSaveMillis = k;
  			this.requestSave = false;
 +			Save.shouldSave = false;
- 		} else if (!this.needToGenDifferentChunks(this.zone, this.localGenRadiusInChunks) && !this.hasChunkColumnsToGenerate()) {
- 			if (!this.spawnReady && GameSingletons.isHost) {
- 				this.readyToPlay = false;
+ 		} else {
+ 			boolean flag = this.needToGenDifferentChunks(this.zone, this.localGenRadiusInChunks);
+ 			boolean flag1 = this.hasChunkColumnsToGenerate();

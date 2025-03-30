@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/networking/packets/MessagePacket.java
 +++ b/finalforeach/cosmicreach/networking/packets/MessagePacket.java
-@@ -11,6 +_,8 @@
+@@ -10,6 +_,8 @@
  import io.netty.buffer.ByteBuf;
  import io.netty.channel.ChannelHandlerContext;
  
@@ -9,7 +9,7 @@
  public class MessagePacket extends GamePacket {
  	public static final int MAX_MESSAGE_LENGTH = 256;
  	public String playerUniqueId;
-@@ -50,22 +_,25 @@
+@@ -49,22 +_,25 @@
  
  			Chat.MAIN_CLIENT_CHAT.addMessage(account, s);
  		} else {

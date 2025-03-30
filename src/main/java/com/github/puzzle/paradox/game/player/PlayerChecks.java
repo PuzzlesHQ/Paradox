@@ -3,10 +3,16 @@ package com.github.puzzle.paradox.game.player;
 import com.github.puzzle.paradox.api.events.packet.MiscEvents;
 import com.github.puzzle.paradox.api.player.ParadoxPlayer;
 import com.github.puzzle.paradox.game.server.ParadoxServerSettings;
+import finalforeach.cosmicreach.blocks.Block;
 import finalforeach.cosmicreach.blocks.BlockPosition;
+import finalforeach.cosmicreach.blocks.BlockState;
 import finalforeach.cosmicreach.entities.player.Gamemode;
+import finalforeach.cosmicreach.entities.player.Player;
+import finalforeach.cosmicreach.networking.GamePacket;
 import finalforeach.cosmicreach.networking.NetworkIdentity;
+import finalforeach.cosmicreach.networking.packets.entities.PlayerPositionPacket;
 import net.neoforged.bus.api.SubscribeEvent;
+import org.slf4j.LoggerFactory;
 
 public class PlayerChecks {
 
@@ -55,7 +61,29 @@ public class PlayerChecks {
     public static class PositionChecks {
         @SubscribeEvent
         public void OnPlayerPosition(MiscEvents.OnPlayerPositionPacket event){
-            //TODO
+            //INPROGRESS
+            //Don't allow moving into collidable blocks, probably will need improving if gravity blocks are added.
+            if(!ParadoxServerSettings.shouldValidatePlayerPos)
+                return;
+            var plrRequestedPos = event.getRequestedPosition();
+            var reqBlockState = BlockPosition.ofGlobal(event.getPlayer().getInternalPlayer().getZone(), (int) plrRequestedPos.x, (int) plrRequestedPos.y, (int) plrRequestedPos.z).getBlockState();
+            var reqBlockStateTop = BlockPosition.ofGlobal(event.getPlayer().getInternalPlayer().getZone(), (int) plrRequestedPos.x, (int) plrRequestedPos.y+1, (int) plrRequestedPos.z).getBlockState();
+            if(!reqBlockState.isFluid && reqBlockState.getBlock() != Block.AIR && !reqBlockState.walkThrough &&
+                    !event.getPlayer().getEntity().getInternalPlayerEntity().isNoClip() &&
+             !reqBlockStateTop.isFluid && reqBlockStateTop.getBlock() != Block.AIR && !reqBlockStateTop.walkThrough
+            ){
+
+                //only reset position and not look vector so camera doesn't possible jitter.
+                event.getPlayer().getInternalPlayer().getEntity().viewDirection = event.getRequestedLookVector();
+                event.getPlayer().setPosition(event.getPlayer().getLastSafePosition().cpy());
+                event.getIdentity().getInternalNetworkIdentity().send(new PlayerPositionPacket(event.getPlayer().getInternalPlayer()));
+
+                event.setCanceled(false);
+                return;
+            }
+
+            //TODO check for flight without noclip = true on serverside.
+            event.getPlayer().setLastSafePosition(event.getCurrentPosition().cpy());
             event.setCanceled(false);
         }
 

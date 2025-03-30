@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/networking/netty/NettyServer.java
 +++ b/finalforeach/cosmicreach/networking/netty/NettyServer.java
-@@ -18,53 +_,56 @@
+@@ -18,56 +_,59 @@
  import finalforeach.cosmicreach.networking.server.ServerIdentity;
  import finalforeach.cosmicreach.networking.server.ServerSingletons;
  import finalforeach.cosmicreach.settings.ServerSettings;
@@ -20,6 +20,7 @@
  import io.netty.channel.socket.SocketChannel;
  import io.netty.channel.socket.nio.NioServerSocketChannel;
  import java.io.BufferedReader;
+ import java.io.IOException;
  import java.io.InputStreamReader;
 +import java.net.InetSocketAddress;
  
@@ -36,6 +37,8 @@
 +	public Array<ServerIdentity> authenticatedConnections;
 +
  	private ChannelFuture channelFuture;
+ 	private BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+ 	public volatile boolean isStopped = false;
 -	public IChat systemChat = new IChat() {
 -		@Override
 -		public void addMessage(Account account, String messageText) {
@@ -80,19 +83,21 @@
  
  		try {
  			ServerBootstrap serverbootstrap = new ServerBootstrap();
-@@ -74,23 +_,36 @@
+@@ -77,9 +_,8 @@
  				}
  			}).option(ChannelOption.SO_BACKLOG, Integer.valueOf(128)).childOption(ChannelOption.SO_KEEPALIVE, true);
  			this.channelFuture = serverbootstrap.bind(this.port).sync();
--			BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(System.in));
 -			String s = null;
 -			Logger.info("Server started, type 'stop' to shutdown and 'help' for commands.");
 -
 +			LOGGER.info("Server started, type 'stop' to shutdown and 'help' for commands.");
 +			/*
- 			while (!"stop".equals(s) && this.channelFuture.channel().isActive()) {
- 				s = bufferedreader.readLine();
- 				this.processCommand(s);
+ 			while (!this.isStopped && !"stop".equals(s) && this.channelFuture.channel().isActive()) {
+ 				if (!this.bufferRead.ready()) {
+ 					Thread.sleep(200L);
+@@ -88,15 +_,30 @@
+ 					this.processCommand(s);
+ 				}
  			}
 -
 -			this.shutdown();
@@ -126,8 +131,8 @@
 +		LOGGER.info("Server closed.");
  	}
  
- 	public void processCommand(String commandLine) {
-@@ -113,10 +_,12 @@
+ 	public void stop() {
+@@ -130,10 +_,12 @@
  	public void broadcastToAll(GamePacket packet) {
  		packet.setupAndSendToAll(this.authenticatedConnections);
  	}
@@ -141,7 +146,7 @@
  
  	public void addContext(ChannelHandlerContext ctx) {
  		ServerIdentity serveridentity = new ServerIdentity(this, ctx);
-@@ -139,20 +_,25 @@
+@@ -156,20 +_,25 @@
  
  	public void removeContext(ChannelHandlerContext ctx) {
  		ServerIdentity serveridentity = this.contextToIdentity.get(ctx);
@@ -151,7 +156,7 @@
 -			ServerSingletons.removeAccount(serveridentity);
 +		if(!serveridentity.shouldIgnore) {
 +			var addy = ((InetSocketAddress) ctx.channel().remoteAddress());
-+			if (!serveridentity.waskicked)
++			if (!serveridentity.waskicked && getAccount(ctx) != null)
 +				LOGGER.info("Player uid '{}' left | {}:{}", getAccount(ctx).getUniqueId(), addy.getAddress().getHostAddress(), addy.getPort());
 +			Player player = ServerSingletons.getPlayer(serveridentity);
 +			if (player != null) {

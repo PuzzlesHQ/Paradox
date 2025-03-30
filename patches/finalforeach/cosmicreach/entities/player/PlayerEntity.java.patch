@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/entities/player/PlayerEntity.java
 +++ b/finalforeach/cosmicreach/entities/player/PlayerEntity.java
-@@ -17,7 +_,7 @@
+@@ -21,7 +_,7 @@
  
  public class PlayerEntity extends Entity {
  	public static final String ENTITY_TYPE_ID = "base:entity_player";
@@ -9,7 +9,7 @@
  	public transient ITextModelInstance nameTag;
  	public static IEntityModel playerModel;
  	private final transient Vector3 tmpPos = new Vector3();
-@@ -31,7 +_,7 @@
+@@ -36,7 +_,7 @@
  	}
  
  	protected PlayerEntity() {

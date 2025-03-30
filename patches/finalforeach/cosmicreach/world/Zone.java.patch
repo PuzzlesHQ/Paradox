@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/world/Zone.java
 +++ b/finalforeach/cosmicreach/world/Zone.java
-@@ -7,9 +_,9 @@
+@@ -8,9 +_,9 @@
  import com.badlogic.gdx.utils.Array;
  import com.badlogic.gdx.utils.Disposable;
  import com.badlogic.gdx.utils.Json;
@@ -11,7 +11,7 @@
  import com.badlogic.gdx.utils.JsonWriter.OutputType;
  import finalforeach.cosmicreach.GameSingletons;
  import finalforeach.cosmicreach.RandomTicks;
-@@ -33,6 +_,8 @@
+@@ -36,6 +_,8 @@
  import finalforeach.cosmicreach.util.Point3DMap;
  import finalforeach.cosmicreach.util.logging.Logger;
  import finalforeach.cosmicreach.worldgen.ZoneGenerator;
@@ -20,7 +20,7 @@
  import java.io.File;
  import java.io.FileOutputStream;
  import java.io.IOException;
-@@ -42,7 +_,7 @@
+@@ -45,7 +_,7 @@
  import java.util.concurrent.ConcurrentHashMap;
  import java.util.function.Consumer;
  
@@ -28,8 +28,8 @@
 +public class Zone extends com.github.puzzle.paradox.game.server.InternalParadoxZone implements Serializable, Disposable {
  	public PriorityQueue<ScheduledTrigger> eventQueue = new PriorityQueue<>((a, b) -> a.triggerTick() - b.triggerTick());
  	public Array<BlockEntity> tickingBlockEntities = new Array<>();
- 	public Array<BlockEntity> allRenderableBlockEntities = new Array<>();
-@@ -61,12 +_,13 @@
+ 	public Array<IRenderable> allRenderableBlockEntities = new Array<>();
+@@ -64,12 +_,13 @@
  	public float respawnHeight = -64.0F;
  	private String skyId;
  	private transient World world;
@@ -44,7 +44,7 @@
  	private Zone() {
  		this.randomTicks = new RandomTicks(this);
  	}
-@@ -549,7 +_,7 @@
+@@ -558,7 +_,7 @@
  	public boolean calculateSpawn() {
  		Vector2 vector2 = new Vector2();
  		this.zoneGenerator.getSpawnPoint(vector2, this.totalSpawnAttempts++);
@@ -53,7 +53,7 @@
  		this.spawnPoint = new Vector3(vector2.x, 100.0F, vector2.y);
  		return true;
  	}
-@@ -568,13 +_,13 @@
+@@ -577,13 +_,13 @@
  				if (--i < -150 || blockstate == Block.WATER.getDefaultBlockState()) {
  					int b0 = 100;
  					this.spawnPoint = new Vector3((float)j, (float)b0, (float)k);
@@ -69,7 +69,7 @@
  			return blockstate != null && !blockstate.walkThrough;
  		}
  	}
-@@ -602,6 +_,8 @@
+@@ -611,6 +_,8 @@
  		}
  
  		if (entity != null && !this.hasEntity(entity)) {

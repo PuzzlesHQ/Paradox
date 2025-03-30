@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/RuntimeInfo.java
 +++ b/finalforeach/cosmicreach/RuntimeInfo.java
-@@ -12,7 +_,7 @@
+@@ -13,7 +_,7 @@
  	public static final boolean isWindows = osName.contains("windows");
  	public static final String version = Gdx.files.internal("build_assets/version.txt").readString();
  	public static boolean GL30Supported = true;

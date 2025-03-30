@@ -14,7 +14,7 @@ public abstract class MiscEvents extends Event {
     GamePacket gamePacket;
     ChannelHandlerContext channel;
     ParadoxNetworkIdentity identity;
-
+    
     public MiscEvents(GamePacket packet, ParadoxNetworkIdentity identity, ChannelHandlerContext channel) {
         this.gamePacket = packet;
         this.channel = channel;
@@ -78,7 +78,15 @@ public abstract class MiscEvents extends Event {
         public Vector3 getRequestedPosition(){
             return getPlayerPositionPacket().position;
         }
-
+        /**
+         * Returns associated look vector {@link Vector3 } the player {@link ParadoxPlayer} moved to
+         * @author repletsin5
+         * @since API 1.0.0-Alpha
+         * @see Vector3
+         */
+        public Vector3 getRequestedLookVector(){
+            return getPlayerPositionPacket().viewDir;
+        }
         /**
          * Returns associated players position {@link Vector3 }
          * @author repletsin5

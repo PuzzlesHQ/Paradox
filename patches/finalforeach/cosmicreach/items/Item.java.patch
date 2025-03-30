@@ -3,7 +3,7 @@
 @@ -10,10 +_,10 @@
  import java.util.HashMap;
  
- public interface Item {
+ public interface Item extends IGameTagged {
 +	org.slf4j.Logger LOGGER =  org.slf4j.LoggerFactory.getLogger("Cosmic Reach | Items");
  	ObjectMap<String, Item> allItems = new ObjectMap<>();
  

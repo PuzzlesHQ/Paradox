@@ -1,8 +1,9 @@
 --- a/finalforeach/cosmicreach/networking/server/ServerZoneLoader.java
 +++ b/finalforeach/cosmicreach/networking/server/ServerZoneLoader.java
-@@ -1,17 +_,17 @@
+@@ -1,18 +_,18 @@
  package finalforeach.cosmicreach.networking.server;
  
+ import com.badlogic.gdx.utils.PauseableThread;
 +import com.badlogic.gdx.utils.Array;
  import finalforeach.cosmicreach.ZoneLoader;
 -import finalforeach.cosmicreach.entities.player.Player;
@@ -20,7 +21,7 @@
  	public boolean shouldRun(boolean setPlayerChunks) {
  		if (setPlayerChunks) {
  			this.worldLoader.setPlayerChunks(this.zone);
-@@ -29,6 +_,7 @@
+@@ -30,6 +_,7 @@
  	public ServerZoneLoader(Zone zone) {
  		this.zone = zone;
  		this.worldLoader = new ZoneLoader(zone);

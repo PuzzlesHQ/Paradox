@@ -1,10 +1,18 @@
 --- a/finalforeach/cosmicreach/networking/packets/blocks/BreakBlockPacket.java
 +++ b/finalforeach/cosmicreach/networking/packets/blocks/BreakBlockPacket.java
-@@ -43,8 +_,8 @@
+@@ -8,6 +_,7 @@
+ import finalforeach.cosmicreach.blocks.MissingBlockStateResult;
+ import finalforeach.cosmicreach.networking.GamePacket;
+ import finalforeach.cosmicreach.networking.NetworkIdentity;
++import finalforeach.cosmicreach.networking.NetworkSide;
+ import finalforeach.cosmicreach.world.Zone;
+ import io.netty.buffer.ByteBuf;
+ import io.netty.channel.ChannelHandlerContext;
+@@ -42,8 +_,8 @@
  
  	@Override
  	public void handle(NetworkIdentity identity, ChannelHandlerContext ctx) {
--		if (identity.getSide() != NetworkSide.CLIENT) {
+-		if (!identity.isClient()) {
  			BlockState blockstate = this.blockPos.getBlockState();
 +		if (identity.getSide() != NetworkSide.CLIENT && com.github.puzzle.paradox.game.server.ParadoxServerSettings.canBreakBlock) {
  			if (blockstate != this.brokenBlockState) {

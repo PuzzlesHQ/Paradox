@@ -22,7 +22,7 @@
  	private static ObjectMap<NetworkIdentity, Account> netIdsToAccounts = new ObjectMap<>();
  	private static ObjectMap<Account, NetworkIdentity> accountsToNetIds = new ObjectMap<>();
  	private static ObjectMap<String, Account> uniqueIdsToAccounts = new ObjectMap<>();
-@@ -145,6 +_,7 @@
+@@ -149,6 +_,7 @@
  			World world = GameSingletons.world;
  
  			for (Zone zone : world.getZones()) {
@@ -30,7 +30,7 @@
  				zone.update(deltaTime);
  			}
  
-@@ -154,6 +_,7 @@
+@@ -158,6 +_,7 @@
  			}
  		});
  		registerBlockEntityOpeners();
@@ -38,7 +38,7 @@
  		GameSingletons.postCreate();
  	}
  
-@@ -189,7 +_,7 @@
+@@ -193,7 +_,7 @@
  	public static Player getPlayer(NetworkIdentity identity) {
  		Account account = getAccount(identity);
  		return account == null ? null : GameSingletons.getPlayerFromUniqueId(account.getUniqueId());
@@ -47,7 +47,7 @@
  
  	public static ServerIdentity getConnection(Player player) {
  		Account account = GameSingletons.getAccountFromPlayer(player);
-@@ -199,4 +_,9 @@
+@@ -203,4 +_,9 @@
  	public static Account getAccountByUniqueId(String playerUniqueId) {
  		return uniqueIdsToAccounts.get(playerUniqueId);
  	}

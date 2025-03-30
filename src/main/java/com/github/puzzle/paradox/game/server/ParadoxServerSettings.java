@@ -23,6 +23,7 @@ public class ParadoxServerSettings {
     public static String RCONpassword = "";
     public static boolean anticheat = true;
     public static boolean isOffline = false;
+    public static boolean shouldValidatePlayerPos = false;
     public static float creativeBreakDelayMin = 64;
 
     public static boolean getBool(String name){
@@ -70,6 +71,7 @@ public class ParadoxServerSettings {
         executeChatCommands =  getBool("commands.enabled");
         joinMessage = Objects.requireNonNullElse(config.getString("server.joinmessage"),"");
         creativeBreakDelayMin = config.getFloat("anticheat.creativebreakdelaymin",64.f);
+        shouldValidatePlayerPos = config.getBoolean("anticheat.shouldvalidateplayerpos",false);
         var rd = getInt("server.renderdistance");
         ServerZoneLoader.INSTANCE.serverLoadDistance = rd < 3 || rd > 32 ? 10 : rd;
     }

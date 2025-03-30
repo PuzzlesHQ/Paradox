@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/networking/packets/blocks/InteractBlockPacket.java
 +++ b/finalforeach/cosmicreach/networking/packets/blocks/InteractBlockPacket.java
-@@ -59,6 +_,8 @@
+@@ -58,6 +_,8 @@
  			Player player = identity.getPlayer();
  			if (this.blockPos != null) {
  				this.blockPos.convertToLocal(zone);
