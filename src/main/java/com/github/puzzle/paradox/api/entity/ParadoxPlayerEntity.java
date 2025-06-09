@@ -1,8 +1,6 @@
 package com.github.puzzle.paradox.api.entity;
 
-import com.github.puzzle.paradox.api.player.ParadoxAccount;
 import com.github.puzzle.paradox.api.player.ParadoxPlayer;
-import finalforeach.cosmicreach.entities.player.Player;
 import finalforeach.cosmicreach.entities.player.PlayerEntity;
 
 public class ParadoxPlayerEntity extends ParadoxEntity {

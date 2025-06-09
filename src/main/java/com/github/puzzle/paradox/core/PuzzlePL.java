@@ -43,7 +43,7 @@ public class PuzzlePL {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger("Puzzle Paradox");
-    public static final Version VERSION = new Version(1,2,15, Version.VersionType.ALPHA);
+    public static final Version VERSION = new Version(1,2,16, Version.VersionType.ALPHA);
     public static final Version API_VERSION = new Version(1,0,0, Version.VersionType.ALPHA);
 
     public final PropertiesConfiguration serverConfig;

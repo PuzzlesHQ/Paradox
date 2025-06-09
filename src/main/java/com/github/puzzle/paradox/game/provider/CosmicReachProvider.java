@@ -2,6 +2,7 @@ package com.github.puzzle.paradox.game.provider;
 
 
 import com.github.puzzle.core.loader.launch.PuzzleClassLoader;
+import com.github.puzzle.paradox.api.Paradox;
 import com.github.puzzle.paradox.core.PuzzlePL;
 import com.github.puzzle.paradox.loader.Version;
 import com.github.puzzle.paradox.loader.launch.ParadoxClassLoader;
@@ -94,13 +95,13 @@ public class CosmicReachProvider implements IGameProvider {
         PluginInfo.Builder puzzleLoaderInfo = PluginInfo.Builder.New();
         {
             puzzleLoaderInfo.setName("Puzzle Plugin Loader");
-            puzzleLoaderInfo.setDesc("A new dedicated modloader for Cosmic Reach");
+            puzzleLoaderInfo.setDesc("A new dedicated server plugin loader for Cosmic Reach");
             puzzleLoaderInfo.addDependency("cosmic-reach", getGameVersion());
 
             HashMap<String, JsonValue> meta = new HashMap<>();
             puzzleLoaderInfo.setMeta(meta);
             puzzleLoaderInfo.setAuthors(new String[]{
-                    "Mr_Zombii", "Repletsin5", "SinfullySoul"
+                    "Mr_Zombii", "Repletsin5", "SinfullySoul","CrabKing"
             });
             puzzleLoaderInfo.setVersion(PuzzlePL.VERSION);
 //            puzzleLoaderInfo.addEntrypoint("preInit", PuzzlePL.class.getName());
@@ -109,7 +110,16 @@ public class CosmicReachProvider implements IGameProvider {
 
             PluginLocator.locatedPlugins.put("puzzle-plugin-loader", puzzleLoaderInfo.build().getOrCreateModContainer());
         }
-
+        PluginInfo.Builder apiInfo = PluginInfo.Builder.New();
+        {
+            apiInfo.setName("Paradox API");
+            apiInfo.setDesc("The Paradox plugin API");
+            apiInfo.addAuthor("Repletsin5");
+            apiInfo.setVersion(PuzzlePL.API_VERSION);
+            HashMap<String, JsonValue> meta = new HashMap<>();
+            apiInfo.setMeta(meta);
+            PluginLocator.locatedPlugins.put("paradox-cr-api", apiInfo.build().getOrCreateModContainer());
+        }
         /* Cosmic Reach as a mod */
         PluginInfo.Builder cosmicReachInfo = PluginInfo.Builder.New();
         {

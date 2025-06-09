@@ -17,8 +17,8 @@
 +
  	private static final HashMap<FileHandle, SoundBuffer> ALL_SOUNDS = new HashMap<>();
  	private static final HashMap<FileHandle, Texture> ALL_TEXTURES = new HashMap<>();
- 	static JsonReader jsonReader = new JsonReader();
-@@ -110,13 +_,13 @@
+ 	private static final JsonReader JSON_READER = new JsonReader();
+@@ -114,13 +_,13 @@
  		} else {
  			FileHandle filehandle1 = Gdx.files.absolute(SaveLocation.getSaveFolderLocation() + "/mods/" + location.toPath());
  			if (filehandle1.exists()) {
@@ -34,7 +34,7 @@
  						"Loading "
  							+ AnsiColours.PURPLE
  							+ "\""
-@@ -135,11 +_,11 @@
+@@ -139,11 +_,11 @@
  				} else {
  					FileHandle filehandle3 = Gdx.files.internal(location.toPath());
  					if (filehandle3.exists()) {

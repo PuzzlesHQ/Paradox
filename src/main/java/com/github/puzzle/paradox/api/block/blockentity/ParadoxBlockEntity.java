@@ -1,7 +1,6 @@
 package com.github.puzzle.paradox.api.block.blockentity;
 
 import finalforeach.cosmicreach.blockentities.BlockEntity;
-import finalforeach.cosmicreach.items.Item;
 
 public abstract class ParadoxBlockEntity {
 

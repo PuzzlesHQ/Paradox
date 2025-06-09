@@ -1,7 +1,5 @@
 package com.github.puzzle.paradox.api.entity;
 
-import finalforeach.cosmicreach.entities.DroneTrapEntity;
-import finalforeach.cosmicreach.entities.EntityLaserProjectile;
 import finalforeach.cosmicreach.entities.LaserDroneEntity;
 
 public class ParadoxLaserDroneEntity extends ParadoxEntity {

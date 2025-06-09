@@ -34,8 +34,12 @@ dependencies {
     //comment out if using server
 //    implementation "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
 //    implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
-
+//
 //    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+//
+//    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion"
+//    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+
     ///////
 
     implementation("com.google.guava:guava:$guavaVersion")
@@ -46,11 +50,9 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
     implementation "org.lz4:lz4-java:1.8.0"
     implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
-    implementation 'com.github.FinalForEach:Cosmic-Reach-Save-Library:136f3ea6aa'
+    implementation "com.github.FinalForEach:Cosmic-Reach-Save-Library:$saveLib"
 
 
-//    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion"
-//    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 
     implementation "com.github.Hangman:TuningFork:$tuningFork"
     implementation "io.netty:netty-all:4.1.24.Final"
@@ -69,6 +71,8 @@ dependencies {
     implementation("org.hjson:hjson:$hjsonVersion")
     implementation('org.jetbrains:annotations:24.0.0')
     implementation("net.sf.jopt-simple:jopt-simple:$joptSimpleVersion")
+//    implementation project(":api") //TODO: fix
+
 }
 
 javadoc {

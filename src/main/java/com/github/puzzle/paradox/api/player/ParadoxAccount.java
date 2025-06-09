@@ -2,8 +2,6 @@ package com.github.puzzle.paradox.api.player;
 
 import finalforeach.cosmicreach.accounts.Account;
 
-import java.util.Set;
-
 public class ParadoxAccount {
 
     Account account;

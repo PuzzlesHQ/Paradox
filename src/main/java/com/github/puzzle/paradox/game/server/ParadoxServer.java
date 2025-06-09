@@ -10,6 +10,10 @@ public class ParadoxServer {
     public ChannelFuture channelfuture;
     public EventLoopGroup eventloopgroup;
     public EventLoopGroup eventloopgroup1;
+    protected int port;
+    public int getPort() {
+        return this.port;
+    }
 
     protected final static Logger LOGGER = LoggerFactory.getLogger("Cosmic Reach | Server");
 

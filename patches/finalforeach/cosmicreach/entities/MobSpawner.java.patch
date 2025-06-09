@@ -1,11 +1,15 @@
 --- a/finalforeach/cosmicreach/entities/MobSpawner.java
 +++ b/finalforeach/cosmicreach/entities/MobSpawner.java
-@@ -87,9 +_,12 @@
+@@ -87,6 +_,7 @@
  	}
  
  	protected void spawnMob(Zone zone) {
 +
  		String s = spawningMobEntityTypeIds.random();
+ 		if (MathUtils.randomBoolean(0.05F)) {
+ 			s = "base:entity_incinerator";
+@@ -94,6 +_,8 @@
+ 
  		Entity entity = EntityCreator.get(s);
  		entity.setPosition(this.tmpSpawnPackLoc);
 +		if(com.github.puzzle.paradox.api.Paradox.getInstance().getEventBus().post(new com.github.puzzle.paradox.api.events.EntityEvents.OnEntitySpawn(entity.getParadoxEntity())).isCanceled())

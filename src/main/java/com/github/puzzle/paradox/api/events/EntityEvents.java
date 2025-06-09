@@ -1,6 +1,5 @@
 package com.github.puzzle.paradox.api.events;
 
-import com.badlogic.gdx.math.Vector3;
 import com.github.puzzle.paradox.api.entity.ParadoxEntity;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;

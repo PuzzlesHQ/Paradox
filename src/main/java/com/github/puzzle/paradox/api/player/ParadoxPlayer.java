@@ -3,15 +3,8 @@ package com.github.puzzle.paradox.api.player;
 import com.badlogic.gdx.math.Vector3;
 import com.github.puzzle.paradox.api.entity.ParadoxPlayerEntity;
 import com.github.puzzle.paradox.core.ClassConverter;
-import com.github.puzzle.paradox.game.player.InternalParadoxAccount;
-import finalforeach.cosmicreach.accounts.Account;
-import finalforeach.cosmicreach.entities.Entity;
 import finalforeach.cosmicreach.entities.player.Player;
 import finalforeach.cosmicreach.entities.player.PlayerEntity;
-import finalforeach.cosmicreach.networking.server.ServerIdentity;
-import finalforeach.cosmicreach.world.Zone;
-
-import java.util.UUID;
 
 public class ParadoxPlayer {
 
@@ -79,7 +72,7 @@ public class ParadoxPlayer {
      * @author repletsin5
      * @since API 1.0.0-Alpha
      * @see Vector3
-     * @see finalforeach.cosmicreach.entities.player.PlayerEntity
+     * @see PlayerEntity
      */
     public Vector3 getPosition(){
         return getEntity().getPosition();
@@ -100,7 +93,7 @@ public class ParadoxPlayer {
      * @author repletsin5
      * @since API 1.0.0-Alpha
      * @see Vector3
-     * @see finalforeach.cosmicreach.entities.player.PlayerEntity
+     * @see PlayerEntity
      */
     public Vector3 getLastSafePosition(){
         return lastSafePosition;

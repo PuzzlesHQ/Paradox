@@ -28,6 +28,7 @@ public class Perms extends DefaultPuzzleCommand {
         return new String[0];
     }
 
+    //TODO: Improve code readability
     @Override
     public int execute(CommandContext<CommandSource> context) throws CommandSyntaxException {
         var account = context.getSource().getAccount();

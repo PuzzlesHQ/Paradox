@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/accounts/AccountOffline.java
 +++ b/finalforeach/cosmicreach/accounts/AccountOffline.java
-@@ -7,14 +_,18 @@
+@@ -9,14 +_,18 @@
  public class AccountOffline extends Account {
  	private String displayName = "Player";
  
@@ -21,7 +21,7 @@
  	}
  
  	@Override
-@@ -29,7 +_,7 @@
+@@ -43,7 +_,7 @@
  
  	@Override
  	public boolean isAllowed() {

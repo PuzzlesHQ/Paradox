@@ -1,0 +1,85 @@
+--- a/finalforeach/cosmicreach/io/ChunkLoader.java
++++ b/finalforeach/cosmicreach/io/ChunkLoader.java
+@@ -12,6 +_,8 @@
+ import finalforeach.cosmicreach.world.World;
+ import finalforeach.cosmicreach.world.Zone;
+ import finalforeach.cosmicreach.worldgen.ChunkColumn;
++import org.slf4j.LoggerFactory;
++
+ import java.io.File;
+ import java.io.FileInputStream;
+ import java.io.IOException;
+@@ -35,6 +_,8 @@
+ 		}
+ 	}
+ 
++	static final org.slf4j.Logger LOGGER =  LoggerFactory.getLogger("ChunkLoader");
++
+ 	private static int readInt(FileInputStream input) throws IOException {
+ 		byte[] abyte = input.readNBytes(4);
+ 		if (abyte.length != 4) {
+@@ -124,15 +_,15 @@
+ 					}
+ 				}
+ 			} catch (Exception exception) {
+-				Logger.error("Could not load region file: " + s);
++				LOGGER.error("Could not load region file: " + s);
+ 				if (chunkbytereader != null) {
+-					Logger.error("Region magic matches: " + (chunkbytereader.magic == -1257812));
+-					Logger.error("Region file version: " + chunkbytereader.fileVersion);
+-					Logger.error("Region compression type: " + chunkbytereader.compressionType);
++					LOGGER.error("Region magic matches: " + (chunkbytereader.magic == -1257812));
++					LOGGER.error("Region file version: " + chunkbytereader.fileVersion);
++					LOGGER.error("Region compression type: " + chunkbytereader.compressionType);
+ 					if (chunkbytereader.fileVersion <= 3) {
+-						Logger.error("Region total chunks written: " + chunkbytereader.numChunkColumnsWritten);
++						LOGGER.error("Region total chunks written: " + chunkbytereader.numChunkColumnsWritten);
+ 					} else {
+-						Logger.error("Region total columns written: " + chunkbytereader.numChunkColumnsWritten);
++						LOGGER.error("Region total columns written: " + chunkbytereader.numChunkColumnsWritten);
+ 					}
+ 				}
+ 
+@@ -142,7 +_,7 @@
+ 
+ 			if (flag) {
+ 				ChunkSaver.saveRegion(zone, region);
+-				Logger.info("Saved converted region: " + s + " to version 4");
++				LOGGER.info("Saved converted region: " + s + " to version 4");
+ 			}
+ 		}
+ 	}
+@@ -179,22 +_,22 @@
+ 			reader.seek(j2);
+ 			int k2 = reader.readInt();
+ 			if ((long)k2 > reader.totalLength) {
+-				Logger.error("Error reading column for: " + cc.chunkX + ", " + cc.chunkY + ", " + cc.chunkZ);
+-				Logger.error("Column index: " + i2);
+-				Logger.error("Index type: " + reader.offsetNumberType);
+-				Logger.error("Byte offset: " + j2 + " (0x" + Integer.toHexString(j2) + ")");
+-				Logger.error("Num bytes in column: " + k2);
++				LOGGER.error("Error reading column for: " + cc.chunkX + ", " + cc.chunkY + ", " + cc.chunkZ);
++				LOGGER.error("Column index: " + i2);
++				LOGGER.error("Index type: " + reader.offsetNumberType);
++				LOGGER.error("Byte offset: " + j2 + " (0x" + Integer.toHexString(j2) + ")");
++				LOGGER.error("Num bytes in column: " + k2);
+ 				throw new RuntimeException("Invalid total bytes for column, got " + k2 + " but cannot be greater than size of file: " + reader.totalLength);
+ 			}
+ 
+ 			int l2 = reader.readInt();
+ 			if (l2 > 4) {
+-				Logger.error("Error reading column for: " + cc.chunkX + ", " + cc.chunkY + ", " + cc.chunkZ);
+-				Logger.error("Column index: " + i2);
+-				Logger.error("Index type: " + reader.offsetNumberType);
+-				Logger.error("Byte offset: " + j2 + " (0x" + Integer.toHexString(j2) + ")");
+-				Logger.error("Num bytes in column: " + k2);
+-				Logger.error("chunkFileVersion: " + l2);
++				LOGGER.error("Error reading column for: " + cc.chunkX + ", " + cc.chunkY + ", " + cc.chunkZ);
++				LOGGER.error("Column index: " + i2);
++				LOGGER.error("Index type: " + reader.offsetNumberType);
++				LOGGER.error("Byte offset: " + j2 + " (0x" + Integer.toHexString(j2) + ")");
++				LOGGER.error("Num bytes in column: " + k2);
++				LOGGER.error("chunkFileVersion: " + l2);
+ 				throw new RuntimeException("Invalid chunk version, got " + l2 + " but cannot be greater than 4");
+ 			}
+ 

@@ -17,7 +17,7 @@ import finalforeach.cosmicreach.items.Item;
 import finalforeach.cosmicreach.items.ItemStack;
 import finalforeach.cosmicreach.networking.NetworkIdentity;
 import finalforeach.cosmicreach.networking.server.ServerIdentity;
-import finalforeach.cosmicreach.util.logging.Logger;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
@@ -27,6 +27,8 @@ import java.util.function.Function;
 @SuppressWarnings("unchecked")
 
 public class ClassConverter {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger("Paradox | Class Converter");
 
     public record EntityInfo<E extends ParadoxEntity, C extends finalforeach.cosmicreach.entities.Entity>
             (String id, Class<E> pEntity, Function<C,E> converter)
@@ -65,8 +67,10 @@ public class ClassConverter {
 
     public static<E extends finalforeach.cosmicreach.entities.Entity> ParadoxEntity convertEntity(E toConvert){
        EntityInfo<ParadoxEntity,E> c = (EntityInfo<ParadoxEntity, E>) ENTITY_CONVERTERS.get(toConvert.entityTypeId);
-       if(c == null)
-           throw new RuntimeException("Can not convert this entity");
+       if(c == null) {
+           LOGGER.warn("Can not convert Entity using ParadoxEntity as default, Entity: {}",toConvert.entityTypeId);
+           return new ParadoxEntity(toConvert);
+       }
       return c.converter().apply(toConvert);
     }
     public static<E extends finalforeach.cosmicreach.blockentities.BlockEntity> ParadoxBlockEntity convertEntity(E toConvert){
@@ -80,15 +84,16 @@ public class ClassConverter {
         PlayerInfo<ParadoxPlayer,Player,PlayerEntity> c = new PlayerInfo<>(ParadoxPlayer.class,ParadoxPlayer::new);
         if(c == null)
             throw new RuntimeException("Can not convert player");
+
         return c.converter().apply(toConvert,(PlayerEntity)toConvert.getEntity());
     }
 
     public static <E, R> R convertClass(E toConvert) {
         ClassInfo<R,E> c = (ClassInfo<R,E>) OTHER_CLASS_CONVERTERS.get(toConvert.getClass().getName());
         if(c == null) {
-            if (toConvert instanceof Entity) {
-                LoggerFactory.getLogger("Paradox | Class Converter").warn("Can not convert Entity using ParadoxEntity as default");
-                return (R) new ParadoxEntity((Entity) toConvert);
+            if (toConvert instanceof Entity e) {
+                LOGGER.warn("Can not convert Entity using ParadoxEntity as default, Entity: {}",e.entityTypeId);
+                return (R) new ParadoxEntity(e);
             }
             throw new RuntimeException("Can not convert class, Not an entity");
         }

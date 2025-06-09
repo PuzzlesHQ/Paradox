@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/networking/netty/NettyServer.java
 +++ b/finalforeach/cosmicreach/networking/netty/NettyServer.java
-@@ -18,56 +_,59 @@
+@@ -18,56 +_,58 @@
  import finalforeach.cosmicreach.networking.server.ServerIdentity;
  import finalforeach.cosmicreach.networking.server.ServerSingletons;
  import finalforeach.cosmicreach.settings.ServerSettings;
@@ -25,13 +25,12 @@
 +import java.net.InetSocketAddress;
  
 -public class NettyServer {
--	public final ServerBroadcastIdentity broadcastIdentity;
++public class NettyServer extends com.github.puzzle.paradox.game.server.ParadoxServer {
+ 	public final ServerBroadcastIdentity broadcastIdentity;
 -	ObjectMap<ChannelHandlerContext, ServerIdentity> contextToIdentity = new ObjectMap<>();
 -	private Array<ServerIdentity> unauthenticatedConnections = new Array<>();
 -	private Array<ServerIdentity> authenticatedConnections = new Array<>();
-+public class NettyServer extends com.github.puzzle.paradox.game.server.ParadoxServer {
- 	private int port;
-+	public final ServerBroadcastIdentity broadcastIdentity;
+-	private int port;
 +	public ObjectMap<ChannelHandlerContext, ServerIdentity> contextToIdentity = new ObjectMap<>();
 +	public Array<ServerIdentity> unauthenticatedConnections;
 +	public Array<ServerIdentity> authenticatedConnections;
@@ -146,7 +145,7 @@
  
  	public void addContext(ChannelHandlerContext ctx) {
  		ServerIdentity serveridentity = new ServerIdentity(this, ctx);
-@@ -162,20 +_,25 @@
+@@ -162,10 +_,15 @@
  
  	public void removeContext(ChannelHandlerContext ctx) {
  		ServerIdentity serveridentity = this.contextToIdentity.get(ctx);
@@ -166,14 +165,13 @@
  		}
  
  		this.unauthenticatedConnections.removeValue(serveridentity, true);
- 		this.authenticatedConnections.removeValue(serveridentity, true);
+@@ -173,9 +_,6 @@
  		this.contextToIdentity.remove(ctx);
  	}
--
- 	public int getPort() {
- 		return this.port;
- 	}
-+
+ 
+-	public int getPort() {
+-		return this.port;
+-	}
  
  	public Account getAccount(ChannelHandlerContext ctx) {
  		ServerIdentity serveridentity = this.contextToIdentity.get(ctx);

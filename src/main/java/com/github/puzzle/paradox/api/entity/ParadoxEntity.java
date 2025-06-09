@@ -5,8 +5,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.github.puzzle.paradox.api.Paradox;
 import com.github.puzzle.paradox.api.ParadoxZone;
 import com.github.puzzle.paradox.api.events.EntityEvents;
-import finalforeach.cosmicreach.GameSingletons;
-import finalforeach.cosmicreach.accounts.Account;
 import finalforeach.cosmicreach.entities.*;
 import finalforeach.cosmicreach.entities.player.PlayerEntity;
 import org.jetbrains.annotations.NotNull;

@@ -9,21 +9,10 @@
  public class CommandPacket extends GamePacket {
  	String[] commandArgs;
  
-@@ -35,18 +_,28 @@
+@@ -35,8 +_,19 @@
  	public void handle(final NetworkIdentity identity, ChannelHandlerContext ctx) {
  		if (!identity.isClient()) {
  			Account account = identity.getAccount();
--			if (account.isOperator()) {
--				Logger.info("Command from " + account.getUniqueId() + " | " + account.getDisplayName() + ": " + String.join(" ", this.commandArgs));
--				Command.triggerCommand(new IChat() {
--					@Override
--					public void addMessage(Account account, String messageText) {
--						ServerSingletons.SERVER.systemChat.addMessage(account, messageText);
--						((ServerIdentity)identity).sendChatMessage(messageText);
--					}
--				}, account, this.commandArgs);
--			} else {
--				((ServerIdentity)identity).sendChatMessage("You do not have permission to run commands.");
 +			if(com.github.puzzle.paradox.game.server.ParadoxServerSettings.executeChatCommands) {
 +				StringBuilder cmd = new StringBuilder();
 +				for (var val : commandArgs){
@@ -34,18 +23,19 @@
 +				}
 +
 +				com.github.puzzle.paradox.game.command.CommandParsing.parse(this,"/" + cmd,identity,ctx);
- 			}
-+//			if (account.isOperator()) {
-+//				Command.triggerCommand(new IChat() {
-+//					@Override
-+//					public void addMessage(Account account, String messageText) {
-+//						ServerSingletons.SERVER.systemChat.addMessage(account, messageText);
-+//						((ServerIdentity)identity).sendChatMessage(messageText);
-+//					}
-+//				}, account, this.commandArgs);
-+//			} else {
-+//				((ServerIdentity)identity).sendChatMessage("You do not have permission to run commands.");
-+//			}
++			}
++			/*
+ 			if (account.isOperator()) {
+-				Logger.info("Command from " + account.getUniqueId() + " | " + account.getDisplayName() + ": " + String.join(" ", this.commandArgs));
+ 				Command.triggerCommand(new IChat() {
+ 					@Override
+ 					public void addMessage(Account account, String messageText) {
+@@ -46,7 +_,7 @@
+ 				}, account, this.commandArgs);
+ 			} else {
+ 				((ServerIdentity)identity).sendChatMessage("You do not have permission to run commands.");
+-			}
++			}*/
  		}
  	}
  }

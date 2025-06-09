@@ -1,6 +1,5 @@
 package com.github.puzzle.paradox.api.item;
 
-import finalforeach.cosmicreach.accounts.Account;
 import finalforeach.cosmicreach.items.Item;
 
 public class ParadoxItem {

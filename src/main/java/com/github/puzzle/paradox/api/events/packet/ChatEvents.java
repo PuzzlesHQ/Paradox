@@ -51,7 +51,7 @@ public abstract class ChatEvents extends Event {
 
         Command<CommandSource> command;
 
-        public OnCommandExecute(com.mojang.brigadier.Command<CommandSource> command, ParadoxPlayer player) {
+        public OnCommandExecute(Command<CommandSource> command, ParadoxPlayer player) {
             super(player);
             this.command = command;
         }

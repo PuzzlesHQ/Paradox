@@ -8,7 +8,7 @@
  import finalforeach.cosmicreach.entities.player.Player;
  import finalforeach.cosmicreach.io.ChunkLoader;
  import finalforeach.cosmicreach.io.ChunkSaver;
-@@ -191,7 +_,6 @@
+@@ -187,7 +_,6 @@
  		int j = i;
  		int k = MathUtils.clamp(i, 6, 12);
  		if (!this.spawnReady) {
@@ -16,7 +16,7 @@
  		}
  
  		if (player.isLoading()) {
-@@ -472,10 +_,11 @@
+@@ -467,10 +_,11 @@
  		}
  
  		long k = System.currentTimeMillis();

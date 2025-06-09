@@ -6,15 +6,15 @@ import com.github.puzzle.paradox.api.player.ParadoxPlayer;
 import com.github.puzzle.paradox.core.PuzzlePL;
 import com.github.puzzle.paradox.loader.Version;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import finalforeach.cosmicreach.entities.player.Player;
-import net.neoforged.bus.EventBus;
 import net.neoforged.bus.api.BusBuilder;
 import net.neoforged.bus.api.IEventBus;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static com.github.puzzle.game.commands.CommandManager.CONSOLE_DISPATCHER;
 import static finalforeach.cosmicreach.GameSingletons.playersToUniqueIds;
