@@ -30,7 +30,7 @@ repositories {
 
 
 group = 'com.github.puzzle'
-version = "1.0+$crVersion+$paradoxVersion";
+version = "1.0+cr-$crVersion+$paradoxVersion";
 dependencies {
 
 //    implementation("org.apache.logging.log4j:log4j-api:$log4jVersion")
