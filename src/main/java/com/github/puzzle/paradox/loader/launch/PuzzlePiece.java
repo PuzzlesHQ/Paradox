@@ -25,7 +25,7 @@ public class PuzzlePiece extends Piece {
     }
 
     private PuzzlePiece() {
-        super(false);
+        super(false,null);
 
         List<URL> classPath = new ArrayList<>();
         classPath.addAll(PluginLocator.getUrlsOnClasspath());

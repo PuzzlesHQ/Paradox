@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.github.puzzle.game.commands.CommandManager.CONSOLE_DISPATCHER;
-import static finalforeach.cosmicreach.GameSingletons.playersToUniqueIds;
+import static finalforeach.cosmicreach.singletons.GameSingletonPlayers.playersToUniqueIds;
 
 public class Paradox  {
 

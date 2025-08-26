@@ -2,10 +2,9 @@ package com.github.puzzle.paradox.game.command.console;
 
 import com.github.puzzle.game.commands.CommandSource;
 import com.github.puzzle.paradox.game.command.DefaultPuzzleCommand;
-import com.github.puzzle.paradox.game.command.ParadoxBrigaderCommand;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import finalforeach.cosmicreach.GameSingletons;
+import finalforeach.cosmicreach.singletons.GameSingletons;
 import net.minecrell.terminalconsole.TerminalConsoleAppender;
 
 public class Save {

@@ -5,11 +5,11 @@
  
  import com.badlogic.gdx.utils.Array;
 +import com.github.puzzle.paradox.game.event.PacketEvents;
- import finalforeach.cosmicreach.GameSingletons;
  import finalforeach.cosmicreach.networking.GamePacket;
  import finalforeach.cosmicreach.networking.NetworkIdentity;
  import finalforeach.cosmicreach.networking.packets.meta.TransactionPacket;
  import finalforeach.cosmicreach.networking.server.ServerSingletons;
+ import finalforeach.cosmicreach.singletons.GameSingletons;
  import finalforeach.cosmicreach.util.exceptions.UnauthenticatedPacketRecieveException;
 -import finalforeach.cosmicreach.util.logging.Logger;
  import io.netty.buffer.ByteBuf;

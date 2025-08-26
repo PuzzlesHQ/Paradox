@@ -1,20 +1,18 @@
 --- a/finalforeach/cosmicreach/networking/server/ServerSingletons.java
 +++ b/finalforeach/cosmicreach/networking/server/ServerSingletons.java
-@@ -2,12 +_,7 @@
+@@ -2,10 +_,7 @@
  
  import com.badlogic.gdx.math.Vector3;
  import com.badlogic.gdx.utils.ObjectMap;
 -import finalforeach.cosmicreach.BlockEntityScreenInfo;
 -import finalforeach.cosmicreach.EntityPathfinder;
--import finalforeach.cosmicreach.GameSingletons;
 -import finalforeach.cosmicreach.Threads;
 -import finalforeach.cosmicreach.TickRunner;
--import finalforeach.cosmicreach.ZoneLoaders;
 +import finalforeach.cosmicreach.*;
  import finalforeach.cosmicreach.accounts.Account;
  import finalforeach.cosmicreach.blockentities.BlockEntity;
  import finalforeach.cosmicreach.blockentities.IBlockEntityWithContainer;
-@@ -41,6 +_,8 @@
+@@ -44,6 +_,8 @@
  
  public class ServerSingletons {
  	public static NettyServer SERVER;
@@ -23,7 +21,7 @@
  	private static ObjectMap<NetworkIdentity, Account> netIdsToAccounts = new ObjectMap<>();
  	private static ObjectMap<Account, NetworkIdentity> accountsToNetIds = new ObjectMap<>();
  	private static ObjectMap<String, Account> uniqueIdsToAccounts = new ObjectMap<>();
-@@ -150,6 +_,7 @@
+@@ -153,6 +_,7 @@
  			World world = GameSingletons.world;
  
  			for (Zone zone : world.getZones()) {
@@ -31,24 +29,24 @@
  				zone.update(deltaTime);
  			}
  
-@@ -160,6 +_,7 @@
- 			}
+@@ -164,6 +_,7 @@
  		});
+ 		registerCustomScreenInfoOpeners();
  		registerBlockEntityOpeners();
 +		puzzle = new com.github.puzzle.paradox.core.PuzzlePL();
  		GameSingletons.postCreate();
  	}
  
-@@ -200,7 +_,7 @@
+@@ -211,7 +_,7 @@
  	public static Player getPlayer(NetworkIdentity identity) {
  		Account account = getAccount(identity);
- 		return account == null ? null : GameSingletons.getPlayerFromUniqueId(account.getUniqueId());
+ 		return account == null ? null : GameSingletonPlayers.getPlayerFromUniqueId(account.getUniqueId());
 -	}
 +    }
  
  	public static ServerIdentity getConnection(Player player) {
- 		Account account = GameSingletons.getAccountFromPlayer(player);
-@@ -210,4 +_,9 @@
+ 		Account account = GameSingletonPlayers.getAccountFromPlayer(player);
+@@ -221,4 +_,9 @@
  	public static Account getAccountByUniqueId(String playerUniqueId) {
  		return uniqueIdsToAccounts.get(playerUniqueId);
  	}

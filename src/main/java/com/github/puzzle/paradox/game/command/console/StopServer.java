@@ -4,11 +4,11 @@ import com.github.puzzle.game.commands.CommandSource;
 import com.github.puzzle.paradox.game.command.DefaultPuzzleCommand;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import finalforeach.cosmicreach.GameSingletons;
 import finalforeach.cosmicreach.Threads;
 import finalforeach.cosmicreach.io.ChunkSaver;
 import finalforeach.cosmicreach.networking.server.ServerSingletons;
 import finalforeach.cosmicreach.server.ServerLauncher;
+import finalforeach.cosmicreach.singletons.GameSingletonPlayers;
 import net.minecrell.terminalconsole.TerminalConsoleAppender;
 
 public class StopServer {
@@ -27,7 +27,7 @@ public class StopServer {
                 ServerSingletons.SERVER.kick("Server stopping!",id);
             }
             Save.shouldSave = true;
-            GameSingletons.unregisterAllPlayers();
+            GameSingletonPlayers.unregisterAllPlayers();
             synchronized (ChunkSaver.class){
                 while (ChunkSaver.isSaving){
 

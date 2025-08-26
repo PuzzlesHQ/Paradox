@@ -1,0 +1,19 @@
+--- a/finalforeach/cosmicreach/singletons/GameSingletons.java
++++ b/finalforeach/cosmicreach/singletons/GameSingletons.java
+@@ -75,7 +_,7 @@
+ 	}
+ 
+ 	public static void create() {
+-		Logger.info("Starting Cosmic Reach " + (isClient ? "Client" : "Server") + " version " + RuntimeInfo.version);
++        org.slf4j.LoggerFactory.getLogger("Cosmic Reach").info("Starting Cosmic Reach {} version {} | Paradox {}", isClient ? "Client" : "Server", RuntimeInfo.version, com.github.puzzle.paradox.core.PuzzlePL.VERSION);
+ 		DynamicArrays.instantiator = new IDynamicArrayInstantiator() {
+ 			@Override
+ 			public <E> IDynamicArray<E> create(Class<E> clazz) {
+@@ -175,6 +_,6 @@
+ 	}
+ 
+ 	public static <T extends CustomScreenInfoRemoteControl> void registerCustomScreenOpener(Class<T> clazz, Consumer<T> info) {
+-		infoScreenOpeners.put(clazz, info);
++		infoScreenOpeners.put( clazz, ( Consumer<CustomScreenInfoRemoteControl>)info);
+ 	}
+ }

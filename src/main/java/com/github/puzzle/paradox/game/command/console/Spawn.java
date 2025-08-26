@@ -9,7 +9,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecrell.terminalconsole.TerminalConsoleAppender;
 
-import static finalforeach.cosmicreach.GameSingletons.world;
+import static finalforeach.cosmicreach.singletons.GameSingletons.world;
 
 public class Spawn {
 

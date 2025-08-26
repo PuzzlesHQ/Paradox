@@ -5,10 +5,10 @@
  import com.badlogic.gdx.utils.JsonValue;
  import com.badlogic.gdx.utils.Json.Serializable;
 +import com.github.puzzle.paradox.game.player.InternalParadoxPlayer;
- import finalforeach.cosmicreach.GameSingletons;
  import finalforeach.cosmicreach.accounts.Account;
  import finalforeach.cosmicreach.blocks.BlockState;
-@@ -23,7 +_,7 @@
+ import finalforeach.cosmicreach.entities.CommonEntityTags;
+@@ -24,7 +_,7 @@
  import finalforeach.cosmicreach.world.World;
  import finalforeach.cosmicreach.world.Zone;
  

@@ -56,3 +56,6 @@ server.properties
 /patchingThings
 /dists/*.zip
 /dists/*.patch
+launcher/src/main/resources/jarpatch.patch
+launcher/src/main/resources/dependencies.json
+launcher/src/main/resources/jarpatch.patch

@@ -1,12 +1,12 @@
 package com.github.puzzle.paradox.api.entity;
 
-import finalforeach.cosmicreach.entities.DroneTrapEntity;
+import finalforeach.cosmicreach.entities.mobs.MobDroneTrap;
 
 public class ParadoxDroneTrapEntity extends ParadoxEntity {
 
-    DroneTrapEntity trapEntity;
+    MobDroneTrap trapEntity;
 
-    public ParadoxDroneTrapEntity(DroneTrapEntity entity) {
+    public ParadoxDroneTrapEntity(MobDroneTrap entity) {
         super(entity);
         trapEntity = entity;
     }
@@ -15,9 +15,9 @@ public class ParadoxDroneTrapEntity extends ParadoxEntity {
      * Avoid using this. Returns Cosmic Reach's internal drone trap entity class
      * @author repletsin5
      * @since API 1.0.0-Alpha
-     * @see DroneTrapEntity
+     * @see MobDroneTrap
      */
-    public DroneTrapEntity getInternalDroneTrapEntity(){
+    public MobDroneTrap getInternalDroneTrapEntity(){
         return trapEntity;
     }
 }

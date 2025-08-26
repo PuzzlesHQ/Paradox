@@ -1,6 +1,6 @@
 package com.github.puzzle.game.commands;
 
-import finalforeach.cosmicreach.GameSingletons;
+import finalforeach.cosmicreach.singletons.GameSingletonPlayers;
 import finalforeach.cosmicreach.accounts.Account;
 import finalforeach.cosmicreach.chat.IChat;
 import finalforeach.cosmicreach.entities.player.Player;
@@ -41,7 +41,7 @@ public class ServerCommandSource implements CommandSource {
 
     @Override
     public Account getAccount() {
-        return GameSingletons.getAccountFromPlayer(getIdentity().getPlayer());
+        return GameSingletonPlayers.getAccountFromPlayer(getIdentity().getPlayer());
     }
 
     @Override

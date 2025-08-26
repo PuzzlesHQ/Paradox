@@ -1,15 +1,15 @@
 --- a/finalforeach/cosmicreach/networking/server/ServerZoneLoader.java
 +++ b/finalforeach/cosmicreach/networking/server/ServerZoneLoader.java
-@@ -1,18 +_,18 @@
+@@ -1,7 +_,7 @@
  package finalforeach.cosmicreach.networking.server;
  
  import com.badlogic.gdx.utils.PauseableThread;
-+import com.badlogic.gdx.utils.Array;
- import finalforeach.cosmicreach.ZoneLoader;
 -import finalforeach.cosmicreach.entities.player.Player;
++import com.badlogic.gdx.utils.Array;
  import finalforeach.cosmicreach.world.IZoneLoader;
  import finalforeach.cosmicreach.world.Zone;
- import finalforeach.cosmicreach.worldgen.ChunkColumn;
+ import finalforeach.cosmicreach.world.ZoneLoader;
+@@ -9,10 +_,10 @@
  
  public class ServerZoneLoader implements IZoneLoader {
  	public int serverLoadDistance = 10;

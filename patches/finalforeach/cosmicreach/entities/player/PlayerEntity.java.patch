@@ -1,15 +1,15 @@
 --- a/finalforeach/cosmicreach/entities/player/PlayerEntity.java
 +++ b/finalforeach/cosmicreach/entities/player/PlayerEntity.java
-@@ -23,7 +_,7 @@
+@@ -21,7 +_,7 @@
  
  public class PlayerEntity extends Entity {
  	public static final String ENTITY_TYPE_ID = "base:entity_player";
 -	private transient Player player;
 +	public transient Player player;
- 	public transient ITextModelInstance nameTag;
  	public static IEntityModel playerModel;
- 	private final transient Vector3 tmpPos = new Vector3();
-@@ -46,7 +_,7 @@
+ 	private boolean wasFirstPersonLastFrame;
+ 	public static final String sneakIdle = "sneak_idle_cycle";
+@@ -43,7 +_,7 @@
  	}
  
  	protected PlayerEntity() {

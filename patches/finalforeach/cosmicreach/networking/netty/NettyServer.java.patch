@@ -1,14 +1,15 @@
 --- a/finalforeach/cosmicreach/networking/netty/NettyServer.java
 +++ b/finalforeach/cosmicreach/networking/netty/NettyServer.java
-@@ -18,56 +_,58 @@
- import finalforeach.cosmicreach.networking.server.ServerIdentity;
+@@ -17,57 +_,59 @@
  import finalforeach.cosmicreach.networking.server.ServerSingletons;
  import finalforeach.cosmicreach.settings.ServerSettings;
+ import finalforeach.cosmicreach.singletons.GameSingletons;
 +import finalforeach.cosmicreach.server.ServerLauncher;
  import finalforeach.cosmicreach.util.ArrayUtils;
  import finalforeach.cosmicreach.util.logging.Logger;
  import finalforeach.cosmicreach.world.IZoneLoader;
  import finalforeach.cosmicreach.world.Zone;
+ import finalforeach.cosmicreach.world.ZoneLoaders;
  import io.netty.bootstrap.ServerBootstrap;
 -import io.netty.channel.ChannelFuture;
 -import io.netty.channel.ChannelHandlerContext;

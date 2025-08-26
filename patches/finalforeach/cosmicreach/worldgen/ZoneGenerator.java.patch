@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/worldgen/ZoneGenerator.java
 +++ b/finalforeach/cosmicreach/worldgen/ZoneGenerator.java
-@@ -15,7 +_,7 @@
+@@ -16,7 +_,7 @@
  import java.util.Random;
  
  public abstract class ZoneGenerator {
@@ -8,4 +8,4 @@
 +	public static final Object REGISTER_ZONE_LOCK = new Object();
  	private static HashMap<String, Class<? extends ZoneGenerator>> allZoneGenerators;
  	private static Array<String> allZoneIds = new Array<>(String.class);
- 	private static HashMap<String, String> zoneIdsAndNames = new HashMap<>();
+ 	public static final int CHUNK_WIDTH = 16;

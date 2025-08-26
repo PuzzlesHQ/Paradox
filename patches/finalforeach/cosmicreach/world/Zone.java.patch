@@ -10,9 +10,9 @@
  import com.badlogic.gdx.utils.Json.Serializable;
 +import com.badlogic.gdx.utils.JsonValue;
  import com.badlogic.gdx.utils.JsonWriter.OutputType;
- import finalforeach.cosmicreach.GameSingletons;
  import finalforeach.cosmicreach.RandomTicks;
-@@ -37,6 +_,8 @@
+ import finalforeach.cosmicreach.Threads;
+@@ -36,6 +_,8 @@
  import finalforeach.cosmicreach.util.Point3DMap;
  import finalforeach.cosmicreach.util.logging.Logger;
  import finalforeach.cosmicreach.worldgen.ZoneGenerator;
@@ -21,7 +21,7 @@
  import java.io.File;
  import java.io.FileOutputStream;
  import java.io.IOException;
-@@ -46,7 +_,7 @@
+@@ -45,7 +_,7 @@
  import java.util.concurrent.ConcurrentHashMap;
  import java.util.function.Consumer;
  
@@ -30,12 +30,13 @@
  	public PriorityQueue<ScheduledTrigger> eventQueue = new PriorityQueue<>((a, b) -> a.triggerTick() - b.triggerTick());
  	public SnapshotArray<BlockEntity> tickingBlockEntities = new SnapshotArray<>(BlockEntity.class);
  	public Array<IRenderable> allRenderableBlockEntities = new Array<>();
-@@ -65,12 +_,13 @@
+@@ -64,13 +_,13 @@
  	public float respawnHeight = -64.0F;
  	private String skyId;
  	private transient World world;
--	private transient MobSpawner mobSpawner = new MobSpawner();
-+	public transient MobSpawner mobSpawner = new MobSpawner();
+-	private transient MobSpawner hostileMobSpawner = MobSpawner.HOSTILE_MOB_SPAWNER;
+-	private transient MobSpawner neutralMobSpawner = MobSpawner.NEUTRAL_MOB_SPAWNER;
++	public transient MobSpawner hostileMobSpawner = MobSpawner.HOSTILE_MOB_SPAWNER;
  	private RandomTicks randomTicks;
  	private final Array<Chunk> toRemove = new Array<>(false, 4096, Chunk.class);
  	int totalSpawnAttempts;
@@ -54,8 +55,8 @@
  		this.spawnPoint = new Vector3(vector2.x, 100.0F, vector2.y);
  		return true;
  	}
-@@ -580,13 +_,13 @@
- 				if (--i < -150 || blockstate == Block.WATER.getDefaultBlockState()) {
+@@ -581,13 +_,13 @@
+ 				if (i < -150 || blockstate != null && blockstate.isFluid) {
  					int b0 = 100;
  					this.spawnPoint = new Vector3((float)j, (float)b0, (float)k);
 -					Logger.info("Spawnpoint at " + this.spawnPoint + " was not valid");
@@ -70,7 +71,7 @@
  			return blockstate != null && !blockstate.walkThrough;
  		}
  	}
-@@ -614,6 +_,8 @@
+@@ -615,6 +_,8 @@
  		}
  
  		if (entity != null && !this.hasEntity(entity)) {
@@ -79,3 +80,19 @@
  			this.addEntity(entity);
  		}
  	}
+@@ -727,7 +_,6 @@
+ 			}
+ 		});
+ 		this.hostileMobSpawner.tick(this);
+-		this.neutralMobSpawner.tick(this);
+ 		this.currentZoneTick++;
+ 	}
+ 
+@@ -802,6 +_,7 @@
+ 
+ 	public void removeEntity(Entity e) {
+ 		if (e != null) {
++			com.github.puzzle.paradox.core.PuzzlePL.uuidToParadoxEntity.remove(e.getParadoxEntity().getUUID());
+ 			if (GameSingletons.isHost && ServerSingletons.SERVER != null) {
+ 				ServerSingletons.SERVER.broadcast(this, new DespawnEntityPacket(e));
+ 			}

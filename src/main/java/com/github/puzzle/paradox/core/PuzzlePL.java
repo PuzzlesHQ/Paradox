@@ -1,19 +1,17 @@
 package com.github.puzzle.paradox.core;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import com.github.puzzle.game.commands.CommandSource;
 import com.github.puzzle.paradox.api.Paradox;
 import com.github.puzzle.paradox.api.entity.ParadoxEntity;
 import com.github.puzzle.paradox.core.permissions.GlobalPermissions;
-import com.github.puzzle.paradox.core.permissions.Permission;
 import com.github.puzzle.paradox.core.permissions.PermissionGroup;
 import com.github.puzzle.paradox.core.terminal.PPLTerminalConsole;
 import com.github.puzzle.paradox.game.command.Commands;
 import com.github.puzzle.paradox.game.player.PlayerChecks;
 import com.github.puzzle.paradox.game.server.ParadoxServerSettings;
 import com.github.puzzle.paradox.loader.Version;
-import com.github.puzzle.paradox.test.Test;
 import com.mojang.brigadier.CommandDispatcher;
-import finalforeach.cosmicreach.TickRunner;
 import finalforeach.cosmicreach.accounts.Account;
 import finalforeach.cosmicreach.accounts.AccountOffline;
 import finalforeach.cosmicreach.networking.packets.MessagePacket;
@@ -32,10 +30,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static finalforeach.cosmicreach.io.SaveLocation.getSaveFolderLocation;
 
@@ -43,13 +38,14 @@ public class PuzzlePL {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger("Puzzle Paradox");
-    public static final Version VERSION = new Version(1,2,16, Version.VersionType.ALPHA);
+    public static final Version VERSION = Version.parseVersion(PuzzlePL.class.getPackage().getImplementationVersion());
     public static final Version API_VERSION = new Version(1,0,0, Version.VersionType.ALPHA);
 
     public final PropertiesConfiguration serverConfig;
     public final FileBasedConfigurationBuilder<PropertiesConfiguration> configBuilder;
 
     public static CommandDispatcher<CommandSource> clientDispatcher = new CommandDispatcher<>(); //to separate server side chat commands
+    public static final ObjectMap<UUID, ParadoxEntity> uuidToParadoxEntity = new ObjectMap<>();
 
     public static Account SERVER_ACCOUNT = null;
 
@@ -99,7 +95,7 @@ public class PuzzlePL {
         serverConfig.addProperty("rcon.port", 47138);
         serverConfig.addProperty("rcon.password", RandomStringUtils.randomAlphanumeric(8));
         serverConfig.addProperty("world.worldtype","base:earth");
-        serverConfig.addProperty("itch.apikey","");
+//        serverConfig.addProperty("itch.apikey","");
     }
     public void init(){
         ParadoxServerSettings.initSetting();
@@ -165,4 +161,6 @@ public class PuzzlePL {
         consoleThread.start();
 
     }
+
+
 }

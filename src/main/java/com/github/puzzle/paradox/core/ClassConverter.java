@@ -11,6 +11,10 @@ import finalforeach.cosmicreach.accounts.Account;
 import finalforeach.cosmicreach.accounts.AccountItch;
 import finalforeach.cosmicreach.accounts.AccountOffline;
 import finalforeach.cosmicreach.entities.*;
+import finalforeach.cosmicreach.entities.mobs.MobDroneTrap;
+import finalforeach.cosmicreach.entities.mobs.MobIncinerator;
+import finalforeach.cosmicreach.entities.mobs.MobInterceptor;
+import finalforeach.cosmicreach.entities.mobs.MobLaserInterceptor;
 import finalforeach.cosmicreach.entities.player.Player;
 import finalforeach.cosmicreach.entities.player.PlayerEntity;
 import finalforeach.cosmicreach.items.Item;
@@ -55,13 +59,13 @@ public class ClassConverter {
     private static final Map<String,ClassInfo<?,?>> OTHER_CLASS_CONVERTERS = new HashMap<>();
 
     private static void registerEntityConverter(EntityInfo<?,?> info){
-        ENTITY_CONVERTERS.put(info.id,info);
+        ENTITY_CONVERTERS.put(info.id, info);
     }
     private static void registerBlockEntityConverter(BlockEntityInfo<?,?> info){
-        BLOCK_ENTITY_CLASS_CONVERTERS.put(info.id,info);
+        BLOCK_ENTITY_CLASS_CONVERTERS.put(info.id, info);
     }
     private static void registerClassConverter(ClassInfo<?,?> info){
-        OTHER_CLASS_CONVERTERS.put(info.className(),info);
+        OTHER_CLASS_CONVERTERS.put(info.className(), info);
     }
 
 
@@ -102,10 +106,11 @@ public class ClassConverter {
 
     static {
         registerEntityConverter(new EntityInfo<>(PlayerEntity.ENTITY_TYPE_ID, ParadoxPlayerEntity.class, ParadoxPlayerEntity::new));
-        registerEntityConverter(new EntityInfo<>(DroneEntity.ENTITY_TYPE_ID, ParadoxDroneEntity.class, ParadoxDroneEntity::new));
-        registerEntityConverter(new EntityInfo<>(DroneTrapEntity.ENTITY_TYPE_ID, ParadoxDroneTrapEntity.class, ParadoxDroneTrapEntity::new));
+        registerEntityConverter(new EntityInfo<>(MobInterceptor.ENTITY_TYPE_ID, ParadoxDroneEntity.class, ParadoxDroneEntity::new));
+        registerEntityConverter(new EntityInfo<>(MobDroneTrap.ENTITY_TYPE_ID, ParadoxDroneTrapEntity.class, ParadoxDroneTrapEntity::new));
         registerEntityConverter(new EntityInfo<>(ItemEntity.ENTITY_TYPE_ID, ParadoxItemEntity.class, ParadoxItemEntity::new));
-        registerEntityConverter(new EntityInfo<>(LaserDroneEntity.ENTITY_TYPE_ID, ParadoxLaserDroneEntity.class, ParadoxLaserDroneEntity::new));
+        registerEntityConverter(new EntityInfo<>(MobIncinerator.ENTITY_TYPE_ID, ParadoxIncinerator.class, ParadoxIncinerator::new));
+        registerEntityConverter(new EntityInfo<>(MobLaserInterceptor.ENTITY_TYPE_ID, ParadoxLaserDroneEntity.class, ParadoxLaserDroneEntity::new));
         registerEntityConverter(new EntityInfo<>(EntityLaserProjectile.ENTITY_TYPE_ID, ParadoxLaserProjectileEntity.class, ParadoxLaserProjectileEntity::new));
 
 

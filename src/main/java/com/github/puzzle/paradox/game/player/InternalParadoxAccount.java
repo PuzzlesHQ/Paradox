@@ -17,8 +17,8 @@ public abstract class InternalParadoxAccount {
 
     public boolean isValid = true;
     public boolean tpRequst = false;
-    private Player tprPlayer;
-    private Player tprToPlayer;
+    private Player tprPlayer = null;
+    private Player tprToPlayer = null;
 
     public void addTpr(ServerIdentity id, Player playerToTp){
         this.tpRequst = true;
@@ -37,6 +37,11 @@ public abstract class InternalParadoxAccount {
         return tprPlayer;
     }
 
+    public void resetTPRInfo(){
+        this.tpRequst = false;
+        this.tprPlayer = null;
+        this.tprToPlayer = null;
+    }
     public Player getTprToPlayer() {
         return tprToPlayer;
     }

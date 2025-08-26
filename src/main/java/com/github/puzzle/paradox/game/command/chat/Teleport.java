@@ -6,11 +6,11 @@ import com.github.puzzle.paradox.game.command.DefaultPuzzleCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import finalforeach.cosmicreach.GameSingletons;
 import finalforeach.cosmicreach.entities.player.Player;
 import finalforeach.cosmicreach.networking.packets.MessagePacket;
 import finalforeach.cosmicreach.networking.packets.entities.PlayerPositionPacket;
 import finalforeach.cosmicreach.networking.server.ServerSingletons;
+import finalforeach.cosmicreach.singletons.GameSingletons;
 
 import java.util.Objects;
 
@@ -92,7 +92,7 @@ public class Teleport {
                 Vector3 vector3 = player.getPosition();
 
                 playerToTp.setPosition(vector3.x, vector3.y, vector3.z);
-                if (GameSingletons.isHost && ServerSingletons.SERVER != null) {
+                if (finalforeach.cosmicreach.singletons.GameSingletons.isHost && ServerSingletons.SERVER != null) {
                     ServerSingletons.SERVER.broadcastToAll(new PlayerPositionPacket(playerToTp));
                 }
                 return 0;

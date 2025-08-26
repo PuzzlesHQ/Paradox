@@ -15,7 +15,7 @@ import net.minecrell.terminalconsole.TerminalConsoleAppender;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 
-import static finalforeach.cosmicreach.GameSingletons.world;
+import static finalforeach.cosmicreach.singletons.GameSingletons.world;
 
 public class PPLTerminalConsole  extends SimpleTerminalConsole {
 

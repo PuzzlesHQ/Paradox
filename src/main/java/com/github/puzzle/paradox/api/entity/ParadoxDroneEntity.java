@@ -1,13 +1,13 @@
 package com.github.puzzle.paradox.api.entity;
 
 import com.badlogic.gdx.math.Vector3;
-import finalforeach.cosmicreach.entities.DroneEntity;
 import finalforeach.cosmicreach.entities.Entity;
+import finalforeach.cosmicreach.entities.mobs.MobInterceptor;
 
 public class ParadoxDroneEntity extends ParadoxEntity {
 
-    DroneEntity droneEntity;
-    public ParadoxDroneEntity(DroneEntity entity) {
+    MobInterceptor droneEntity;
+    public ParadoxDroneEntity(MobInterceptor entity) {
         super(entity);
         droneEntity = entity;
     }
@@ -25,10 +25,10 @@ public class ParadoxDroneEntity extends ParadoxEntity {
      * Avoid using this. Returns Cosmic Reach's internal drone entity class
      * @author repletsin5
      * @since API 1.0.0-Alpha
-     * @see DroneEntity
+     * @see MobInterceptor
      * @see Entity
      */
-    public DroneEntity getInternalDroneEntity() {
+    public MobInterceptor getInternalDroneEntity() {
         return droneEntity;
     }
 }

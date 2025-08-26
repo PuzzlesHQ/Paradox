@@ -13,7 +13,7 @@ import io.netty.channel.ChannelHandlerContext;
 
 import static com.github.puzzle.paradox.core.PuzzlePL.SERVER_ACCOUNT;
 import static com.github.puzzle.paradox.core.PuzzlePL.clientDispatcher;
-import static finalforeach.cosmicreach.GameSingletons.world;
+import static finalforeach.cosmicreach.singletons.GameSingletons.world;
 import static finalforeach.cosmicreach.networking.server.ServerSingletons.OP_LIST;
 
 public class CommandParsing {

@@ -6,12 +6,16 @@ import com.github.puzzle.paradox.api.Paradox;
 import com.github.puzzle.paradox.api.ParadoxZone;
 import com.github.puzzle.paradox.api.events.EntityEvents;
 import finalforeach.cosmicreach.entities.*;
+import finalforeach.cosmicreach.entities.mobs.MobDroneTrap;
+import finalforeach.cosmicreach.entities.mobs.MobInterceptor;
 import finalforeach.cosmicreach.entities.player.PlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import static com.github.puzzle.paradox.core.PuzzlePL.uuidToParadoxEntity;
 
 @SuppressWarnings("unchecked")
 public class ParadoxEntity {
@@ -32,6 +36,7 @@ public class ParadoxEntity {
     public ParadoxEntity(Entity entity) {
         this.entity = entity;
         this.uuid = UUID.randomUUID();
+        uuidToParadoxEntity.put(uuid,this);
     }
     Entity entity;
     UUID uuid;
@@ -115,14 +120,22 @@ public class ParadoxEntity {
         if(Paradox.getInstance().getEventBus().post(new EntityEvents.OnEntitySpawn(pe)).isCanceled())
             return null;
         zone.addEntity(pe);
-        zone.getInternalZone().mobSpawner.countMobs(zone.getInternalZone());
         return (E) pe;
     }
-
+    /**
+     * @author repletsin5
+     * @since API 1.0.0-Alpha
+     * @param uuid
+     * @return ParadoxEntity or null if not found
+     * @see ParadoxEntity
+     */
+    static ParadoxEntity getByUUID(@NotNull UUID uuid){
+        return uuidToParadoxEntity.get(uuid);
+    }
     static {
         classtoidentity.put(ParadoxPlayerEntity.class, PlayerEntity.ENTITY_TYPE_ID);
-        classtoidentity.put(ParadoxDroneEntity.class, DroneEntity.ENTITY_TYPE_ID);
-        classtoidentity.put(ParadoxDroneTrapEntity.class, DroneTrapEntity.ENTITY_TYPE_ID);
+        classtoidentity.put(ParadoxDroneEntity.class, MobInterceptor.ENTITY_TYPE_ID);
+        classtoidentity.put(ParadoxDroneTrapEntity.class, MobDroneTrap.ENTITY_TYPE_ID);
         classtoidentity.put(ParadoxItemEntity.class, ItemEntity.ENTITY_TYPE_ID);
     }
 }

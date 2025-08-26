@@ -1,0 +1,28 @@
+--- a/finalforeach/cosmicreach/world/ZoneLoader.java
++++ b/finalforeach/cosmicreach/world/ZoneLoader.java
+@@ -76,6 +_,8 @@
+ 		if (!GameSingletons.isHost) {
+ 			return false;
+ 		} else {
++			if(com.github.puzzle.paradox.game.command.console.Save.isSaveRequested())
++				return true;
+ 			long i = System.currentTimeMillis();
+ 			return this.requestSave || i - this.lastSaveMillis > this.autoSaveIntervalSeconds * 1000L;
+ 		}
+@@ -182,7 +_,7 @@
+ 		int j = i;
+ 		int k = MathUtils.clamp(i, 6, 12);
+ 		if (!this.spawnReady) {
+-			k = 1;
++//			k = 1;
+ 		}
+ 
+ 		if (player.isLoading()) {
+@@ -473,6 +_,7 @@
+ 			ChunkSaver.saveWorld(world);
+ 			this.lastSaveMillis = k;
+ 			this.requestSave = false;
++			com.github.puzzle.paradox.game.command.console.Save.shouldSave = false;
+ 		} else {
+ 			boolean flag = this.needToGenDifferentChunks(this.zone, this.localGenRadiusInChunks);
+ 			boolean flag1 = this.hasChunkColumnsToGenerate();

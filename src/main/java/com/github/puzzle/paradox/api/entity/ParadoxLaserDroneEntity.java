@@ -1,11 +1,11 @@
 package com.github.puzzle.paradox.api.entity;
 
-import finalforeach.cosmicreach.entities.LaserDroneEntity;
+import finalforeach.cosmicreach.entities.mobs.MobLaserInterceptor;
 
 public class ParadoxLaserDroneEntity extends ParadoxEntity {
-    LaserDroneEntity laserDroneEntity;
+    MobLaserInterceptor laserDroneEntity;
 
-    public ParadoxLaserDroneEntity(LaserDroneEntity entity) {
+    public ParadoxLaserDroneEntity(MobLaserInterceptor entity) {
         super(entity);
         laserDroneEntity = entity;
     }
@@ -14,9 +14,9 @@ public class ParadoxLaserDroneEntity extends ParadoxEntity {
      * Avoid using this. Returns Cosmic Reach's internal laser drone entity class
      * @author repletsin5
      * @since API 1.0.0-Alpha
-     * @see LaserDroneEntity
+     * @see MobLaserInterceptor
      */
-    public LaserDroneEntity getInternalEntityLaserProjectile(){
+    public MobLaserInterceptor getInternalEntityLaserProjectile(){
         return laserDroneEntity;
     }
 }

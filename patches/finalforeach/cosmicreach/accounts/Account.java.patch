@@ -1,8 +1,8 @@
 --- a/finalforeach/cosmicreach/accounts/Account.java
 +++ b/finalforeach/cosmicreach/accounts/Account.java
-@@ -7,9 +_,9 @@
- import finalforeach.cosmicreach.entities.player.Player;
- import finalforeach.cosmicreach.networking.server.ServerSingletons;
+@@ -8,9 +_,9 @@
+ import finalforeach.cosmicreach.singletons.GameSingletonPlayers;
+ import finalforeach.cosmicreach.singletons.GameSingletons;
  
 -public abstract class Account implements Serializable {
 -	private String username;
@@ -13,7 +13,7 @@
  
  	public final String getUsername() {
  		return this.username;
-@@ -19,11 +_,12 @@
+@@ -20,11 +_,12 @@
  		return this.uniqueId;
  	}
  
@@ -28,7 +28,7 @@
  		this.uniqueId = this.getPrefix() + "_id:" + uniqueId.toString();
  	}
  
-@@ -42,6 +_,7 @@
+@@ -43,6 +_,7 @@
  		json.readField(this, "username", jsonData);
  		json.readField(this, "uniqueId", jsonData);
  	}

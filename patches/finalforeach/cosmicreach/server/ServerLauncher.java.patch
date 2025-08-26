@@ -1,23 +1,24 @@
 --- a/finalforeach/cosmicreach/server/ServerLauncher.java
 +++ b/finalforeach/cosmicreach/server/ServerLauncher.java
-@@ -2,6 +_,11 @@
+@@ -2,53 +_,81 @@
  
  import com.badlogic.gdx.Gdx;
  import com.badlogic.gdx.backends.headless.HeadlessFiles;
++import com.github.puzzle.paradox.core.PuzzlePL;
 +import com.github.puzzle.paradox.loader.entrypoint.interfaces.PluginInitializer;
 +import com.github.puzzle.paradox.loader.entrypoint.interfaces.PrePluginInitializer;
 +import com.github.puzzle.paradox.loader.plugin.PluginContainer;
 +import com.github.puzzle.paradox.loader.plugin.PluginLocator;
 +import com.google.common.primitives.Ints;
- import finalforeach.cosmicreach.GameSingletons;
  import finalforeach.cosmicreach.TickRunner;
- import finalforeach.cosmicreach.ZoneLoaders;
-@@ -9,46 +_,67 @@
+ import finalforeach.cosmicreach.io.ChunkLoader;
  import finalforeach.cosmicreach.io.SaveLocation;
  import finalforeach.cosmicreach.networking.netty.NettyServer;
  import finalforeach.cosmicreach.networking.server.ServerSingletons;
+ import finalforeach.cosmicreach.singletons.GameSingletons;
 -import finalforeach.cosmicreach.util.logging.Logger;
  import finalforeach.cosmicreach.world.World;
+ import finalforeach.cosmicreach.world.ZoneLoaders;
  import finalforeach.cosmicreach.worldgen.ZoneGenerator;
 +import org.slf4j.LoggerFactory;
 +
@@ -93,7 +94,8 @@
 +                 ZoneLoaders.INSTANCE.addZoneLoader(GameSingletons.world.getDefaultZone());
 +            }
 +            TickRunner.INSTANCE.continueTickThread();
-+            NettyServer nettyserver = new NettyServer(Ints.constrainToRange(ServerSingletons.puzzle.serverConfig.getInt("server.port"),1,(Short.MAX_VALUE*2)+1));
++            ServerSingletons.puzzle = new PuzzlePL();
++            NettyServer nettyserver = new NettyServer(Ints.constrainToRange(ServerSingletons.puzzle.serverConfig.getInt("server.port",47137),1,(Short.MAX_VALUE*2)+1));
 +            ServerSingletons.SERVER = nettyserver;
 +            ServerSingletons.puzzle.init();
 +            PluginLocator.locatedPlugins.keySet().forEach(containerID -> {

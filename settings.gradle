@@ -1,4 +1,5 @@
 buildscript {
+
     repositories {
         flatDir {
             // to use local builds
@@ -6,6 +7,13 @@ buildscript {
         }
         mavenCentral()
         maven { url = 'https://maven.minecraftforge.net/' }
+        maven { url 'https://jitpack.io' }
+        maven { url "https://maven.google.com/" }
+        maven { url "https://libraries.minecraft.net" }
+        maven {
+            name "neoforged"
+            url "https://maven.neoforged.net/release"
+        }
     }
 
     dependencies {
@@ -21,3 +29,4 @@ buildscript {
 
 rootProject.name = 'Paradox'
 //include "api"
+include "launcher"

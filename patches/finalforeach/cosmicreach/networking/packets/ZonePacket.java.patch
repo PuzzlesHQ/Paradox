@@ -1,7 +1,7 @@
 --- a/finalforeach/cosmicreach/networking/packets/ZonePacket.java
 +++ b/finalforeach/cosmicreach/networking/packets/ZonePacket.java
 @@ -11,14 +_,14 @@
- import finalforeach.cosmicreach.world.Zone;
+ import finalforeach.cosmicreach.world.ZoneLoaders;
  import io.netty.buffer.ByteBuf;
  import io.netty.channel.ChannelHandlerContext;
 -

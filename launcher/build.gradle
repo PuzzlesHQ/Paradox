@@ -1,0 +1,52 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        flatDir {
+            // to use local builds
+            dirs 'lib'
+        }
+    }
+
+    dependencies {
+    }
+}
+
+plugins {
+    id "java"
+    id "com.gradleup.shadow" version "8.3.6"
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven { url "https://maven.google.com/" }
+    maven { url "https://libraries.minecraft.net" }
+    maven {
+        name "neoforged"
+        url "https://maven.neoforged.net/release"
+    }
+}
+
+
+
+group = 'com.github.puzzle'
+version = "1.0+$crVersion+$paradoxVersion";
+dependencies {
+
+//    implementation("org.apache.logging.log4j:log4j-api:$log4jVersion")
+//    implementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
+//    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
+
+    implementation("org.hjson:hjson:$hjsonVersion")
+    implementation("io.sigpipe:jbsdiff:1.0")
+    implementation 'org.apache.commons:commons-compress:1.26.0'
+}
+
+jar {
+    manifest {
+        attributes("Implementation-Title": project.name,
+                "Implementation-Version": version,
+                "Main-Class": "io.github.puzzleshq.paradox.bootstrap.Bootstrap",
+                "Multi-Release": true);
+    }
+}

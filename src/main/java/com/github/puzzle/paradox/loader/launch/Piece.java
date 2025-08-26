@@ -12,6 +12,7 @@ import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -33,14 +34,24 @@ public class Piece {
     public static void main(String[] args) {
         new Piece().launch(args);
     }
-    Piece(){
-        this(true);
+
+    public static void url_main(String[] args, URL[] list){
+        new Piece(list).launch(args);
     }
-    Piece(boolean doNormalInit) {
+    Piece(){
+        this(true,null);
+    }
+    Piece(URL[] urls){
+        this(true,urls);
+    }
+    Piece(boolean doNormalInit,URL[] urls) {
 
         if(doNormalInit) {
             List<URL> classPath = new ArrayList<>();
             classPath.addAll(PluginLocator.getUrlsOnClasspath());
+            if(urls != null){
+                classPath.addAll(List.of(urls));
+            }
             PluginLocator.crawlPluginFolder(classPath);
 
             classLoader = new ParadoxClassLoader(classPath);

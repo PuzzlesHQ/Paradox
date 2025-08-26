@@ -1,0 +1,29 @@
+--- a/finalforeach/cosmicreach/singletons/GameSingletonPlayers.java
++++ b/finalforeach/cosmicreach/singletons/GameSingletonPlayers.java
+@@ -13,8 +_,8 @@
+ 
+ public class GameSingletonPlayers {
+ 	private static ObjectMap<String, Player> uniqueIdsToPlayers = new ObjectMap<>();
+-	private static WeakHashMap<Player, String> playersToUniqueIds = new WeakHashMap<>();
+-	private static WeakHashMap<Player, Account> playersToAccounts = new WeakHashMap<>();
++	public static WeakHashMap<Player, String> playersToUniqueIds = new WeakHashMap<>();
++	public static WeakHashMap<Player, Account> playersToAccounts = new WeakHashMap<>();
+ 
+ 	public static Player getPlayerFromUniqueId(String playerAccountUniqueId) {
+ 		return uniqueIdsToPlayers.get(playerAccountUniqueId);
+@@ -29,6 +_,7 @@
+ 			uniqueIdsToPlayers.put(account.getUniqueId(), player);
+ 			playersToUniqueIds.put(player, account.getUniqueId());
+ 			playersToAccounts.put(player, account);
++			com.github.puzzle.paradox.api.Paradox.getInstance().addPlayer(player);
+ 		}
+ 	}
+ 
+@@ -52,6 +_,7 @@
+ 	public static void unregisterPlayer(Player player) {
+ 		synchronized (getPlayerLock()) {
+ 			String s = playersToUniqueIds.get(player);
++			com.github.puzzle.paradox.api.Paradox.getInstance().removePlayer(player);
+ 			playersToUniqueIds.remove(player);
+ 			uniqueIdsToPlayers.remove(s);
+ 			Account account = playersToAccounts.remove(player);
