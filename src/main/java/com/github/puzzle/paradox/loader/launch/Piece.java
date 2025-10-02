@@ -1,18 +1,14 @@
 package com.github.puzzle.paradox.loader.launch;
 
-import com.github.puzzle.core.loader.launch.PuzzleClassLoader;
 import com.github.puzzle.paradox.core.util.Reflection;
 import com.github.puzzle.paradox.game.provider.CosmicReachProvider;
 import com.github.puzzle.paradox.loader.plugin.PluginLocator;
 import com.github.puzzle.paradox.loader.providers.api.IGameProvider;
 import com.github.puzzle.paradox.util.MethodUtil;
-import finalforeach.cosmicreach.server.ServerLauncher;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-import joptsimple.OptionSpec;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -21,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 @SuppressWarnings("deprecation")
 public class Piece {
@@ -53,9 +50,9 @@ public class Piece {
             if(urls != null){
                 classPath.addAll(List.of(urls));
             }
-            PluginLocator.crawlPluginFolder(classPath);
-
             classLoader = new ParadoxClassLoader(classPath);
+
+
             blackboard = new HashMap<>();
 
             Thread.currentThread().setContextClassLoader(classLoader);
@@ -77,6 +74,10 @@ public class Piece {
 //            provider.inject(classLoader);
 //            Piece.provider.addBuiltinMods();
 //            PrePluginInitializer.invokeEntrypoint();
+            List<URL> classPath = new ArrayList<>();
+            PluginLocator.crawlPluginFolder(classPath);
+            PluginLocator.getPlugins(classPath);
+            provider.addBuiltinMods();
             if (PluginLocator.locatedPlugins == null) PluginLocator.getPlugins();
             Class<?> clazz = Class.forName(provider.getEntrypoint(), false, classLoader);
             Method main = Reflection.getMethod(clazz,"main", String[].class);

@@ -1,0 +1,17 @@
+{
+  "id": "${plugin_id}",
+  "version": "${plugin_version}",
+  "name": "${plugin_name}",
+  "description": "test",
+  "authors": [
+    "YOU :D"
+  ],
+  "entrypoints": {
+    "init": [
+      "dev.puzzleshq.paradox.testplugin.TestPlugin"
+    ]
+  },
+  "dependencies": {
+    "cosmic-reach": ">=0.4.1"
+  }
+}

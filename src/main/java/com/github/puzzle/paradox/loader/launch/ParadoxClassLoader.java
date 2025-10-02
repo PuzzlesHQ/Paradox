@@ -38,7 +38,6 @@ public class ParadoxClassLoader extends PuzzleClassLoader {
         // classloader exclusions
         addClassLoaderExclusion("java.");
         addClassLoaderExclusion("sun.");
-        addClassLoaderExclusion("org.lwjgl.");
         addClassLoaderExclusion("org.apache.logging.");
         addClassLoaderExclusion("com.github.puzzle.paradox.loader.launch.");
         addClassLoaderExclusion("org.slf4j");
@@ -51,10 +50,6 @@ public class ParadoxClassLoader extends PuzzleClassLoader {
         addTransformerExclusion("org.objectweb.asm.");
         addTransformerExclusion("com.google.common.");
         addTransformerExclusion("org.bouncycastle.");
-        addTransformerExclusion("org.bouncycastle.");
-        addClassLoaderExclusion("com.github.puzzle.loader.launch.internal.transformers.");
-        addClassLoaderExclusion("com.github.puzzle.access_manipulator.");
         addClassLoaderExclusion("com.github.puzzle.paradox.loader.");
-        addClassLoaderExclusion("com.github.puzzle.loader.");
     }
 }

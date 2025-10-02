@@ -1,0 +1,51 @@
+plugins {
+    id 'java-library'
+}
+
+group = 'dev.puzzleshq.paradox.testplugin'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+
+    maven { url 'https://jitpack.io' }
+    maven { url "https://maven.google.com/" }
+    maven { url "https://libraries.minecraft.net" }
+    maven {
+        name "neoforged"
+        url "https://maven.neoforged.net/release"
+    }
+}
+
+dependencies {
+    implementation(project(":"))
+
+    project(":").configurations.shadow.allDependencies.forEach {d ->
+//        System.out.println("shadow: "+ d.name)
+
+        implementation(d)
+    }
+    project(":").configurations.runtimeClasspath.allDependencies.forEach {d ->
+        if(d.name != "test-plugin")
+            implementation(d)
+    }
+}
+
+processResources {
+    // Locations of where to inject the properties
+    def resourceTargets = [ "paradox.plugin.json" ]
+
+    // Left item is the name in the target, right is the varuable name
+    def replaceProperties = [
+            "plugin_version"     : plugin_version,
+            "plugin_name"        : plugin_name,
+            "plugin_id"          : plugin_id,
+    ]
+
+
+    inputs.properties replaceProperties
+    replaceProperties.put "project", project
+    filesMatching(resourceTargets) {
+        expand replaceProperties
+    }
+}

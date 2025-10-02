@@ -17,9 +17,6 @@ public interface IGameProvider {
     // Extra Data
     String getEntrypoint();
 
-    // Inits
-    void registerTransformers(PuzzleClassLoader classLoader);
-    void inject(PuzzleClassLoader classLoader);
 
     void addBuiltinMods();
 }

@@ -63,32 +63,6 @@ public class CosmicReachProvider implements IGameProvider {
     }
 
 
-
-    @Override
-    public void registerTransformers(PuzzleClassLoader classLoader) {
-        PluginLocator.getPlugins(List.of(classLoader.getURLs()));
-        addBuiltinMods();
-
-        TransformerInitializer.invokeTransformers(classLoader);
-    }
-
-
-
-    @Override
-    public void inject(PuzzleClassLoader classLoader) {
-        PluginLocator.verifyDependencies();
-
-        File cosmicReach = searchForCosmicReach();
-        if (cosmicReach != null) {
-            try {
-                classLoader.addURL(cosmicReach.toURI().toURL());
-            } catch (MalformedURLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-    }
-
     @Override
     public void addBuiltinMods() {
         /* Puzzle Loader as a Plugin */

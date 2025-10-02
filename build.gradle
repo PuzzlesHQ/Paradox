@@ -93,6 +93,9 @@ dependencies {
     shadow"org.hjson:hjson:$hjsonVersion"
     shadow('org.jetbrains:annotations:24.0.0')
     shadow"net.sf.jopt-simple:jopt-simple:$joptSimpleVersion"
+
+    //
+    runtimeOnly(project("test-plugin"))
 //    implementation project(":api") //TODO: fix
 
 }
@@ -202,7 +205,7 @@ jar {
 }
 
 tasks.runShadow {
-
+//    classpath +=
 }
 processResources() {
 
