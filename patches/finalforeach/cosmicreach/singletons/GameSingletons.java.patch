@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/singletons/GameSingletons.java
 +++ b/finalforeach/cosmicreach/singletons/GameSingletons.java
-@@ -75,7 +_,7 @@
+@@ -77,7 +_,7 @@
  	}
  
  	public static void create() {
@@ -9,7 +9,7 @@
  		DynamicArrays.instantiator = new IDynamicArrayInstantiator() {
  			@Override
  			public <E> IDynamicArray<E> create(Class<E> clazz) {
-@@ -175,6 +_,6 @@
+@@ -179,6 +_,6 @@
  	}
  
  	public static <T extends CustomScreenInfoRemoteControl> void registerCustomScreenOpener(Class<T> clazz, Consumer<T> info) {

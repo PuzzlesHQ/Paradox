@@ -59,3 +59,4 @@ server.properties
 launcher/src/main/resources/jarpatch.patch
 launcher/src/main/resources/dependencies.json
 launcher/src/main/resources/jarpatch.patch
+/dists

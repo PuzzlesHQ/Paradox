@@ -10,8 +10,8 @@
 -import finalforeach.cosmicreach.TickRunner;
 +import finalforeach.cosmicreach.*;
  import finalforeach.cosmicreach.accounts.Account;
- import finalforeach.cosmicreach.blockentities.BlockEntity;
- import finalforeach.cosmicreach.blockentities.IBlockEntityWithContainer;
+ import finalforeach.cosmicreach.blocks.BlockState;
+ import finalforeach.cosmicreach.blocks.blockentities.BlockEntity;
 @@ -44,6 +_,8 @@
  
  public class ServerSingletons {
@@ -37,7 +37,11 @@
  		GameSingletons.postCreate();
  	}
  
-@@ -211,7 +_,7 @@
+@@ -209,11 +_,10 @@
+ 	public static Account getAccount(NetworkIdentity identity) {
+ 		return identity == null ? null : netIdsToAccounts.get(identity);
+ 	}
+-
  	public static Player getPlayer(NetworkIdentity identity) {
  		Account account = getAccount(identity);
  		return account == null ? null : GameSingletonPlayers.getPlayerFromUniqueId(account.getUniqueId());
@@ -46,7 +50,7 @@
  
  	public static ServerIdentity getConnection(Player player) {
  		Account account = GameSingletonPlayers.getAccountFromPlayer(player);
-@@ -221,4 +_,9 @@
+@@ -223,4 +_,9 @@
  	public static Account getAccountByUniqueId(String playerUniqueId) {
  		return uniqueIdsToAccounts.get(playerUniqueId);
  	}

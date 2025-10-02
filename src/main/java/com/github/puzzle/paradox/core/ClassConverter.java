@@ -17,6 +17,7 @@ import finalforeach.cosmicreach.entities.mobs.MobInterceptor;
 import finalforeach.cosmicreach.entities.mobs.MobLaserInterceptor;
 import finalforeach.cosmicreach.entities.player.Player;
 import finalforeach.cosmicreach.entities.player.PlayerEntity;
+import finalforeach.cosmicreach.entities.projectiles.EntityProjectileLaser;
 import finalforeach.cosmicreach.items.Item;
 import finalforeach.cosmicreach.items.ItemStack;
 import finalforeach.cosmicreach.networking.NetworkIdentity;
@@ -49,7 +50,7 @@ public class ClassConverter {
     {
 
     }
-    public record BlockEntityInfo<E extends ParadoxBlockEntity, C extends finalforeach.cosmicreach.blockentities.BlockEntity>
+    public record BlockEntityInfo<E extends ParadoxBlockEntity, C extends finalforeach.cosmicreach.blocks.blockentities.BlockEntity>
             (String id, Class<E> clazz, Function<C,E> converter)
     {
 
@@ -77,7 +78,7 @@ public class ClassConverter {
        }
       return c.converter().apply(toConvert);
     }
-    public static<E extends finalforeach.cosmicreach.blockentities.BlockEntity> ParadoxBlockEntity convertEntity(E toConvert){
+    public static<E extends finalforeach.cosmicreach.blocks.blockentities.BlockEntity> ParadoxBlockEntity convertEntity(E toConvert){
         BlockEntityInfo<ParadoxBlockEntity,E> c = (BlockEntityInfo<ParadoxBlockEntity, E>) BLOCK_ENTITY_CLASS_CONVERTERS.get(toConvert.getBlockEntityId());
         if(c == null)
             throw new RuntimeException("Can not convert this block entity");
@@ -111,7 +112,7 @@ public class ClassConverter {
         registerEntityConverter(new EntityInfo<>(ItemEntity.ENTITY_TYPE_ID, ParadoxItemEntity.class, ParadoxItemEntity::new));
         registerEntityConverter(new EntityInfo<>(MobIncinerator.ENTITY_TYPE_ID, ParadoxIncinerator.class, ParadoxIncinerator::new));
         registerEntityConverter(new EntityInfo<>(MobLaserInterceptor.ENTITY_TYPE_ID, ParadoxLaserDroneEntity.class, ParadoxLaserDroneEntity::new));
-        registerEntityConverter(new EntityInfo<>(EntityLaserProjectile.ENTITY_TYPE_ID, ParadoxLaserProjectileEntity.class, ParadoxLaserProjectileEntity::new));
+        registerEntityConverter(new EntityInfo<>(EntityProjectileLaser.ENTITY_TYPE_ID, ParadoxLaserProjectileEntity.class, ParadoxLaserProjectileEntity::new));
 
 
 

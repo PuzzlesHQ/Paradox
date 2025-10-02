@@ -1,11 +1,12 @@
 package com.github.puzzle.paradox.api.entity;
 
-import finalforeach.cosmicreach.entities.EntityLaserProjectile;
+
+import finalforeach.cosmicreach.entities.projectiles.EntityProjectileLaser;
 
 public class ParadoxLaserProjectileEntity extends ParadoxEntity {
 
-    EntityLaserProjectile projectile;
-    public ParadoxLaserProjectileEntity(EntityLaserProjectile entity) {
+    EntityProjectileLaser projectile;
+    public ParadoxLaserProjectileEntity(EntityProjectileLaser entity) {
         super(entity);
         projectile = entity;
     }
@@ -14,9 +15,9 @@ public class ParadoxLaserProjectileEntity extends ParadoxEntity {
      * Avoid using this. Returns Cosmic Reach's internal laser projectile entity class
      * @author repletsin5
      * @since API 1.0.0-Alpha
-     * @see EntityLaserProjectile
+     * @see EntityProjectileLaser
      */
-    public EntityLaserProjectile getInternalEntityLaserProjectile(){
+    public EntityProjectileLaser getInternalEntityLaserProjectile(){
         return projectile;
     }
 }

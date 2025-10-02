@@ -1,7 +1,7 @@
 package com.github.puzzle.paradox.core.util;
 
-import finalforeach.cosmicreach.blockevents.actions.BlockActionPlaySound2D;
-import finalforeach.cosmicreach.blockevents.actions.BlockActionReplaceBlockState;
+import finalforeach.cosmicreach.gameevents.blockevents.actions.BlockActionPlaySound2D;
+import finalforeach.cosmicreach.gameevents.blockevents.actions.BlockActionReplaceBlockState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -27,7 +27,7 @@
  
 -public class Zone implements Serializable, Disposable {
 +public class Zone extends com.github.puzzle.paradox.game.server.InternalParadoxZone implements Serializable, Disposable {
- 	public PriorityQueue<ScheduledTrigger> eventQueue = new PriorityQueue<>((a, b) -> a.triggerTick() - b.triggerTick());
+ 	public PriorityQueue<ScheduledBlockTrigger> eventQueue = new PriorityQueue<>((a, b) -> a.triggerTick() - b.triggerTick());
  	public SnapshotArray<BlockEntity> tickingBlockEntities = new SnapshotArray<>(BlockEntity.class);
  	public Array<IRenderable> allRenderableBlockEntities = new Array<>();
 @@ -64,13 +_,13 @@

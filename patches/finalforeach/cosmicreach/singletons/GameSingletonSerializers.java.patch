@@ -1,0 +1,11 @@
+--- a/finalforeach/cosmicreach/singletons/GameSingletonSerializers.java
++++ b/finalforeach/cosmicreach/singletons/GameSingletonSerializers.java
+@@ -30,7 +_,7 @@
+ 		CRBinSerializer.registerDefaultClassSerializer(Float.class, (serial, name, i) -> serial.writeFloat(name, i));
+ 		CRBinDeserializer.registerDefaultClassDeserializer(Float.class, (name, d) -> d.readFloat(name, 0.0F));
+ 		CRBinSerializer.registerDefaultClassSerializer(Double.class, (serial, name, d) -> serial.writeDouble(name, d));
+-		CRBinDeserializer.registerDefaultClassDeserializer(Double.class, (name, d) -> d.readDouble(name, 0.0));
++		CRBinDeserializer.registerDefaultClassDeserializer(Double.class, (name, d) -> d.readDouble(name, 0.0d));
+ 		CRBinSerializer.registerDefaultClassSerializer(Color.class, (serial, name, color) -> {
+ 			if (color != null) {
+ 				serial.writeLong(name, (long)Color.rgba8888(color));

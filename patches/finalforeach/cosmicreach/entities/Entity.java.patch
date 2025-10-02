@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/entities/Entity.java
 +++ b/finalforeach/cosmicreach/entities/Entity.java
-@@ -45,7 +_,7 @@
+@@ -47,7 +_,7 @@
  import java.util.function.Consumer;
  import java.util.function.Predicate;
  
@@ -9,7 +9,7 @@
  	public static final transient Vector3 gravity = new Vector3(0.0F, -29.400002F, 0.0F);
  	protected static final transient Matrix4 tmpModelMatrix = new Matrix4();
  	protected static final transient Vector3 tmpRenderPos = new Vector3();
-@@ -57,7 +_,7 @@
+@@ -59,7 +_,7 @@
  	@CRBSerialized
  	public String entityTypeId;
  	@CRBSerialized
@@ -18,7 +18,7 @@
  	@CRBSerialized
  	public float gravityModifier = 1.0F;
  	@CRBSerialized
-@@ -179,13 +_,15 @@
+@@ -181,13 +_,15 @@
  			if (ServerSingletons.SERVER != null && damageSource instanceof Entity entity) {
  				ServerSingletons.SERVER.broadcast(this.zone, new HitEntityPacket(this, entity, amount));
  			}

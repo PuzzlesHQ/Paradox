@@ -7,11 +7,16 @@
  import com.badlogic.gdx.math.MathUtils;
  import com.badlogic.gdx.math.Vector3;
  import com.badlogic.gdx.utils.Array;
-@@ -35,6 +_,7 @@
+@@ -35,10 +_,11 @@
+ import finalforeach.cosmicreach.util.GameTagList;
  import finalforeach.cosmicreach.util.constants.Direction;
  import finalforeach.cosmicreach.world.BlockSetter;
- import finalforeach.cosmicreach.world.Zone;
 +
  import java.util.HashMap;
  import java.util.function.Supplier;
  
+-public class ItemThing implements Item {
++public class ItemThing extends com.github.puzzle.paradox.game.item.InternalParadoxItem implements Item {
+ 	public static final GameTag TAG_FLUID_VACUUM_BREAKABLE = GameTag.get("fluid_vacuum_breakable");
+ 	public static final GameTag TAG_FLUID_VACUUM_GET_RUBBER = GameTag.get("fluid_vacuum_get_rubber");
+ 	public static final String ITEM2D_ID = "base:item2D";

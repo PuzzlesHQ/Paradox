@@ -1,11 +1,12 @@
---- a/finalforeach/cosmicreach/blockevents/actions/BlockActionExplode.java
-+++ b/finalforeach/cosmicreach/blockevents/actions/BlockActionExplode.java
-@@ -30,6 +_,8 @@
+--- a/finalforeach/cosmicreach/gameevents/blockevents/actions/BlockActionExplode.java
++++ b/finalforeach/cosmicreach/gameevents/blockevents/actions/BlockActionExplode.java
+@@ -31,6 +_,9 @@
+ 	public boolean dropsItems = true;
  
- 	@Override
  	public void act(BlockEventArgs args) {
 +		if(!com.github.puzzle.paradox.game.server.ParadoxServerSettings.doesC4Explode)
 +			return;
++
  		Zone zone = args.zone;
  		BlockState blockstate = args.srcBlockState;
  		BlockPosition blockposition = args.blockPos;

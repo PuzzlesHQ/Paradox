@@ -1,6 +1,6 @@
 package com.github.puzzle.paradox.api.events;
 
-import finalforeach.cosmicreach.blockevents.BlockEventArgs;
+import finalforeach.cosmicreach.gameevents.blockevents.BlockEventArgs;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
 

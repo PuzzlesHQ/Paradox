@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,7 @@ public class Piece {
     public static IGameProvider provider;
 
     public static Map<String, Object> blackboard;
-    public static PuzzleClassLoader classLoader;
+    public static URLClassLoader classLoader;
 
     public static final Logger LOGGER = LogManager.getLogger("Paradox | Loader");
 
@@ -62,31 +63,18 @@ public class Piece {
 
     }
 
-    private void launch(String[] args) {
+    public void launch(String[] args) {
         final OptionParser parser = new OptionParser();
         parser.allowsUnrecognizedOptions();
 
         final OptionSet options = parser.parse(args);
         try {
-            OptionSpec<String> provider_option = parser.accepts("gameProvider").withOptionalArg().ofType(String.class);
-            OptionSpec<String> modFolder_option = parser.accepts("pluginFolder").withOptionalArg().ofType(String.class);
-
-            classLoader.addClassLoaderExclusion(DEFAULT_PROVIDER.substring(0, DEFAULT_PROVIDER.lastIndexOf('.')));
-            classLoader.addClassLoaderExclusion("com.github.puzzle.paradox.loader.launch");
-            classLoader.addClassLoaderExclusion("com.github.puzzle.paradox.loader.entrypoint");
-            classLoader.addClassLoaderExclusion("com.github.puzzle.paradox.loader.plugin");
-            classLoader.addClassLoaderExclusion("com.github.puzzle.paradox.loader.providers");
-            classLoader.addClassLoaderExclusion("com.github.puzzle.paradox.utils");
-
-            if (options.has(provider_option))
-                provider = (IGameProvider) Class.forName(provider_option.value(options), true, classLoader).newInstance();
-            else
                 provider = (IGameProvider) Class.forName(DEFAULT_PROVIDER, true, classLoader).newInstance();
 
 
 
-            provider.registerTransformers(classLoader);
-            provider.inject(classLoader);
+//            provider.registerTransformers(classLoader);
+//            provider.inject(classLoader);
 //            Piece.provider.addBuiltinMods();
 //            PrePluginInitializer.invokeEntrypoint();
             if (PluginLocator.locatedPlugins == null) PluginLocator.getPlugins();

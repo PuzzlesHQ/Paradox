@@ -9,8 +9,10 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,53 +30,24 @@ public class PuzzlePiece extends Piece {
         super(false,null);
 
         List<URL> classPath = new ArrayList<>();
-        classPath.addAll(PluginLocator.getUrlsOnClasspath());
-        PluginLocator.crawlPluginFolder(classPath);
         try {
-            classLoader = (PuzzleClassLoader) Class.forName("com.github.puzzle.core.loader.launch.Piece").getDeclaredField("classLoader").get(null);
+            classLoader = (URLClassLoader) Class.forName("dev.puzzleshq.puzzleloader.loader.launch.Piece").getDeclaredField("classLoader").get(null);
         } catch (NoSuchFieldException | ClassNotFoundException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-        blackboard = new HashMap<>();
-        classPath.forEach(classLoader::addURL);
-    }
-
-    private void launch(String[] args) {
-        final OptionParser parser = new OptionParser();
-        parser.allowsUnrecognizedOptions();
-
-        final OptionSet options = parser.parse(args);
+//        blackboard = new HashMap<>();
         try {
-            OptionSpec<String> provider_option = parser.accepts("gameProvider").withOptionalArg().ofType(String.class);
-            OptionSpec<String> modFolder_option = parser.accepts("pluginFolder").withOptionalArg().ofType(String.class);
-
-            classLoader.addClassLoaderExclusion(DEFAULT_PROVIDER.substring(0, DEFAULT_PROVIDER.lastIndexOf('.')));
-            classLoader.addClassLoaderExclusion("com.github.puzzle.paradox.loader.launch");
-            classLoader.addClassLoaderExclusion("com.github.puzzle.paradox.loader.entrypoint");
-            classLoader.addClassLoaderExclusion("com.github.puzzle.paradox.loader.plugin");
-            classLoader.addClassLoaderExclusion("com.github.puzzle.paradox.loader.providers");
-            classLoader.addClassLoaderExclusion("com.github.puzzle.paradox.utils");
-
-            if (options.has(provider_option))
-                provider = (IGameProvider) Class.forName(provider_option.value(options), true, classLoader).newInstance();
-            else
-                provider = (IGameProvider) Class.forName(DEFAULT_PROVIDER, true, classLoader).newInstance();
-
-
-
-            provider.registerTransformers(classLoader);
-            provider.inject(classLoader);
-//            Piece.provider.addBuiltinMods();
-//            PrePluginInitializer.invokeEntrypoint();
-            if (PluginLocator.locatedPlugins == null) PluginLocator.getPlugins();
-            Class<?> clazz = Class.forName(provider.getEntrypoint(), false, classLoader);
-            Method main = Reflection.getMethod(clazz,"main", String[].class);
-            LOGGER.info("Launching {} version {}", provider.getName(), provider.getRawVersion());
-//            ServerLauncher.main(args);
-            MethodUtil.runStaticMethod(main, (Object) args);
-        } catch (Exception e) {
-            LOGGER.error("Unable To Launch", e);
-            System.exit(1);
+            var addURLfunc = Class.forName("dev.puzzleshq.puzzleloader.loader.launch.Piece").getDeclaredMethod("addURL", URL.class);
+            addURLfunc.setAccessible(true);
+            PluginLocator.crawlPluginFolder(classPath);
+            for (URL url : classPath) {
+                addURLfunc.invoke(null,url);
+            }
+        } catch (NoSuchMethodException | ClassNotFoundException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
         }
+
     }
+
+
 }

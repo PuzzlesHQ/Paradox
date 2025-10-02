@@ -1,0 +1,26 @@
+--- a/finalforeach/cosmicreach/gameevents/GameEventArgs.java
++++ b/finalforeach/cosmicreach/gameevents/GameEventArgs.java
+@@ -3,6 +_,7 @@
+ import com.badlogic.gdx.math.Vector3;
+ import com.badlogic.gdx.utils.Queue;
+ import finalforeach.cosmicreach.entities.player.Player;
++import finalforeach.cosmicreach.gameevents.blockevents.BlockEventArgs;
+ import finalforeach.cosmicreach.networking.NetworkIdentity;
+ import finalforeach.cosmicreach.world.Zone;
+ 
+@@ -56,7 +_,14 @@
+ 
+ 	public void run(T[] triggers) {
+ 		for (int i = 0; i < triggers.length; i++) {
+-			triggers[i].act(this);
++			if(this instanceof BlockEventArgs args) {
++				if (!com.github.puzzle.paradox.api.Paradox.getInstance().getEventBus().post(new com.github.puzzle.paradox.api.events.BlockEventEvents.OnEventAct(args)).isCanceled()) {
++					triggers[i].act(this);
++
++				}
++			}
++			else
++				triggers[i].act(this);
+ 		}
+ 	}
+ 

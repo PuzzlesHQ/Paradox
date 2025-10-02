@@ -1,0 +1,11 @@
+--- a/finalforeach/cosmicreach/items/ItemBlock.java
++++ b/finalforeach/cosmicreach/items/ItemBlock.java
+@@ -5,7 +_,7 @@
+ import finalforeach.cosmicreach.blocks.BlockStateMissing;
+ import finalforeach.cosmicreach.util.GameTagList;
+ 
+-public class ItemBlock implements Item {
++public class ItemBlock extends com.github.puzzle.paradox.game.item.InternalParadoxItem implements Item  {
+ 	private BlockState blockState;
+ 
+ 	public ItemBlock(BlockState blockState) {
