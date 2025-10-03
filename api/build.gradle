@@ -1,0 +1,42 @@
+
+group = 'com.github.puzzle'
+version = '1.0-SNAPSHOT'
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven { url "https://maven.google.com/" }
+    maven { url "https://libraries.minecraft.net" }
+    maven {
+        name "neoforged"
+        url "https://maven.neoforged.net/release"
+    }
+}
+
+apply plugin: "java"
+
+
+dependencies {
+    //quick way of using same dependencies as the core but no using cosmicreach's decomp source
+    project(":").configurations.shadow.allDependencies.forEach {d ->
+        implementation(d)
+    }
+    project(":").configurations.runtimeClasspath.allDependencies.forEach {d ->
+        if(d.name != "test-plugin" && d.name != "api"){
+            implementation(d)
+        }
+    }
+}
+
+javadoc {
+}
+
+tasks.register("copyToLib", Copy) {
+    from shadowJar
+    from configurations.shadow
+    into("$buildDir/output/lib")
+}
+
+
+processResources() {
+    duplicatesStrategy = 'EXCLUDE'
+}
