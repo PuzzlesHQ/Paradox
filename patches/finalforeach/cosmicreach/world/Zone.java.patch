@@ -92,7 +92,7 @@
  
  	public void removeEntity(Entity e) {
  		if (e != null) {
-+			com.github.puzzle.paradox.core.PuzzlePL.uuidToParadoxEntity.remove(e.getParadoxEntity().getUUID());
++			com.github.puzzle.paradox.api.impl.entity.ParadoxEntity.uuidToParadoxEntity.remove(e.getParadoxEntity().getUUID());
  			if (GameSingletons.isHost && ServerSingletons.SERVER != null) {
  				ServerSingletons.SERVER.broadcast(this, new DespawnEntityPacket(e));
  			}

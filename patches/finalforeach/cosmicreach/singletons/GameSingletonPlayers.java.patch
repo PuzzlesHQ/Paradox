@@ -1,5 +1,13 @@
 --- a/finalforeach/cosmicreach/singletons/GameSingletonPlayers.java
 +++ b/finalforeach/cosmicreach/singletons/GameSingletonPlayers.java
+@@ -1,6 +_,7 @@
+ package finalforeach.cosmicreach.singletons;
+ 
+ import com.badlogic.gdx.utils.ObjectMap;
++
+ import finalforeach.cosmicreach.accounts.Account;
+ import finalforeach.cosmicreach.entities.player.Player;
+ import finalforeach.cosmicreach.entities.player.skins.IPlayerSkin;
 @@ -13,8 +_,8 @@
  
  public class GameSingletonPlayers {

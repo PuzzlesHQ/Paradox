@@ -37,7 +37,7 @@
  		GameSingletons.postCreate();
  	}
  
-@@ -209,11 +_,10 @@
+@@ -205,11 +_,10 @@
  	public static Account getAccount(NetworkIdentity identity) {
  		return identity == null ? null : netIdsToAccounts.get(identity);
  	}
@@ -50,7 +50,7 @@
  
  	public static ServerIdentity getConnection(Player player) {
  		Account account = GameSingletonPlayers.getAccountFromPlayer(player);
-@@ -223,4 +_,9 @@
+@@ -219,4 +_,9 @@
  	public static Account getAccountByUniqueId(String playerUniqueId) {
  		return uniqueIdsToAccounts.get(playerUniqueId);
  	}

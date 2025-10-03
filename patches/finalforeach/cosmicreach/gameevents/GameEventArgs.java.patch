@@ -14,7 +14,7 @@
  		for (int i = 0; i < triggers.length; i++) {
 -			triggers[i].act(this);
 +			if(this instanceof BlockEventArgs args) {
-+				if (!com.github.puzzle.paradox.api.Paradox.getInstance().getEventBus().post(new com.github.puzzle.paradox.api.events.BlockEventEvents.OnEventAct(args)).isCanceled()) {
++				if (!com.github.puzzle.paradox.api.Paradox.getInstance().getEventBus().post(new com.github.puzzle.paradox.api.impl.events.BlockEventEvents.OnEventAct(args)).isCanceled()) {
 +					triggers[i].act(this);
 +
 +				}

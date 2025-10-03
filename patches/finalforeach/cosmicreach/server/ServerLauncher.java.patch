@@ -1,14 +1,15 @@
 --- a/finalforeach/cosmicreach/server/ServerLauncher.java
 +++ b/finalforeach/cosmicreach/server/ServerLauncher.java
-@@ -2,53 +_,81 @@
+@@ -2,53 +_,82 @@
  
  import com.badlogic.gdx.Gdx;
  import com.badlogic.gdx.backends.headless.HeadlessFiles;
 +import com.github.puzzle.paradox.core.PuzzlePL;
-+import com.github.puzzle.paradox.loader.entrypoint.interfaces.PluginInitializer;
++import com.github.puzzle.paradox.entrypoints.PluginInitializer;
 +import com.github.puzzle.paradox.loader.entrypoint.interfaces.PrePluginInitializer;
 +import com.github.puzzle.paradox.loader.plugin.PluginContainer;
 +import com.github.puzzle.paradox.loader.plugin.PluginLocator;
++import com.github.puzzle.paradox.util.PuzzleEntrypointUtil;
 +import com.google.common.primitives.Ints;
  import finalforeach.cosmicreach.TickRunner;
  import finalforeach.cosmicreach.io.ChunkLoader;
@@ -82,7 +83,7 @@
 +            }
 +            ServerSingletons.create();
 +            registerZoneGenerators();
-+            PrePluginInitializer.invokeEntrypoint();
++            PuzzleEntrypointUtil.invoke(com.github.puzzle.paradox.entrypoints.PrePluginInitializer.ENTRYPOINT_KEY, com.github.puzzle.paradox.entrypoints.PrePluginInitializer.class, com.github.puzzle.paradox.entrypoints.PrePluginInitializer::onPreInit);
 +            String s2 = "server-world-1";
 +            GameSingletons.world = ChunkLoader.loadWorld(s2);
 +            if (GameSingletons.world == null) {
