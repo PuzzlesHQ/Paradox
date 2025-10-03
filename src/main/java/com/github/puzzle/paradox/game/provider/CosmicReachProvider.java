@@ -1,12 +1,8 @@
 package com.github.puzzle.paradox.game.provider;
 
 
-import com.github.puzzle.core.loader.launch.PuzzleClassLoader;
-import com.github.puzzle.paradox.api.Paradox;
 import com.github.puzzle.paradox.core.PuzzlePL;
 import com.github.puzzle.paradox.loader.Version;
-import com.github.puzzle.paradox.loader.launch.ParadoxClassLoader;
-import com.github.puzzle.paradox.loader.launch.TransformerInitializer;
 import com.github.puzzle.paradox.loader.plugin.PluginLocator;
 import com.github.puzzle.paradox.loader.plugin.info.PluginInfo;
 import com.github.puzzle.paradox.loader.providers.api.IGameProvider;
@@ -18,9 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 

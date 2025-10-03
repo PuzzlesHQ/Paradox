@@ -2,7 +2,7 @@ package com.github.puzzle.paradox.api;
 
 import com.github.puzzle.game.commands.CommandSource;
 import com.github.puzzle.paradox.api.enums.CommandType;
-import com.github.puzzle.paradox.api.player.ParadoxPlayer;
+import com.github.puzzle.paradox.api.interfaces.player.IParadoxPlayer;
 import com.github.puzzle.paradox.core.PuzzlePL;
 import com.github.puzzle.paradox.loader.Version;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -35,7 +35,7 @@ public class Paradox  {
     public IEventBus getEventBus(){
         return eventBus;
     }
-    private final Map<String, ParadoxPlayer> cachedPlr = new HashMap<>();
+    private final Map<String, IParadoxPlayer> cachedPlr = new HashMap<>();
 
     ///////////////////////////////////////////////////////////////////////////////////////
     //TODO: improve these so they are not visible in normal API
@@ -77,10 +77,10 @@ public class Paradox  {
      * This returns a set of all players registered on the server
      * @author repletsin5
      * @since API 1.0.0-Alpha
-     * @see ParadoxPlayer
+     * @see IParadoxPlayer
      * @see Set
      */
-    public Set<ParadoxPlayer> getPlayers(){
+    public Set<IParadoxPlayer> getPlayers(){
       return new HashSet<>(cachedPlr.values());
     }
 

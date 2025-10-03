@@ -3,7 +3,7 @@ package com.github.puzzle.paradox.core;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.github.puzzle.game.commands.CommandSource;
 import com.github.puzzle.paradox.api.Paradox;
-import com.github.puzzle.paradox.api.entity.ParadoxEntity;
+import com.github.puzzle.paradox.api.interfaces.entity.IParadoxEntity;
 import com.github.puzzle.paradox.core.permissions.GlobalPermissions;
 import com.github.puzzle.paradox.core.permissions.PermissionGroup;
 import com.github.puzzle.paradox.core.terminal.PPLTerminalConsole;
@@ -45,7 +45,6 @@ public class PuzzlePL {
     public final FileBasedConfigurationBuilder<PropertiesConfiguration> configBuilder;
 
     public static CommandDispatcher<CommandSource> clientDispatcher = new CommandDispatcher<>(); //to separate server side chat commands
-    public static final ObjectMap<UUID, ParadoxEntity> uuidToParadoxEntity = new ObjectMap<>();
 
     public static Account SERVER_ACCOUNT = null;
 

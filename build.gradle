@@ -96,7 +96,8 @@ dependencies {
 
     //
     runtimeOnly(project("test-plugin"))
-//    implementation project(":api") //TODO: fix
+    compileOnly(project(":api")) //TODO: fix
+    runtimeOnly(project(":api")) //TODO: fix
 
 }
 

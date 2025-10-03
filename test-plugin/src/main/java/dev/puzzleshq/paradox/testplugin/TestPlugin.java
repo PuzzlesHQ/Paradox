@@ -1,7 +1,7 @@
 package dev.puzzleshq.paradox.testplugin;
 
 import com.github.puzzle.paradox.game.command.Commands;
-import com.github.puzzle.paradox.loader.entrypoint.interfaces.PluginInitializer;
+import com.github.puzzle.paradox.entrypoints.PluginInitializer;
 
 public class TestPlugin implements PluginInitializer {
 

@@ -28,6 +28,6 @@ buildscript {
 }
 
 rootProject.name = 'Paradox'
-//include "api"
+include "api"
 include "launcher"
 include 'test-plugin'

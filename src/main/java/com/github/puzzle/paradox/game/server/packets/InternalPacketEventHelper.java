@@ -1,8 +1,8 @@
 package com.github.puzzle.paradox.game.server.packets;
 
 import com.github.puzzle.paradox.api.Paradox;
-import com.github.puzzle.paradox.api.events.packet.ChatEvents;
-import com.github.puzzle.paradox.api.events.packet.MiscEvents;
+import com.github.puzzle.paradox.api.impl.events.packet.ChatEvents;
+import com.github.puzzle.paradox.api.impl.events.packet.MiscEvents;
 import finalforeach.cosmicreach.networking.GamePacket;
 import finalforeach.cosmicreach.networking.NetworkIdentity;
 import finalforeach.cosmicreach.networking.packets.MessagePacket;

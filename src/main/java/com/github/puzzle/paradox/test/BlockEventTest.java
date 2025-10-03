@@ -1,6 +1,6 @@
 package com.github.puzzle.paradox.test;
 
-import com.github.puzzle.paradox.api.events.BlockEventEvents;
+import com.github.puzzle.paradox.api.impl.events.BlockEventEvents;
 import net.neoforged.bus.api.SubscribeEvent;
 
 public class BlockEventTest {
