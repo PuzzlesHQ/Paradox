@@ -8,7 +8,6 @@ import java.util.UUID;
 
 
 public interface IParadoxEntity {
-    UUID uuid = null;
 
     /**
      * Returns a Vector3 of entity's position
@@ -33,19 +32,14 @@ public interface IParadoxEntity {
      * @see UUID
      * @see String
      */
-    default String getUUIDAsString() {
-        return uuid.toString();
-    }
-
+    String getUUIDAsString();
     /**
      * Returns the UUID of the entity
      * @author repletsin5
      * @since API 1.0.0-Alpha
      * @see UUID
      */
-    default UUID getUUID(){
-        return uuid;
-    }
+    UUID getUUID();
 
     /**
      * Returns a Vector3 of entity's direction it is looking

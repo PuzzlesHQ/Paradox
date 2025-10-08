@@ -1,10 +1,11 @@
-package com.github.puzzle.paradox.api;
+package com.github.puzzle.paradox.api.impl;
 
+import com.github.puzzle.paradox.api.interfaces.IParadoxNetworkIdentity;
 import com.github.puzzle.paradox.api.interfaces.player.IParadoxPlayer;
 import com.github.puzzle.paradox.core.ClassConverter;
 import finalforeach.cosmicreach.networking.server.ServerIdentity;
 
-public class ParadoxNetworkIdentity {
+public class ParadoxNetworkIdentity implements IParadoxNetworkIdentity {
     ServerIdentity identity;
     IParadoxPlayer player;
     public ParadoxNetworkIdentity(ServerIdentity identity) {

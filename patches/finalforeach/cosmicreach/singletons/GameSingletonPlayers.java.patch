@@ -23,7 +23,7 @@
  			uniqueIdsToPlayers.put(account.getUniqueId(), player);
  			playersToUniqueIds.put(player, account.getUniqueId());
  			playersToAccounts.put(player, account);
-+			com.github.puzzle.paradox.api.Paradox.getInstance().addPlayer(player);
++			((com.github.puzzle.paradox.api.Paradox)com.github.puzzle.paradox.api.Paradox.getInstance()).addPlayer(player);
  		}
  	}
  
@@ -31,7 +31,7 @@
  	public static void unregisterPlayer(Player player) {
  		synchronized (getPlayerLock()) {
  			String s = playersToUniqueIds.get(player);
-+			com.github.puzzle.paradox.api.Paradox.getInstance().removePlayer(player);
++			((com.github.puzzle.paradox.api.Paradox)com.github.puzzle.paradox.api.Paradox.getInstance()).removePlayer(player);
  			playersToUniqueIds.remove(player);
  			uniqueIdsToPlayers.remove(s);
  			Account account = playersToAccounts.remove(player);

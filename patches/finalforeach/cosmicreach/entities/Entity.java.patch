@@ -18,8 +18,12 @@
  	@CRBSerialized
  	public float gravityModifier = 1.0F;
  	@CRBSerialized
-@@ -181,13 +_,15 @@
+@@ -179,15 +_,19 @@
+ 	public void hit(IDamageSource damageSource, float amount) {
+ 		if (amount != 0.0F) {
  			if (ServerSingletons.SERVER != null && damageSource instanceof Entity entity) {
++				if(com.github.puzzle.paradox.api.Paradox.getInstance().getEventBus().post(new com.github.puzzle.paradox.api.events.EntityEvents.OnTakeDamage(this.getParadoxEntity(),null, amount, entity.getParadoxEntity())).isCanceled())
++					return;
  				ServerSingletons.SERVER.broadcast(this.zone, new HitEntityPacket(this, entity, amount));
  			}
 -

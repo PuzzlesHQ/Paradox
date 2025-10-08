@@ -1,4 +1,4 @@
-package com.github.puzzle.paradox.loader;
+package com.github.puzzle.paradox.api.records;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

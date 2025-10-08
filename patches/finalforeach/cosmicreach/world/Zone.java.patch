@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/world/Zone.java
 +++ b/finalforeach/cosmicreach/world/Zone.java
-@@ -8,10 +_,10 @@
+@@ -8,11 +_,12 @@
  import com.badlogic.gdx.utils.Array;
  import com.badlogic.gdx.utils.Disposable;
  import com.badlogic.gdx.utils.Json;
@@ -10,8 +10,10 @@
  import com.badlogic.gdx.utils.Json.Serializable;
 +import com.badlogic.gdx.utils.JsonValue;
  import com.badlogic.gdx.utils.JsonWriter.OutputType;
++import com.github.puzzle.paradox.api.impl.entity.util.ParadoxEntityUtil;
  import finalforeach.cosmicreach.RandomTicks;
  import finalforeach.cosmicreach.Threads;
+ import finalforeach.cosmicreach.blocks.BlockState;
 @@ -36,6 +_,8 @@
  import finalforeach.cosmicreach.util.Point3DMap;
  import finalforeach.cosmicreach.util.logging.Logger;
@@ -92,7 +94,7 @@
  
  	public void removeEntity(Entity e) {
  		if (e != null) {
-+			com.github.puzzle.paradox.api.impl.entity.ParadoxEntity.uuidToParadoxEntity.remove(e.getParadoxEntity().getUUID());
++			((ParadoxEntityUtil)com.github.puzzle.paradox.api.Paradox.getInstance().getEntityUtil()).uuidToParadoxEntity.remove(e.getParadoxEntity().getUUID());
  			if (GameSingletons.isHost && ServerSingletons.SERVER != null) {
  				ServerSingletons.SERVER.broadcast(this, new DespawnEntityPacket(e));
  			}

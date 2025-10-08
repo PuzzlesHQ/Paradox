@@ -2,7 +2,7 @@ package com.github.puzzle.paradox.game.provider;
 
 
 import com.github.puzzle.paradox.core.PuzzlePL;
-import com.github.puzzle.paradox.loader.Version;
+import com.github.puzzle.paradox.api.records.Version;
 import com.github.puzzle.paradox.loader.plugin.PluginLocator;
 import com.github.puzzle.paradox.loader.plugin.info.PluginInfo;
 import com.github.puzzle.paradox.loader.providers.api.IGameProvider;

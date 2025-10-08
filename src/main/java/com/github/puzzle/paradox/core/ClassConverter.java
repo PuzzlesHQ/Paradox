@@ -1,9 +1,10 @@
 package com.github.puzzle.paradox.core;
 
-import com.github.puzzle.paradox.api.ParadoxNetworkIdentity;
+import com.github.puzzle.paradox.api.impl.ParadoxNetworkIdentity;
 import com.github.puzzle.paradox.api.impl.entity.*;
 import com.github.puzzle.paradox.api.impl.item.ParadoxItem;
 import com.github.puzzle.paradox.api.impl.item.ParadoxItemStack;
+import com.github.puzzle.paradox.api.interfaces.IParadoxNetworkIdentity;
 import com.github.puzzle.paradox.api.interfaces.block.blockentity.IParadoxBlockEntity;
 import com.github.puzzle.paradox.api.interfaces.entity.*;
 import com.github.puzzle.paradox.api.interfaces.item.IParadoxItem;
@@ -120,8 +121,8 @@ public class ClassConverter {
 
 
 
-        registerClassConverter(new ClassInfo<>(NetworkIdentity.class.getName(), ParadoxNetworkIdentity.class, ParadoxNetworkIdentity::new));
-        registerClassConverter(new ClassInfo<>(ServerIdentity.class.getName(), ParadoxNetworkIdentity.class, ParadoxNetworkIdentity::new));
+        registerClassConverter(new ClassInfo<>(NetworkIdentity.class.getName(), IParadoxNetworkIdentity.class, ParadoxNetworkIdentity::new));
+        registerClassConverter(new ClassInfo<>(ServerIdentity.class.getName(), IParadoxNetworkIdentity.class, ParadoxNetworkIdentity::new));
         registerClassConverter(new ClassInfo<>(ItemStack.class.getName(), IParadoxItemStack.class, ParadoxItemStack::new));
         registerClassConverter(new ClassInfo<>(Item.class.getName(), IParadoxItem.class, ParadoxItem::new));
         registerClassConverter(new ClassInfo<>(Account.class.getName(), ParadoxAccount.class, ParadoxAccount::new));

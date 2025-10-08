@@ -128,7 +128,6 @@ public class Bootstrap {
             }
         }
 
-//        System.out.println("Creating run scripts...");
         //TODO:
 
         System.out.println("Launching server...");

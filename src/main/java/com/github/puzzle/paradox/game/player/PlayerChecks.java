@@ -1,6 +1,6 @@
 package com.github.puzzle.paradox.game.player;
 
-import com.github.puzzle.paradox.api.ParadoxNetworkIdentity;
+import com.github.puzzle.paradox.api.impl.ParadoxNetworkIdentity;
 import com.github.puzzle.paradox.api.impl.entity.ParadoxPlayerEntity;
 import com.github.puzzle.paradox.api.impl.events.packet.MiscEvents;
 import com.github.puzzle.paradox.api.interfaces.player.IParadoxPlayer;

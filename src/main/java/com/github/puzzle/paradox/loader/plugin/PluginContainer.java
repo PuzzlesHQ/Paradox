@@ -1,6 +1,6 @@
 package com.github.puzzle.paradox.loader.plugin;
 
-import com.github.puzzle.paradox.loader.Version;
+import com.github.puzzle.paradox.api.records.Version;
 import com.github.puzzle.paradox.loader.entrypoint.EntrypointContainer;
 import com.github.puzzle.paradox.loader.plugin.info.PluginInfo;
 import org.jetbrains.annotations.NotNull;

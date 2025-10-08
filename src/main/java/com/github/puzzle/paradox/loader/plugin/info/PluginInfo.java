@@ -1,6 +1,6 @@
 package com.github.puzzle.paradox.loader.plugin.info;
 
-import com.github.puzzle.paradox.loader.Version;
+import com.github.puzzle.paradox.api.records.Version;
 import com.github.puzzle.paradox.loader.plugin.AdapterPathPair;
 import com.github.puzzle.paradox.loader.plugin.PluginContainer;
 import com.github.puzzle.paradox.loader.plugin.PluginJsonInfo;

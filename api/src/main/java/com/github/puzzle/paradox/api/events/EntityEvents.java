@@ -31,7 +31,7 @@ public abstract class EntityEvents extends Event {
         ENVIRONMENT
     }
 
-    //TODO: impl source and entitySource
+    //TODO: impl source
     public static class OnTakeDamage extends EntityEvents implements ICancellableEvent {
 
         public OnTakeDamage(IParadoxEntity entity, @Nullable DamageSource source, float hitPoints, @Nullable IParadoxEntity entitySource) {
@@ -46,7 +46,7 @@ public abstract class EntityEvents extends Event {
 
 
         /**
-         * Returns a float of entity's received damage
+         * Returns a float of the entity's received damage
          * @author repletsin5
          * @since API 1.0.0-Alpha
          */
@@ -59,15 +59,15 @@ public abstract class EntityEvents extends Event {
          */
         public @Nullable DamageSource getSource() {
             throw new NotImplementedException();
-//            return source;
         }
 
         /**
-         * Do not use, not implemented
+         * Returns the entity that caused the damage, Null if the enviroment.
+         * @author repletsin5
+         * @since API 1.0.0-Alpha
          */
         public @Nullable IParadoxEntity getEntitySource() {
-            throw new NotImplementedException();
-            //return entitySource;
+            return entitySource;
         }
     }
 }

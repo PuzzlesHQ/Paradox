@@ -1,9 +1,10 @@
 package com.github.puzzle.paradox.loader;
 
+import com.github.puzzle.paradox.api.records.Version;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.NotNull;
 
-import static com.github.puzzle.paradox.loader.Version.parseVersionWithThrow;
+import static com.github.puzzle.paradox.api.records.Version.parseVersionWithThrow;
 
 public class VersionParser {
     public static boolean hasDependencyVersion(@NotNull Version current, @NotNull String wanted){

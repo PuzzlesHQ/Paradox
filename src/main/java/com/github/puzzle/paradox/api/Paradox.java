@@ -2,9 +2,12 @@ package com.github.puzzle.paradox.api;
 
 import com.github.puzzle.game.commands.CommandSource;
 import com.github.puzzle.paradox.api.enums.CommandType;
+import com.github.puzzle.paradox.api.impl.entity.util.ParadoxEntityUtil;
+import com.github.puzzle.paradox.api.interfaces.IParadox;
+import com.github.puzzle.paradox.api.interfaces.entity.util.IParadoxEntityUtil;
 import com.github.puzzle.paradox.api.interfaces.player.IParadoxPlayer;
 import com.github.puzzle.paradox.core.PuzzlePL;
-import com.github.puzzle.paradox.loader.Version;
+import com.github.puzzle.paradox.api.records.Version;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import finalforeach.cosmicreach.entities.player.Player;
 import net.neoforged.bus.api.BusBuilder;
@@ -19,14 +22,15 @@ import java.util.Set;
 import static com.github.puzzle.game.commands.CommandManager.CONSOLE_DISPATCHER;
 import static finalforeach.cosmicreach.singletons.GameSingletonPlayers.playersToUniqueIds;
 
-public class Paradox  {
+public class Paradox implements IParadox {
 
     IEventBus eventBus;
     private Paradox(){
         eventBus = BusBuilder.builder().build();
     }
-    public static Paradox INSTANCE = null;
-    public static Paradox getInstance(){
+    public static IParadox INSTANCE = null;
+
+    public static IParadox getInstance(){
         if (INSTANCE == null)
             INSTANCE = new Paradox();
         return INSTANCE;
@@ -36,7 +40,7 @@ public class Paradox  {
         return eventBus;
     }
     private final Map<String, IParadoxPlayer> cachedPlr = new HashMap<>();
-
+    private final IParadoxEntityUtil entityUtil = new ParadoxEntityUtil();
     ///////////////////////////////////////////////////////////////////////////////////////
     //TODO: improve these so they are not visible in normal API
 
@@ -80,8 +84,14 @@ public class Paradox  {
      * @see IParadoxPlayer
      * @see Set
      */
+    @Override
     public Set<IParadoxPlayer> getPlayers(){
       return new HashSet<>(cachedPlr.values());
+    }
+
+    @Override
+    public IParadoxEntityUtil getEntityUtil() {
+        return entityUtil;
     }
 
     /**
@@ -90,6 +100,7 @@ public class Paradox  {
      * @since API 1.0.0-Alpha
      * @see Version
      */
+    @Override
     public Version getAPIVersion(){
         return PuzzlePL.API_VERSION;
     }
