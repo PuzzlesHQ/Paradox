@@ -1,6 +1,6 @@
 package com.github.puzzle.paradox.api.impl.events.packet;
 
-import com.github.puzzle.game.commands.CommandSource;
+import com.github.puzzle.paradox.api.commands.CommandSource;
 import com.github.puzzle.paradox.api.interfaces.player.IParadoxPlayer;
 import com.mojang.brigadier.Command;
 import net.neoforged.bus.api.Event;

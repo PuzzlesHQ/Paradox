@@ -1,8 +1,8 @@
 --- a/finalforeach/cosmicreach/RuntimeInfo.java
 +++ b/finalforeach/cosmicreach/RuntimeInfo.java
-@@ -13,7 +_,7 @@
- 	public static final boolean isWindows = osName.contains("windows");
+@@ -15,7 +_,7 @@
  	public static final String version = Gdx.files.internal("build_assets/version.txt").readString();
+ 	public static final GameVersion gameVersion = GameVersion.of(version);
  	public static boolean GL30Supported = true;
 -	public static String gameVariant = "Vanilla";
 +	public static String gameVariant = "Paradox";

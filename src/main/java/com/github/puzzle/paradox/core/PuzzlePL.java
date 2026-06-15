@@ -1,6 +1,6 @@
 package com.github.puzzle.paradox.core;
 
-import com.github.puzzle.game.commands.CommandSource;
+import com.github.puzzle.paradox.api.commands.CommandSource;
 import com.github.puzzle.paradox.api.Paradox;
 import com.github.puzzle.paradox.core.permissions.GlobalPermissions;
 import com.github.puzzle.paradox.core.permissions.PermissionGroup;
@@ -14,22 +14,28 @@ import finalforeach.cosmicreach.accounts.Account;
 import finalforeach.cosmicreach.accounts.AccountOffline;
 import finalforeach.cosmicreach.networking.packets.MessagePacket;
 import finalforeach.cosmicreach.networking.server.ServerSingletons;
+import net.minecrell.terminalconsole.TerminalConsoleAppender;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
+import org.jline.utils.InfoCmp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static finalforeach.cosmicreach.io.SaveLocation.getSaveFolderLocation;
+import static finalforeach.cosmicreach.util.SaveLocation.getSaveFolderLocation;
 
 public class PuzzlePL {
 
@@ -135,8 +141,38 @@ public class PuzzlePL {
         GlobalPermissions.savePermissionGroups();
         GlobalPermissions.savePlayerPermissions();
     }
+    public void checkCapabilities(Terminal terminal) {
+        // Check if the terminal supports cursor movement
+        boolean supportsCursorMovement = terminal.getStringCapability(InfoCmp.Capability.save_cursor) != null
+                && terminal.getStringCapability(InfoCmp.Capability.restore_cursor) != null
+                && terminal.getStringCapability(InfoCmp.Capability.cursor_address) != null;
+        if (supportsCursorMovement) {
+            // Save cursor
+            terminal.puts(InfoCmp.Capability.save_cursor);
+            // Move cursor to position (1, 1)
+            terminal.puts(InfoCmp.Capability.cursor_address, 1, 1);
+            // Print message
+            terminal.writer().println("Cursor movement supported");
+            // Restore cursor
+            terminal.puts(InfoCmp.Capability.restore_cursor);
+        }
+    }
 
     public void initConsoleListener(){
+        try {
+            Terminal customTerminal = TerminalBuilder.builder()
+                    .name("CustomTerminal")
+                    .system(false)
+                    .streams(System.in, System.out)
+                    .encoding(StandardCharsets.UTF_8)
+                    .jansi(true)
+                    .build();
+            checkCapabilities(customTerminal);
+            TerminalConsoleAppender.setTerminal(customTerminal);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         consoleThread = new Thread("Console Handler"){
             public void run() {
                 try {

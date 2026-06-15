@@ -1,7 +1,7 @@
 package com.github.puzzle.paradox.game.command.console;
 
 import com.badlogic.gdx.math.Vector3;
-import com.github.puzzle.game.commands.CommandSource;
+import com.github.puzzle.paradox.api.commands.CommandSource;
 import com.github.puzzle.paradox.game.command.DefaultPuzzleCommand;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.FloatArgumentType;

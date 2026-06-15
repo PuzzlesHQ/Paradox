@@ -28,13 +28,17 @@ import java.util.jar.Manifest;
 public class ParadoxClassLoader extends PuzzleClassLoader {
     public static Logger LOGGER = LogManager.getLogger("Paradox | Classloader");
 
-    public ParadoxClassLoader(@NotNull Collection<URL> sources) {
-        this(sources.toArray(new URL[0]));
+    public ParadoxClassLoader(@NotNull Collection<URL> sources,ClassLoader parent) {
+        this(sources.toArray(new URL[0]),parent);
     }
 
-    public ParadoxClassLoader(URL[] sources) {
-        super(sources);
+    public ParadoxClassLoader(URL[] sources,ClassLoader parent) {
+        super(sources,parent);
 
+//        LOGGER.warn("Loaded URLS:\n");
+//            for (var s : sources){
+//                LOGGER.warn("\t{}",s.getFile());
+//            }
         // classloader exclusions
         addClassLoaderExclusion("java.");
         addClassLoaderExclusion("sun.");
@@ -43,13 +47,6 @@ public class ParadoxClassLoader extends PuzzleClassLoader {
         addClassLoaderExclusion("org.slf4j");
         addClassLoaderExclusion("com.google.");
         addClassLoaderExclusion("org.hjson");
-
-        // transformer exclusions
-        addTransformerExclusion("javax.");
-        addTransformerExclusion("argo.");
-        addTransformerExclusion("org.objectweb.asm.");
-        addTransformerExclusion("com.google.common.");
-        addTransformerExclusion("org.bouncycastle.");
         addClassLoaderExclusion("com.github.puzzle.paradox.loader.");
     }
 }

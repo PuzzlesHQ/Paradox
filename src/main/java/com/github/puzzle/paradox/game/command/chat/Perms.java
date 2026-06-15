@@ -1,17 +1,15 @@
 package com.github.puzzle.paradox.game.command.chat;
 
-import com.github.puzzle.game.commands.CommandSource;
+import com.github.puzzle.paradox.api.commands.CommandSource;
+import com.github.puzzle.paradox.api.impl.player.ParadoxAccount;
 import com.github.puzzle.paradox.core.permissions.GlobalPermissions;
 import com.github.puzzle.paradox.core.permissions.PermissionGroup;
 import com.github.puzzle.paradox.game.command.DefaultPuzzleCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import finalforeach.cosmicreach.networking.packets.MessagePacket;
 import finalforeach.cosmicreach.networking.server.ServerSingletons;
-import org.slf4j.LoggerFactory;
 
-import static com.github.puzzle.paradox.core.PuzzlePL.SERVER_ACCOUNT;
 import static com.github.puzzle.paradox.core.PuzzlePL.sendbackChat;
 
 public class Perms extends DefaultPuzzleCommand {
@@ -31,7 +29,7 @@ public class Perms extends DefaultPuzzleCommand {
     //TODO: Improve code readability
     @Override
     public int execute(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        var account = context.getSource().getAccount();
+        var account = ((ParadoxAccount)context.getSource().getAccount()).getInternalAccount();
         var args = StringArgumentType.getString(context, "args");
         var split = args.split(" ");
         if(split.length > 5) {

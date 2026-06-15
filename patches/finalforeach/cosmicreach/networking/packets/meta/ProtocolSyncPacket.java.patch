@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/networking/packets/meta/ProtocolSyncPacket.java
 +++ b/finalforeach/cosmicreach/networking/packets/meta/ProtocolSyncPacket.java
-@@ -71,7 +_,7 @@
+@@ -85,7 +_,7 @@
  
  	@Override
  	public void handle(NetworkIdentity identity, ChannelHandlerContext ctx) {

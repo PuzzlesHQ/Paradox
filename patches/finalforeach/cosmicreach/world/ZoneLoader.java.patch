@@ -1,7 +1,7 @@
 --- a/finalforeach/cosmicreach/world/ZoneLoader.java
 +++ b/finalforeach/cosmicreach/world/ZoneLoader.java
-@@ -76,6 +_,8 @@
- 		if (!GameSingletons.isHost) {
+@@ -69,6 +_,8 @@
+ 		if (!GameSingletons.isHost()) {
  			return false;
  		} else {
 +			if(com.github.puzzle.paradox.game.command.console.Save.isSaveRequested())
@@ -9,16 +9,16 @@
  			long i = System.currentTimeMillis();
  			return this.requestSave || i - this.lastSaveMillis > this.autoSaveIntervalSeconds * 1000L;
  		}
-@@ -182,7 +_,7 @@
+@@ -208,7 +_,7 @@
  		int j = i;
- 		int k = MathUtils.clamp(i, 6, 12);
+ 		int k = MathUtils.clamp(i, 3, 4);
  		if (!this.spawnReady) {
 -			k = 1;
 +//			k = 1;
  		}
  
- 		if (player.isLoading()) {
-@@ -473,6 +_,7 @@
+ 		if (player.isLoading() || GameSingletons.isClient() && GameSingletons.client().isInLoadingState()) {
+@@ -559,6 +_,7 @@
  			ChunkSaver.saveWorld(world);
  			this.lastSaveMillis = k;
  			this.requestSave = false;

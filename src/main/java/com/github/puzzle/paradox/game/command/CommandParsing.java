@@ -1,7 +1,7 @@
 package com.github.puzzle.paradox.game.command;
 
 import com.github.puzzle.game.commands.CommandManager;
-import com.github.puzzle.game.commands.CommandSource;
+import com.github.puzzle.paradox.api.commands.CommandSource;
 import com.github.puzzle.game.commands.ParadoxCommandSource;
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;

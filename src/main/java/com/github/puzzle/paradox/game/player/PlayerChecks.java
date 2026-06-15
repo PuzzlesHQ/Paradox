@@ -66,19 +66,19 @@ public class PlayerChecks {
             var plrRequestedPos = event.getRequestedPosition();
             var reqBlockState = BlockPosition.ofGlobal(event.getPlayer().getInternalPlayer().getZone(), (int) plrRequestedPos.x, (int) plrRequestedPos.y, (int) plrRequestedPos.z).getBlockState();
             var reqBlockStateTop = BlockPosition.ofGlobal(event.getPlayer().getInternalPlayer().getZone(), (int) plrRequestedPos.x, (int) plrRequestedPos.y+1, (int) plrRequestedPos.z).getBlockState();
-            if(!reqBlockState.isFluid && reqBlockState.getBlock() != Block.AIR && !reqBlockState.walkThrough &&
-                    !((ParadoxPlayerEntity)event.getPlayer().getEntity()).getInternalPlayerEntity().isNoClip() &&
-             !reqBlockStateTop.isFluid && reqBlockStateTop.getBlock() != Block.AIR && !reqBlockStateTop.walkThrough
-            ){
-
-                //only reset position and not look vector so camera doesn't possible jitter.
-                event.getPlayer().getInternalPlayer().getEntity().viewDirection = event.getRequestedLookVector();
-                event.getPlayer().setPosition(event.getPlayer().getLastSafePosition().cpy());
-                ((ParadoxNetworkIdentity)event.getIdentity()).getInternalNetworkIdentity().send(new PlayerPositionPacket(event.getPlayer().getInternalPlayer()));
-
-                event.setCanceled(false);
-                return;
-            }
+//            if(!reqBlockState.isFluid && reqBlockState.getBlock() != Block.AIR && !reqBlockState.walkThrough &&
+//                    !((ParadoxPlayerEntity)event.getPlayer().getEntity()).getInternalPlayerEntity().isNoClip() &&
+//             !reqBlockStateTop.isFluid && reqBlockStateTop.getBlock() != Block.AIR && !reqBlockStateTop.walkThrough
+//            ){
+//
+//                //only reset position and not look vector so camera doesn't possible jitter.
+//                event.getPlayer().getInternalPlayer().getEntity().viewDirection = event.getRequestedLookVector();
+//                event.getPlayer().setPosition(event.getPlayer().getLastSafePosition().cpy());
+//                ((ParadoxNetworkIdentity)event.getIdentity()).getInternalNetworkIdentity().send(new PlayerPositionPacket(event.getPlayer().getInternalPlayer()));
+//
+//                event.setCanceled(false);
+//                return;
+//            }
 
             //TODO check for flight without noclip = true on serverside.
             event.getPlayer().setLastSafePosition(event.getCurrentPosition().cpy());

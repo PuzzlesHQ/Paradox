@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/chat/commands/moderation/CommandOp.java
 +++ b/finalforeach/cosmicreach/chat/commands/moderation/CommandOp.java
-@@ -24,4 +_,8 @@
+@@ -30,4 +_,8 @@
  	public String getShortDescription() {
  		return "Makes a player an operator";
  	}

@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/chat/commands/moderation/CommandBanIp.java
 +++ b/finalforeach/cosmicreach/chat/commands/moderation/CommandBanIp.java
-@@ -36,4 +_,8 @@
+@@ -43,4 +_,8 @@
  	public String getShortDescription() {
  		return "Bans a player by their IP address";
  	}

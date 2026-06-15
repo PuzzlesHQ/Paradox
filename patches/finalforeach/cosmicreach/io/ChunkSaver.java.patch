@@ -1,9 +1,9 @@
 --- a/finalforeach/cosmicreach/io/ChunkSaver.java
 +++ b/finalforeach/cosmicreach/io/ChunkSaver.java
-@@ -14,12 +_,12 @@
- import finalforeach.cosmicreach.savelib.crbin.CRBinSerializer;
+@@ -15,12 +_,12 @@
  import finalforeach.cosmicreach.savelib.lightdata.blocklight.IBlockLightData;
  import finalforeach.cosmicreach.savelib.lightdata.skylight.ISkylightData;
+ import finalforeach.cosmicreach.util.ChunkByteWriter;
 -import finalforeach.cosmicreach.util.logging.Logger;
  import finalforeach.cosmicreach.world.Chunk;
  import finalforeach.cosmicreach.world.EntityRegion;
@@ -14,14 +14,13 @@
  import java.io.File;
  import java.io.FileOutputStream;
  import java.io.IOException;
-@@ -27,11 +_,13 @@
- import java.nio.charset.StandardCharsets;
- import net.jpountz.lz4.LZ4Compressor;
- import net.jpountz.lz4.LZ4Factory;
--
+@@ -30,9 +_,13 @@
+ import java.nio.file.Files;
+ import java.nio.file.Path;
+ import java.nio.file.StandardCopyOption;
++import java.util.Arrays;
+ 
  public class ChunkSaver {
- 	private static final LZ4Factory LZ4_FACTORY = LZ4Factory.fastestInstance();
- 	private static final LZ4Compressor LZ4_COMPRESSOR = LZ4_FACTORY.fastCompressor();
  	private static final Json WORLD_INFO_JSON = new Json();
 +
 +   private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger("Cosmic Reach | Chunk Saver");
@@ -29,7 +28,7 @@
  	public static volatile boolean isSaving;
  	private static Object saveWorldLock = new Object();
  	private static Object entityRegionLock = new Object();
-@@ -53,26 +_,25 @@
+@@ -54,29 +_,28 @@
  			throw new RuntimeException(ioexception);
  		}
  	}
@@ -37,18 +36,21 @@
  	public static void saveWorld(World world) {
  		synchronized (saveWorldLock) {
  			try {
- 				isSaving = true;
--				Logger.info("Started saving world");
+ 				if (world != null) {
+ 					isSaving = true;
+-					Logger.info("Started saving world");
 +         LOGGER.info("Started saving world");
- 				saveWorldInfo(world, false);
- 				PlayerSaver.savePlayers(world);
+ 					saveWorldInfo(world, false);
+ 					PlayerSaver.savePlayers(world);
  
 +
- 				for (Zone zone : world.getZones()) {
- 					saveZone(zone);
- 				}
+ 					for (Zone zone : world.getZones()) {
+ 						saveZone(zone);
+ 					}
  
--				Logger.info("Finished saving");
+-					Logger.info("Finished saving");
+ 					return;
+ 				}
 +         LOGGER.info("Finished saving");
  			} finally {
  				isSaving = false;
@@ -59,12 +61,65 @@
  	public static void saveZone(Zone zone) {
  		for (Region region : zone.getRegions()) {
  			if (!region.isEmpty()) {
-@@ -183,7 +_,7 @@
+@@ -111,9 +_,7 @@
+ 		ByteArray bytearray = new ByteArray();
+ 		int[] aint = new int[256];
+ 
+-		for (int i = 0; i < aint.length; i++) {
+-			aint[i] = -1;
+-		}
++        Arrays.fill(aint, -1);
+ 
+ 		ByteArray bytearray1 = new ByteArray();
+ 		IChunkByteWriter ichunkbytewriter = getChunkByteWriter(bytearray1);
+@@ -134,11 +_,9 @@
+ 
+ 				if (flag) {
+ 					int l3 = bytearray1.size;
+-					if (aint != null) {
+-						aint[l] = l3;
+-					}
++                    aint[l] = l3;
+ 
+-					ichunkbytewriter.writeInt(0);
++                    ichunkbytewriter.writeInt(0);
+ 					ichunkbytewriter.writeInt(7);
+ 					int k4 = bytearray1.size;
+ 					ichunkbytewriter.writeByte(0);
+@@ -167,12 +_,13 @@
+ 				int i3 = randomaccessfile.readInt();
+ 				int i4 = randomaccessfile.readInt();
+ 				int l4 = randomaccessfile.readInt();
+-				byte[] abyte1 = new byte[(int)(randomaccessfile.length() - 12L)];
+-				randomaccessfile.read(abyte1);
++				byte[] regiondata = new byte[(int)(randomaccessfile.length() - 12L)];
++				randomaccessfile.read(regiondata);
++                if (l4 == 2) {
++                    regiondata = CompressionUtils.decompress(regiondata);
++                }
+ 
+-				chunkbytereader = new ChunkByteReader(switch (l4) {
+-					case 2 -> CompressionUtils.decompress(abyte1);
+-				}, i3, i4, l4);
++				chunkbytereader = new ChunkByteReader(regiondata, i3, i4, l4);
+ 				if (chunkbytereader.fileVersion >= 7) {
+ 					chunkbytereader.setFileChunkByteOffsets(region);
+ 					int[] aint1 = region.fileChunkByteOffsets;
+@@ -192,7 +_,7 @@
  					}
  				}
  			} catch (Exception exception1) {
 -				Logger.error("Error loading bytes from region file: " + s2);
 +				LOGGER.error("Error loading bytes from region file: " + s2);
  				exception1.printStackTrace();
- 				boolean flag3 = false;
  			}
+ 		}
+@@ -279,7 +_,7 @@
+ 						}
+ 					}
+ 				} catch (Exception exception) {
+-					Logger.error("Failed to safely save region: " + s2, exception);
++                    LOGGER.error("Failed to safely save region: {}", s2, exception);
+ 					if (file2.exists()) {
+ 						file2.delete();
+ 					}

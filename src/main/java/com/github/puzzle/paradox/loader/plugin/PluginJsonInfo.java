@@ -1,8 +1,6 @@
 package com.github.puzzle.paradox.loader.plugin;
 
 import com.github.puzzle.paradox.core.util.Reflection;
-import com.github.puzzle.paradox.loader.lang.LanguageAdapter;
-import com.github.puzzle.paradox.loader.lang.impl.LanguageAdapterWrapper;
 import com.github.puzzle.paradox.loader.launch.Piece;
 import org.hjson.JsonArray;
 import org.hjson.JsonObject;
@@ -87,20 +85,20 @@ public class PluginJsonInfo {
             info.meta = new HashMap<>();
             for (String name : objc.names()) {
                 info.meta.put(name, objc.get(name));
-                if (objc.get("languageAdapters") != null) {
-                    JsonObject adapters = objc.get("languageAdapters").asObject();
-                    for (String id : adapters.names()) {
-                        Class<?> clazz = null;
-                        try {
-                            clazz = Class.forName(adapters.get(id).asString(), false, Piece.classLoader);
-                        } catch (ClassNotFoundException e) {
-                            throw new RuntimeException(e);
-                        }
-                        Class<LanguageAdapter> adClass = (Class<LanguageAdapter>) clazz;
-                        LanguageAdapter adapter = new LanguageAdapterWrapper(Reflection.newInstance(adClass));
-                        LanguageAdapter.ADAPTERS.put(id, adapter);
-                    }
-                }
+//                if (objc.get("languageAdapters") != null) {
+//                    JsonObject adapters = objc.get("languageAdapters").asObject();
+//                    for (String id : adapters.names()) {
+//                        Class<?> clazz = null;
+//                        try {
+//                            clazz = Class.forName(adapters.get(id).asString(), false, Piece.classLoader);
+//                        } catch (ClassNotFoundException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                        Class<LanguageAdapter> adClass = (Class<LanguageAdapter>) clazz;
+//                        LanguageAdapter adapter = new LanguageAdapterWrapper(Reflection.newInstance(adClass));
+//                        LanguageAdapter.ADAPTERS.put(id, adapter);
+//                    }
+//                }
             }
         } else info.meta = new HashMap<>();
         if (obj.get("dependencies") != null) {

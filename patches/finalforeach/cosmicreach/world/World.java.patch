@@ -1,0 +1,11 @@
+--- a/finalforeach/cosmicreach/world/World.java
++++ b/finalforeach/cosmicreach/world/World.java
+@@ -18,7 +_,7 @@
+ import java.util.Random;
+ import java.util.Set;
+ 
+-public class World implements Serializable {
++public class World extends com.github.puzzle.paradox.game.world.InternalParadoxWorld implements Serializable {
+ 	public String defaultZoneId;
+ 	private transient HashMap<String, Zone> zoneMap = new HashMap<>();
+ 	public transient String worldFolderName;

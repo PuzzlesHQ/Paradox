@@ -19,6 +19,12 @@ buildscript {
             name "neoforged"
             url "https://maven.neoforged.net/release"
         }
+        repositories {
+            maven {
+                name = "henkelmax.public"
+                url = 'https://maven.maxhenkel.de/repository/public'
+            }
+        }
     }
 
     dependencies {
@@ -28,7 +34,7 @@ buildscript {
 }
 plugins {
     id 'application'
-    id "com.gradleup.shadow" version "8.3.6"
+    id "com.gradleup.shadow" version "9.2.2"
 }
 group = 'com.github.puzzle'
 version = '1.0-SNAPSHOT'
@@ -68,14 +74,12 @@ dependencies {
     implementation "org.lz4:lz4-java:1.8.0"
     implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
     implementation "com.github.FinalForEach:Cosmic-Reach-Save-Library:$saveLib"
-
-
-
+    implementation 'io.github.jaredmdobson:concentus:1.0.2'
     implementation "com.github.Hangman:TuningFork:$tuningFork"
     implementation "io.netty:netty-all:4.1.24.Final"
 
     shadow("org.reflections:reflections:$reflectionsVersion")
-    shadow("com.mojang:brigadier:1.0.18")
+    shadow("com.mojang:brigadier:1.3.10")
     shadow 'org.apache.commons:commons-configuration2:2.11.0'
     shadow 'org.apache.commons:commons-lang3:3.14.0'
     shadow 'org.apache.commons:commons-text:1.12.0'
@@ -95,19 +99,22 @@ dependencies {
     shadow"net.sf.jopt-simple:jopt-simple:$joptSimpleVersion"
 
     //
-    runtimeOnly(project("test-plugin"))
+//    runtimeOnly(project("test-plugin"))
     compileOnly(project(":api")) //TODO: fix
     runtimeOnly(project(":api")) //TODO: fix
 
 }
 
 tasks.named('runShadow', JavaExec) {
+    setStandardInput(System.in)
 }
 
 application {
     mainClass = 'com.github.puzzle.paradox.loader.launch.Piece'
     // Optionally, you can add default JVM arguments to the start scripts like this:
-    applicationDefaultJvmArgs = ['--add-opens=java.base/java.lang=ALL-UNNAMED']
+    applicationDefaultJvmArgs = ['--add-opens=java.base/java.lang=ALL-UNNAMED', "-Dterminal.jline=false",
+            "-Dterminal.ansi=true", "-Djline.WindowsTerminal.directConsole=false"]
+
 }
 javadoc {
 }

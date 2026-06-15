@@ -1,8 +1,9 @@
 package com.github.puzzle.paradox.api.impl.player;
 
+import com.github.puzzle.paradox.api.interfaces.player.IParadoxAccount;
 import finalforeach.cosmicreach.accounts.Account;
 
-public class ParadoxAccount {
+public class ParadoxAccount implements IParadoxAccount {
 
     Account account;
     public ParadoxAccount(Account account){
@@ -17,6 +18,11 @@ public class ParadoxAccount {
      */
     public String getDisplayName(){
         return this.account.displayname;
+    }
+
+    @Override
+    public void setUsername(String username) {
+         account.setUsername(username);
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.github.puzzle.paradox.api;
 
-import com.github.puzzle.game.commands.CommandSource;
+import com.github.puzzle.paradox.api.commands.CommandSource;
 import com.github.puzzle.paradox.api.enums.CommandType;
 import com.github.puzzle.paradox.api.impl.entity.util.ParadoxEntityUtil;
 import com.github.puzzle.paradox.api.interfaces.IParadox;

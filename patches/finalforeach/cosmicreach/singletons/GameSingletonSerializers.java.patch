@@ -8,4 +8,4 @@
 +		CRBinDeserializer.registerDefaultClassDeserializer(Double.class, (name, d) -> d.readDouble(name, 0.0d));
  		CRBinSerializer.registerDefaultClassSerializer(Color.class, (serial, name, color) -> {
  			if (color != null) {
- 				serial.writeLong(name, (long)Color.rgba8888(color));
+ 				serial.writeLong(name, (long)Color.rgba8888(color) & 4294967295L);

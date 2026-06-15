@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-import static finalforeach.cosmicreach.io.SaveLocation.getSaveFolderLocation;
+import static finalforeach.cosmicreach.util.SaveLocation.getSaveFolderLocation;
 
 public class GlobalPermissions {
     public static PermissionGroup DEFAULT_GROUP;

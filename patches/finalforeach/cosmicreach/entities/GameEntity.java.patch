@@ -1,0 +1,27 @@
+--- a/finalforeach/cosmicreach/entities/GameEntity.java
++++ b/finalforeach/cosmicreach/entities/GameEntity.java
+@@ -54,7 +_,7 @@
+ import java.util.function.Consumer;
+ import java.util.function.Predicate;
+ 
+-public class GameEntity implements ICRBinSerializable, IGameTagged, IDamageSource {
++public class GameEntity extends com.github.puzzle.paradox.game.entity.InternalParadoxEntity  implements ICRBinSerializable, IGameTagged, IDamageSource {
+ 	protected static final transient Matrix4 tmpModelMatrix = new Matrix4();
+ 	protected static final transient Vector3 tmpRenderPos = new Vector3();
+ 	private static final BlockPosition tmpBlockPos1 = new BlockPosition(null, 0, 0, 0);
+@@ -206,9 +_,14 @@
+ 			}
+ 
+ 			if (ServerSingletons.SERVER != null) {
++				if (damageSource instanceof GameEntity entity) {
++					if (com.github.puzzle.paradox.api.Paradox.getInstance().getEventBus().post(new com.github.puzzle.paradox.api.events.EntityEvents.OnTakeDamage(this.getParadoxEntity(), null, amount, entity.getParadoxEntity())).isCanceled())
++						return;
++				}
+ 				ServerSingletons.SERVER.broadcast(this.zone, new HitEntityPacket(this, damageSource, amount));
+ 			}
+-
++			if(com.github.puzzle.paradox.api.Paradox.getInstance().getEventBus().post(new com.github.puzzle.paradox.api.events.EntityEvents.OnTakeDamage(this.getParadoxEntity(),null, amount, null)).isCanceled())
++				return;
+ 			if (amount < 0.0F) {
+ 				this.hitpoints = Math.min(this.hitpoints - amount, this.maxHitpoints);
+ 			} else if (amount >= this.hitpoints || this.getPendingDamage() == 0.0F && !this.recentlyHit()) {

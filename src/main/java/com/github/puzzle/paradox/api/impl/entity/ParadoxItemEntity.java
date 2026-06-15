@@ -3,12 +3,12 @@ package com.github.puzzle.paradox.api.impl.entity;
 import com.github.puzzle.paradox.api.interfaces.entity.IParadoxItemEntity;
 import com.github.puzzle.paradox.api.interfaces.item.IParadoxItemStack;
 import com.github.puzzle.paradox.core.ClassConverter;
-import finalforeach.cosmicreach.entities.ItemEntity;
+import finalforeach.cosmicreach.entities.ItemGameEntity;
 
 public class ParadoxItemEntity extends ParadoxEntity implements IParadoxItemEntity  {
-    ItemEntity entity;
+    ItemGameEntity entity;
 
-    public ParadoxItemEntity(ItemEntity entity) {
+    public ParadoxItemEntity(ItemGameEntity entity) {
         super(entity);
     }
 
@@ -21,9 +21,9 @@ public class ParadoxItemEntity extends ParadoxEntity implements IParadoxItemEnti
      * Avoid using this. Returns Cosmic Reach's internal item entity class
      * @author repletsin5
      * @since API 1.0.0-Alpha
-     * @see ItemEntity
+     * @see ItemGameEntity
      */
-    public ItemEntity getInternalItemEntity(){
+    public ItemGameEntity getInternalItemEntity(){
         return entity;
     }
 }

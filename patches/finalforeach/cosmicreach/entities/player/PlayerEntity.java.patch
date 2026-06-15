@@ -1,20 +1,21 @@
 --- a/finalforeach/cosmicreach/entities/player/PlayerEntity.java
 +++ b/finalforeach/cosmicreach/entities/player/PlayerEntity.java
-@@ -21,7 +_,7 @@
+@@ -24,8 +_,8 @@
  
- public class PlayerEntity extends Entity {
+ public class PlayerEntity extends GameEntity implements IPlayerEntity {
  	public static final String ENTITY_TYPE_ID = "base:entity_player";
 -	private transient Player player;
+ 	private transient OxygenBreathingComponent oxygenBreathingComponent;
 +	public transient Player player;
  	public static IEntityModel playerModel;
  	private boolean wasFirstPersonLastFrame;
  	public static final String sneakIdle = "sneak_idle_cycle";
-@@ -43,7 +_,7 @@
+@@ -47,7 +_,7 @@
  	}
  
  	protected PlayerEntity() {
 -		super("base:entity_player");
 +      	super(ENTITY_TYPE_ID);
  		this.maxHitpoints = this.hitpoints = 3.0F;
+ 		this.addTag(CommonEntityTags.PLAYER);
  		this.fallDamage = PlayerFallDamage.INSTANCE;
- 		Threads.runOnMainThread(() -> {

@@ -1,0 +1,11 @@
+--- a/finalforeach/cosmicreach/util/predicates/GamePredicateEntity.java
++++ b/finalforeach/cosmicreach/util/predicates/GamePredicateEntity.java
+@@ -31,7 +_,7 @@
+ 				default:
+ 					switch (b0) {
+ 						case 0:
+-							this.subPredicate = json.readValue(GamePredicateItemEntity.class, jsonData);
++							this.subPredicate = (Predicate<T>) json.readValue(GamePredicateItemEntity.class, jsonData);
+ 							return;
+ 						default:
+ 							throw new IllegalArgumentException("Unknown entity predicate type: " + s);

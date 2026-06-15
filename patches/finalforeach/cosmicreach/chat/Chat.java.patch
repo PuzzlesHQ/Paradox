@@ -1,0 +1,11 @@
+--- a/finalforeach/cosmicreach/chat/Chat.java
++++ b/finalforeach/cosmicreach/chat/Chat.java
+@@ -6,7 +_,7 @@
+ import finalforeach.cosmicreach.accounts.Account;
+ import java.util.Iterator;
+ 
+-public class Chat implements IChat {
++public class Chat extends com.github.puzzle.paradox.game.player.chat.InternalParadoxChat implements IChat {
+ 	public static Chat MAIN_CLIENT_CHAT = new Chat();
+ 	public float maxMessageDurationSeconds = 10.0F;
+ 	public int maxMessages = 100;

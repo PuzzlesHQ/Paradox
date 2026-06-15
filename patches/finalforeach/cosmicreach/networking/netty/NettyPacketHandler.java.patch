@@ -1,21 +1,22 @@
 --- a/finalforeach/cosmicreach/networking/netty/NettyPacketHandler.java
 +++ b/finalforeach/cosmicreach/networking/netty/NettyPacketHandler.java
-@@ -1,13 +_,13 @@
- package finalforeach.cosmicreach.networking.netty;
+@@ -2,6 +_,7 @@
  
  import com.badlogic.gdx.utils.Array;
+ import finalforeach.cosmicreach.io.CompressionUtils;
 +import com.github.puzzle.paradox.game.event.PacketEvents;
  import finalforeach.cosmicreach.networking.GamePacket;
  import finalforeach.cosmicreach.networking.NetworkIdentity;
- import finalforeach.cosmicreach.networking.packets.meta.TransactionPacket;
- import finalforeach.cosmicreach.networking.server.ServerSingletons;
+ import finalforeach.cosmicreach.networking.PacketLogger;
+@@ -10,7 +_,6 @@
  import finalforeach.cosmicreach.singletons.GameSingletons;
+ import finalforeach.cosmicreach.util.GameProperties;
  import finalforeach.cosmicreach.util.exceptions.UnauthenticatedPacketRecieveException;
 -import finalforeach.cosmicreach.util.logging.Logger;
  import io.netty.buffer.ByteBuf;
  import io.netty.channel.Channel;
  import io.netty.channel.ChannelHandlerContext;
-@@ -17,6 +_,7 @@
+@@ -21,6 +_,7 @@
  
  public abstract class NettyPacketHandler extends ChannelInboundHandlerAdapter {
  	Array<GamePacket> bundledPackets = new Array<>();
@@ -23,47 +24,54 @@
  
  	@Override
  	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-@@ -26,33 +_,42 @@
- 			bytebuf = (ByteBuf)msg;
- 			short short1 = bytebuf.readShort();
- 			GamePacket gamepacket1 = GamePacket.getPacket(short1);
--			if (GameSingletons.isHost && gamepacket1.shouldRejectUnauthenticated()) {
--				AttributeKey<Boolean> attributekey = ServerSingletons.AUTHENTICATED_ATTRIBUTE;
--				Channel channel = ctx.channel();
--				if (!channel.hasAttr(attributekey)) {
--					ctx.close();
--					throw new UnauthenticatedPacketRecieveException((Class<? extends GamePacket>)gamepacket1.getClass());
--				}
--			}
-+			if(gamepacket1 == null)
-+				return;
-+			if (GameSingletons.isHost) {
-+                if (gamepacket1.shouldRejectUnauthenticated()) {
-+                    AttributeKey<Boolean> attributekey = ServerSingletons.AUTHENTICATED_ATTRIBUTE;
-+                    Channel channel = ctx.channel();
-+                    if (!channel.hasAttr(attributekey)) {
-+                        throw new UnauthenticatedPacketRecieveException(gamepacket1.getClass());
-+                    }
-+                }
-+            }
-+
+@@ -54,32 +_,54 @@
+ 				ByteBuf bytebuf1 = ctx.alloc().ioBuffer(abyte1.length);
+ 				bytebuf1.writeBytes(abyte1);
  
- 			gamepacket1.receive(bytebuf);
++
++				if (gamepacket == null)
++					return;
+ 				try {
+ 					gamepacket.receive(bytebuf1);
+-				} finally {
+-					bytebuf1.release();
++					bytebuf1.release();
++				} catch (Throwable th) {
++					bytebuf1.release();
++					throw th;
+ 				}
+-			} else {
++
++			}else {
++				if (gamepacket == null)
++					return;
+ 				gamepacket.receive(bytebuf);
+ 			}
++			if (GameSingletons.isHost()) {
++				if (gamepacket.shouldRejectUnauthenticated()) {
++					AttributeKey<Boolean> attributekey = ServerSingletons.AUTHENTICATED_ATTRIBUTE;
++					Channel channel = ctx.channel();
++					if (!channel.hasAttr(attributekey)) {
++						throw new UnauthenticatedPacketRecieveException(gamepacket.getClass());
++					}
++				}
++			}
+ 
  			NetworkIdentity networkidentity = this.getIdentity(ctx);
- 			if (TransactionPacket.keepBundling && !(gamepacket1 instanceof TransactionPacket)) {
- 				this.bundledPackets.add(gamepacket1);
+ 			if (TransactionPacket.keepBundling && !(gamepacket instanceof TransactionPacket)) {
+ 				this.bundledPackets.add(gamepacket);
  			} else {
--				gamepacket1.handle(networkidentity, ctx);
-+				PacketEvents.ON_PACKET_HANDLE_EVENT.invoker().onPacketHandle(gamepacket1,networkidentity,ctx);
-+				if(com.github.puzzle.paradox.game.server.packets.InternalPacketEventHelper.fireAssociatedPacketEvent(gamepacket1, networkidentity, ctx))
-+					gamepacket1.handle(networkidentity, ctx);
+-				gamepacket.handle(networkidentity, ctx);
++				PacketEvents.ON_PACKET_HANDLE_EVENT.invoker().onPacketHandle(gamepacket,networkidentity,ctx);
++				if(com.github.puzzle.paradox.game.server.packets.InternalPacketEventHelper.fireAssociatedPacketEvent(gamepacket, networkidentity, ctx))
++					gamepacket.handle(networkidentity, ctx);
  			}
  
  			if (!this.bundledPackets.isEmpty() && !TransactionPacket.keepBundling) {
 +				PacketEvents.ON_BUNDLE_PACKET_HANDLE_EVENT.invoker().onPacketBundleHandle(bundledPackets,networkidentity,ctx);
 +
- 				for (GamePacket gamepacket : this.bundledPackets) {
--					gamepacket.handle(networkidentity, ctx);
+ 				for (int k = 0; k < this.bundledPackets.size; k++) {
+-					this.bundledPackets.get(k).handle(networkidentity, ctx);
 +					if(com.github.puzzle.paradox.game.server.packets.InternalPacketEventHelper.fireAssociatedPacketEvent(gamepacket, networkidentity, ctx))
 +						gamepacket.handle(networkidentity, ctx);
  				}
@@ -75,5 +83,5 @@
 -			Logger.warn("Rejected packet " + unauthenticatedpacketrecieveexception.packetClass.getSimpleName() + " from unauthenticated client: " + s);
 +			LOGGER.warn("Rejected packet " + unauthenticatedpacketrecieveexception.packetClass.getSimpleName() + " from unauthenticated client: " + s);
  		} catch (Exception exception) {
- 			if (GameSingletons.isClient) {
+ 			if (GameSingletons.isClient()) {
  				throw exception;

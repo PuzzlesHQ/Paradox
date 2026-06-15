@@ -6,9 +6,9 @@
  import com.badlogic.gdx.utils.Json.Serializable;
 +import com.github.puzzle.paradox.game.player.InternalParadoxPlayer;
  import finalforeach.cosmicreach.accounts.Account;
+ import finalforeach.cosmicreach.achievements.Achievement;
  import finalforeach.cosmicreach.blocks.BlockState;
- import finalforeach.cosmicreach.entities.CommonEntityTags;
-@@ -24,7 +_,7 @@
+@@ -26,7 +_,7 @@
  import finalforeach.cosmicreach.world.World;
  import finalforeach.cosmicreach.world.Zone;
  
@@ -16,4 +16,4 @@
 +public class Player extends InternalParadoxPlayer implements Serializable, ISlotContainerParent {
  	public Gamemode gamemode = Gamemode.SURVIVAL;
  	public String zoneId;
- 	private Entity entity;
+ 	public String currentOrbitId;

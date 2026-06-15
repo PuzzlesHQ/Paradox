@@ -50,7 +50,9 @@ public class Piece {
             if(urls != null){
                 classPath.addAll(List.of(urls));
             }
-            classLoader = new ParadoxClassLoader(classPath);
+            PluginLocator.crawlPluginFolder(classPath);
+            PluginLocator.getPlugins(classPath);
+            classLoader = new ParadoxClassLoader(classPath, Piece.class.getClassLoader());
 
 
             blackboard = new HashMap<>();
@@ -74,9 +76,6 @@ public class Piece {
 //            provider.inject(classLoader);
 //            Piece.provider.addBuiltinMods();
 //            PrePluginInitializer.invokeEntrypoint();
-            List<URL> classPath = new ArrayList<>();
-            PluginLocator.crawlPluginFolder(classPath);
-            PluginLocator.getPlugins(classPath);
             provider.addBuiltinMods();
             if (PluginLocator.locatedPlugins == null) PluginLocator.getPlugins();
             Class<?> clazz = Class.forName(provider.getEntrypoint(), false, classLoader);

@@ -1,6 +1,7 @@
 package com.github.puzzle.paradox.game.command.chat;
 
-import com.github.puzzle.game.commands.CommandSource;
+import com.github.puzzle.paradox.api.commands.CommandSource;
+import com.github.puzzle.paradox.api.impl.player.ParadoxAccount;
 import com.github.puzzle.paradox.game.command.DefaultPuzzleCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -24,7 +25,7 @@ public class SetName extends DefaultPuzzleCommand {
             packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
             packet.setupAndSend(
                     ServerSingletons
-                            .getIdentityByAccount(context.getSource().getAccount()));
+                            .getIdentityByAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()));
             return 0;
         }
         boolean isTaken = false;
@@ -39,7 +40,7 @@ public class SetName extends DefaultPuzzleCommand {
             packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
             packet.setupAndSend(
                     ServerSingletons
-                            .getIdentityByAccount(context.getSource().getAccount()));
+                            .getIdentityByAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()));
             return 0;
         }
         context.getSource().getAccount().setUsername(name);
@@ -47,7 +48,7 @@ public class SetName extends DefaultPuzzleCommand {
         packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
         packet.setupAndSend(
                 ServerSingletons
-                        .getIdentityByAccount(context.getSource().getAccount()));
+                        .getIdentityByAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()));
         return 0;
     }
 

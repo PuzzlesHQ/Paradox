@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/server/ServerLauncher.java
 +++ b/finalforeach/cosmicreach/server/ServerLauncher.java
-@@ -2,53 +_,82 @@
+@@ -2,6 +_,13 @@
  
  import com.badlogic.gdx.Gdx;
  import com.badlogic.gdx.backends.headless.HeadlessFiles;
@@ -13,10 +13,11 @@
 +import com.google.common.primitives.Ints;
  import finalforeach.cosmicreach.TickRunner;
  import finalforeach.cosmicreach.io.ChunkLoader;
- import finalforeach.cosmicreach.io.SaveLocation;
- import finalforeach.cosmicreach.networking.netty.NettyServer;
- import finalforeach.cosmicreach.networking.server.ServerSingletons;
+ import finalforeach.cosmicreach.networking.PacketLogger;
+@@ -10,74 +_,85 @@
  import finalforeach.cosmicreach.singletons.GameSingletons;
+ import finalforeach.cosmicreach.util.GameProperties;
+ import finalforeach.cosmicreach.util.SaveLocation;
 -import finalforeach.cosmicreach.util.logging.Logger;
  import finalforeach.cosmicreach.world.World;
  import finalforeach.cosmicreach.world.ZoneLoaders;
@@ -24,6 +25,7 @@
 +import org.slf4j.LoggerFactory;
 +
  import java.io.File;
+ import javax.swing.SwingUtilities;
  
 +import static finalforeach.cosmicreach.worldgen.ZoneGenerator.registerZoneGenerators;
 +
@@ -36,12 +38,30 @@
 -
 -			File file1 = new File(ServerLauncher.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
 -			SaveLocation.saveLocationOverride = file1.getPath();
+-			boolean flag = true;
 -
 -			for (int i = 0; i < args.length; i++) {
 -				String s = args[i];
 -				if (s.equals("-s") || s.equals("--save-location")) {
 -					SaveLocation.saveLocationOverride = args[i + 1];
 -					new File(SaveLocation.saveLocationOverride).mkdirs();
+-				} else if (s.equals("--no-gui")) {
+-					flag = false;
+-				} else if (s.equals("--log-packets")) {
+-					GameProperties.logPackets = true;
+-					GameProperties.projectName = "server";
+-				}
+-			}
+-
+-			if (flag) {
+-				try {
+-					if (SwingUtilities.isEventDispatchThread()) {
+-						ServerGUI.setupGUI();
+-					} else {
+-						SwingUtilities.invokeAndWait(() -> ServerGUI.setupGUI());
+-					}
+-				} catch (Exception exception) {
+-					exception.printStackTrace();
 -				}
 -			}
 -
@@ -60,62 +80,86 @@
 -			TickRunner.INSTANCE.continueTickThread();
 -			NettyServer nettyserver = new NettyServer();
 -			ServerSingletons.SERVER = nettyserver;
+-			if (flag) {
+-				ServerGUI.addServerListeners();
+-			}
+-
+-			if (GameProperties.logPackets) {
+-				PacketLogger.init();
+-			}
+-
 -			nettyserver.run();
 -			System.exit(0);
 -		}
+-	}
 +    public static boolean isRunning = false;
 +    public static Thread rconThread;
 +    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger("Cosmic Reach");
 +
 +    public static void main(String[] args) throws Exception {
-+        if (!StartupHelper.startNewJvmIfRequired()) {
-+            if (Gdx.files == null) {
-+                Gdx.files = new HeadlessFiles();
-+            }
-+            String s = new File("./saves").getPath();
-+            SaveLocation.saveLocationOverride = s;
-+            for (int i = 0; i < args.length; i++) {
-+                String s1 = args[i];
-+                if (s1.equals("-s") || s1.equals("--save-location")) {
-+                    SaveLocation.saveLocationOverride = args[i + 1];
-+                    new File(SaveLocation.saveLocationOverride).mkdirs();
-+                }
-+            }
-+            ServerSingletons.create();
-+            registerZoneGenerators();
-+            PuzzleEntrypointUtil.invoke(com.github.puzzle.paradox.entrypoints.PrePluginInitializer.ENTRYPOINT_KEY, com.github.puzzle.paradox.entrypoints.PrePluginInitializer.class, com.github.puzzle.paradox.entrypoints.PrePluginInitializer::onPreInit);
-+            String s2 = "server-world-1";
-+            GameSingletons.world = ChunkLoader.loadWorld(s2);
-+            if (GameSingletons.world == null) {
-+                LOGGER.info("Creating new world.");
-+                String s3 = "base:earth";
-+                GameSingletons.world = World.createNew(s2, null, s3, ZoneGenerator.getZoneGenerator(s3));
-+            } else {
-+                 LOGGER.info("Loaded world.");
-+                 ZoneLoaders.INSTANCE.addZoneLoader(GameSingletons.world.getDefaultZone());
-+            }
-+            TickRunner.INSTANCE.continueTickThread();
-+            ServerSingletons.puzzle = new PuzzlePL();
-+            NettyServer nettyserver = new NettyServer(Ints.constrainToRange(ServerSingletons.puzzle.serverConfig.getInt("server.port",47137),1,(Short.MAX_VALUE*2)+1));
-+            ServerSingletons.SERVER = nettyserver;
-+            ServerSingletons.puzzle.init();
-+            PluginLocator.locatedPlugins.keySet().forEach(containerID -> {
-+                PluginContainer container = PluginLocator.locatedPlugins.get(containerID);
-+                try {
-+                    container.invokeEntrypoint(PluginInitializer.ENTRYPOINT_KEY, PluginInitializer.class, PluginInitializer::onInit);
-+                } catch (Exception e) {
-+                    throw new RuntimeException(e);
-+                }
-+            });
-+            isRunning = true;
-+            ServerSingletons.puzzle.initConsoleListener();
-+            nettyserver.run();
-+            isRunning = false;
-+            ServerSingletons.puzzle.exit();
++        if (StartupHelper.startNewJvmIfRequired()) {
++            return;
 +        }
++        if (Gdx.files == null) {
++            Gdx.files = new HeadlessFiles();
++        }
++        boolean useGui = true;
++
++        SaveLocation.saveLocationOverride = new File("./saves").getPath();
++        for (int i = 0; i < args.length; i++) {
++            String arg = args[i];
++            if (arg.equals("-s") || arg.equals("--save-location")) {
++                SaveLocation.saveLocationOverride = args[i + 1];
++                new File(SaveLocation.saveLocationOverride).mkdirs();
++            } else if (arg.equals("--no-gui")) {
++                useGui = false;
++            }
++        }
++        if (useGui) {
++            ServerGUI.setupGUI();
++        }
++
++
++        ServerSingletons.create();
++        registerZoneGenerators();
++        PuzzleEntrypointUtil.invoke(com.github.puzzle.paradox.entrypoints.PrePluginInitializer.ENTRYPOINT_KEY, com.github.puzzle.paradox.entrypoints.PrePluginInitializer.class, com.github.puzzle.paradox.entrypoints.PrePluginInitializer::onPreInit);
++        String s2 = "server-world-1";
++        GameSingletons.world = ChunkLoader.loadWorld(s2);
++        if (GameSingletons.world == null) {
++            LOGGER.info("Creating new world.");
++            String s3 = "base:earth";
++            GameSingletons.world = World.createNew(s2, null, s3, ZoneGenerator.getZoneGenerator(s3));
++        } else {
++            LOGGER.info("Loaded world.");
++            ZoneLoaders.INSTANCE.addZoneLoader(GameSingletons.world.getDefaultZone());
++        }
++        TickRunner.INSTANCE.continueTickThread();
++        ServerSingletons.puzzle = new PuzzlePL();
++        NettyServer nettyserver = new NettyServer(Ints.constrainToRange(ServerSingletons.puzzle.serverConfig.getInt("server.port", 47137), 1, (Short.MAX_VALUE * 2) + 1));
++        ServerSingletons.SERVER = nettyserver;
++        ServerSingletons.puzzle.init();
++        PluginLocator.locatedPlugins.keySet().forEach(containerID -> {
++            PluginContainer container = PluginLocator.locatedPlugins.get(containerID);
++            try {
++                container.invokeEntrypoint(PluginInitializer.ENTRYPOINT_KEY, PluginInitializer.class, PluginInitializer::onInit);
++            } catch (Exception e) {
++                throw new RuntimeException(e);
++            }
++        });
++        isRunning = true;
++        ServerSingletons.puzzle.initConsoleListener();
++        if (useGui) {
++            ServerGUI.addServerListeners();
++        }
++
++        nettyserver.run();
++        isRunning = false;
++        ServerSingletons.puzzle.exit();
++
 +    }
 +
-+   public static boolean isRunning() {
-+      return isRunning;
- 	}
++    public static boolean isRunning() {
++        return isRunning;
++    }
++
  }

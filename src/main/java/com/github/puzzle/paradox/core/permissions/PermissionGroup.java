@@ -12,7 +12,7 @@ public class PermissionGroup implements ICRBinSerializable {
     public PermissionGroup(String name, String... perms){
         this.permissionGroupName = name;
         for(String permString : perms){
-            assert(permString == null || permString.isBlank() || permString.isEmpty());
+            assert permString == null || permString.isBlank();
             if(GlobalPermissions.getPermission(permString) != null)
                 permissionList.putIfAbsent(permString,GlobalPermissions.getPermission(permString));
         }

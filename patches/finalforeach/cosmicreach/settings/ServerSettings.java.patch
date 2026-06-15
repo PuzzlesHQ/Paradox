@@ -1,0 +1,10 @@
+--- a/finalforeach/cosmicreach/settings/ServerSettings.java
++++ b/finalforeach/cosmicreach/settings/ServerSettings.java
+@@ -28,5 +_,7 @@
+ 
+ 	static {
+ 		init();
++//		System.load();
+ 	}
+ }
++

@@ -1,10 +1,10 @@
 package com.github.puzzle.paradox.game.command.console;
 
-import com.github.puzzle.game.commands.CommandSource;
+import com.github.puzzle.paradox.api.commands.CommandSource;
 import com.github.puzzle.paradox.game.command.DefaultPuzzleCommand;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import finalforeach.cosmicreach.Threads;
+import finalforeach.cosmicreach.util.Threads;
 import finalforeach.cosmicreach.io.ChunkSaver;
 import finalforeach.cosmicreach.networking.server.ServerSingletons;
 import finalforeach.cosmicreach.server.ServerLauncher;

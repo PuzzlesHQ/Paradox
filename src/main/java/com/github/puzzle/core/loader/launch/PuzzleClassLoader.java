@@ -1,5 +1,6 @@
 package com.github.puzzle.core.loader.launch;
 
+import com.github.puzzle.paradox.loader.SimpleAssetLoader;
 import net.minecraft.launchwrapper.IClassNameTransformer;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.apache.logging.log4j.Level;
@@ -11,10 +12,11 @@ import org.jetbrains.annotations.Nullable;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.JarURLConnection;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.net.URLConnection;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.CodeSigner;
 import java.security.CodeSource;
 import java.util.*;
@@ -27,35 +29,22 @@ import java.util.jar.Manifest;
 
 public class PuzzleClassLoader extends URLClassLoader {
     public static Logger LOGGER = LogManager.getLogger("Puzzle | Classloader");
+    public final ClassLoader parent = getClass().getClassLoader();
 
-    public static final int BUFFER_SIZE = 1 << 12;
     protected final List<URL> sources;
-    private final ClassLoader parent = getClass().getClassLoader();
+    public final Set<String> missingClasses = new HashSet<>();
 
-    private final List<IClassTransformer> transformers = new ArrayList<>(2);
-    private final Map<String, Class<?>> cachedClasses = new ConcurrentHashMap<>();
-    private final Set<String> invalidClasses = new HashSet<>(1000);
+    public final Set<String> missingResourceCache = new HashSet<>();
+    public final Map<String, byte[]> resourceCache = new HashMap<>();
 
     private final Set<String> classLoaderExceptions = new HashSet<>();
-    private final Set<String> transformerExceptions = new HashSet<>();
-    private final Map<String, byte[]> resourceCache = new ConcurrentHashMap<>(1000);
-    private final Set<String> negativeResourceCache = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     private IClassNameTransformer renameTransformer;
+    public final Map<String, Class<?>> classCache = new HashMap<>();
 
-    private final ThreadLocal<byte[]> loadBuffer = new ThreadLocal<>();
 
-    private static final String[] RESERVED_NAMES = {"CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"};
-
-    private static final boolean DEBUG = Boolean.parseBoolean(System.getProperty("legacy.debugClassLoading", "false"));
-    private static final boolean DEBUG_FINER = DEBUG && Boolean.parseBoolean(System.getProperty("legacy.debugClassLoadingFiner", "false"));
-
-    public PuzzleClassLoader(@NotNull Collection<URL> sources) {
-        this(sources.toArray(new URL[0]));
-    }
-
-    public PuzzleClassLoader(URL[] sources) {
-        super(sources, null);
+    public PuzzleClassLoader(URL[] sources, ClassLoader parent) {
+        super(sources, parent);
         this.sources = new ArrayList<>(Arrays.asList(sources));
 
         // classloader exclusions
@@ -67,175 +56,18 @@ public class PuzzleClassLoader extends URLClassLoader {
         addClassLoaderExclusion("com.google.");
         addClassLoaderExclusion("org.hjson");
 
-        // transformer exclusions
-        addTransformerExclusion("javax.");
-        addTransformerExclusion("argo.");
-        addTransformerExclusion("org.objectweb.asm.");
-        addTransformerExclusion("com.google.common.");
-        addTransformerExclusion("org.bouncycastle.");
-        addTransformerExclusion("org.bouncycastle.");
         addClassLoaderExclusion("com.github.puzzle.access_manipulator.");
         addClassLoaderExclusion("com.github.puzzle.paradox.loader.");
         addClassLoaderExclusion("com.github.puzzle.loader.");
+        addClassLoaderExclusion("com.github.puzzle.api.records.");
+        addClassLoaderExclusion("com.github.puzzle.api.interfaces.");
+        addClassLoaderExclusion("com.github.puzzle.api.enums.");
+        addClassLoaderExclusion("com.github.puzzle.api.events.");
+        addClassLoaderExclusion("com.github.puzzle.api.commands.");
+        addClassLoaderExclusion("com.github.puzzle.entrypoints.");
     }
 
-    public void registerTransformer(IClassTransformer transformer) {
-        try {
-            transformers.add(transformer);
-            if (transformer instanceof IClassNameTransformer && renameTransformer == null) {
-                renameTransformer = (IClassNameTransformer) transformer;
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.ERROR, "A critical problem occurred registering the ASM transformer class {}", transformer.getClass().getName(), e);
-        }
-    }
-
-    public void registerTransformer(String transformerClassName) {
-        try {
-            IClassTransformer transformer = (IClassTransformer) loadClass(transformerClassName).newInstance();
-            transformers.add(transformer);
-            if (transformer instanceof IClassNameTransformer && renameTransformer == null) {
-                renameTransformer = (IClassNameTransformer) transformer;
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.ERROR, "A critical problem occurred registering the ASM transformer class {}", transformerClassName, e);
-        }
-    }
-
-    public void registerTransformers(String @NotNull ... transformerClassNames) {
-        for (String transformerClassName : transformerClassNames) {
-            registerTransformer(transformerClassName);
-        }
-    }
-
-    public Class<?> defineClass(String clazzName, byte[] bytes) {
-        return super.defineClass(clazzName, bytes, 0, bytes.length);
-    }
-
-    @Override
-    public Class<?> findClass(final String name) throws ClassNotFoundException {
-        if (invalidClasses.contains(name)) {
-            throw new ClassNotFoundException(name);
-        }
-
-        for (final String exception : classLoaderExceptions) {
-            if (name.startsWith(exception)) {
-                return parent.loadClass(name);
-            }
-        }
-
-        if (cachedClasses.containsKey(name)) {
-            return cachedClasses.get(name);
-        }
-
-        for (final String exception : transformerExceptions) {
-            if (name.startsWith(exception)) {
-                try {
-                    final Class<?> clazz = super.findClass(name);
-                    cachedClasses.put(name, clazz);
-                    return clazz;
-                } catch (ClassNotFoundException e) {
-                    invalidClasses.add(name);
-                    throw e;
-                }
-            }
-        }
-
-        try {
-            final String transformedName = transformName(name);
-            if (cachedClasses.containsKey(transformedName)) {
-                return cachedClasses.get(transformedName);
-            }
-
-            final String untransformedName = untransformName(name);
-
-            final int lastDot = untransformedName.lastIndexOf('.');
-            final String packageName = lastDot == -1 ? "" : untransformedName.substring(0, lastDot);
-            final String fileName = untransformedName.replace('.', '/').concat(".class");
-            URLConnection urlConnection = findCodeSourceConnectionFor(fileName);
-
-            CodeSigner[] signers = null;
-
-            if (lastDot > -1 && !untransformedName.startsWith("net.minecraft.")) {
-                if (urlConnection instanceof JarURLConnection jarURLConnection) {
-                    final JarFile jarFile = jarURLConnection.getJarFile();
-
-                    if (jarFile != null && jarFile.getManifest() != null) {
-                        final Manifest manifest = jarFile.getManifest();
-                        final JarEntry entry = jarFile.getJarEntry(fileName);
-
-                        Package pkg = getDefinedPackage(packageName);
-                        getClassBytes(untransformedName);
-                        signers = entry.getCodeSigners();
-                        if (pkg == null) {
-                            pkg = definePackage(packageName, manifest, jarURLConnection.getJarFileURL());
-                        } else {
-                            if (pkg.isSealed() && !pkg.isSealed(jarURLConnection.getJarFileURL())) {
-                                LOGGER.error("The jar file {} is trying to seal already secured path {}", jarFile.getName(), packageName);
-                            } else if (isSealed(packageName, manifest)) {
-                                LOGGER.error("The jar file {} has a security seal for path {}, but that path is defined and not secure", jarFile.getName(), packageName);
-                            }
-                        }
-                    }
-                } else {
-                    Package pkg = getDefinedPackage(packageName);
-                    if (pkg == null) {
-                        pkg = definePackage(packageName, null, null, null, null, null, null, null);
-                    } else if (pkg.isSealed()) {
-                        LOGGER.error("The URL {} is defining elements for sealed path {}", urlConnection.getURL(), packageName);
-                    }
-                }
-            }
-
-            final byte[] transformedClass = runTransformers(untransformedName, transformedName, getClassBytes(untransformedName));
-
-            final CodeSource codeSource = urlConnection == null ? null : new CodeSource(urlConnection.getURL(), signers);
-            final Class<?> clazz = defineClass(transformedName, transformedClass, 0, transformedClass.length, codeSource);
-            cachedClasses.put(transformedName, clazz);
-            return clazz;
-        } catch (Throwable e) {
-            invalidClasses.add(name);
-            if (DEBUG) {
-                LOGGER.trace("Exception encountered attempting classloading of {}", name, e);
-                LOGGER.error("Exception encountered attempting classloading of", e);
-            }
-            throw new ClassNotFoundException(name, e);
-        }
-    }
-
-    private String untransformName(final String name) {
-        if (renameTransformer != null) {
-            return renameTransformer.unmapClassName(name);
-        }
-
-        return name;
-    }
-
-    private String transformName(final String name) {
-        if (renameTransformer != null) {
-            return renameTransformer.remapClassName(name);
-        }
-
-        return name;
-    }
-
-    private boolean isSealed(final String path, final @NotNull Manifest manifest) {
-        Attributes attributes = manifest.getAttributes(path);
-        String sealed = null;
-        if (attributes != null) {
-            sealed = attributes.getValue(Name.SEALED);
-        }
-
-        if (sealed == null) {
-            attributes = manifest.getMainAttributes();
-            if (attributes != null) {
-                sealed = attributes.getValue(Name.SEALED);
-            }
-        }
-        return "true".equalsIgnoreCase(sealed);
-    }
-
-    private @Nullable URLConnection findCodeSourceConnectionFor(final String name) {
+    private URLConnection getConnection(String name) {
         final URL resource = findResource(name);
         if (resource != null) {
             try {
@@ -248,130 +80,135 @@ public class PuzzleClassLoader extends URLClassLoader {
         return null;
     }
 
-    private byte[] runTransformers(final String name, final String transformedName, byte[] basicClass) {
-        if (DEBUG_FINER) {
-            LOGGER.info("Beginning transform of {{} ({})} Start Length: %d", name, transformedName, (basicClass == null ? 0 : basicClass.length));
-            for (final IClassTransformer transformer : transformers) {
-                final String transName = transformer.getClass().getName();
-                LOGGER.info("Before Transformer {{} ({})} {}: %d", name, transformedName, transName, (basicClass == null ? 0 : basicClass.length));
-                basicClass = transformer.transform(name, transformedName, basicClass);
-                LOGGER.info("After  Transformer {{} ({})} {}: %d", name, transformedName, transName, (basicClass == null ? 0 : basicClass.length));
-            }
-            LOGGER.info("Ending transform of {{} ({})} Start Length: %d", name, transformedName, (basicClass == null ? 0 : basicClass.length));
-        } else {
-            for (final IClassTransformer transformer : transformers) {
-                basicClass = transformer.transform(name, transformedName, basicClass);
-            }
+    public byte[] getResourceBytes(String name) {
+
+        if (missingResourceCache.contains(name)) return null;
+        SimpleAssetLoader.RawFileHandle handle = SimpleAssetLoader.getLowLevelClassPathAssetErrors("/".concat(toFileName(name)), false);
+
+        if (handle == null) {
+            missingResourceCache.add(name);
+            return null;
         }
-        return basicClass;
+
+        byte[] bytes = handle.getBytes();
+        resourceCache.put(name, bytes);
+        handle.dispose();
+        return bytes;
+    }
+    private static Method I_HATE_YOU_JAVA_CLASSLOADERS;
+    private static boolean aboveJava8;
+
+    static {
+        try {
+            I_HATE_YOU_JAVA_CLASSLOADERS = ClassLoader.class.getDeclaredMethod("findLoadedClass", String.class);
+            I_HATE_YOU_JAVA_CLASSLOADERS.setAccessible(true);
+        } catch (Exception e) {
+            aboveJava8 = true;
+        }
     }
 
+    @Override
+    public Class<?> findClass(final String name) throws ClassNotFoundException {
+        if (missingClasses.contains(name)) throw new ClassNotFoundException(name);
+
+        if (name.endsWith(".package-info")) return parent.loadClass(name);
+
+        for (String exclusion : classLoaderExceptions) {
+            if (name.startsWith(exclusion)) return parent.loadClass(name);
+        }
+
+        if (aboveJava8){
+
+        } else {
+            Class<?> parentTest;
+            try {
+                parentTest = (Class<?>) I_HATE_YOU_JAVA_CLASSLOADERS.invoke(parent, name);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+            if (parentTest != null) return parentTest;
+        }
+
+        if (isClassLoaded(name))
+            return classCache.get(name);
+
+        try {
+            int lastDot = name.lastIndexOf('.');
+            String pkgName = lastDot == -1 ? "" : name.substring(0, lastDot);
+
+            String classFileNameSoft = name.replaceAll("\\.", "/") + ".class";
+            String fileName = toFileName(name);
+
+            URLConnection connection = getConnection(classFileNameSoft);
+            CodeSigner[] signers = null;
+
+            CodeSource source = null;
+
+            if (connection instanceof JarURLConnection) {
+                JarURLConnection  jarConnection = (JarURLConnection) connection;
+
+                JarFile jar = jarConnection.getJarFile();
+
+                if (jar != null && jar.getManifest() != null) {
+                    JarEntry entry = jar.getJarEntry(fileName);
+
+                    getResourceBytes(name);
+                    signers = entry.getCodeSigners();
+                    source = new CodeSource(jarConnection.getJarFileURL(), signers);
+                }
+                if (lastDot > -1) {
+                    if (getPackage(pkgName) == null)
+                        definePackage(pkgName, jarConnection.getManifest(), jarConnection.getJarFileURL());
+                }
+            } else {
+                if (lastDot > -1) {
+                    Package pkg = getPackage(pkgName);
+                    if (pkg == null)
+                        definePackage(pkgName, null, null, null, null, null, null, null);
+                }
+            }
+
+            if (connection == null) {
+                try {
+                    return parent.loadClass(name);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            byte[] bytes = getResourceBytes(name);
+            if (bytes == null) {
+                missingClasses.add(name);
+                throw new ClassNotFoundException(name);
+            }
+            Class<?> clazz;
+            try {
+                clazz = defineClass(name, bytes, 0, bytes.length, source);
+                classCache.put(name, clazz);
+            } catch (LinkageError e) {
+                if (e.getMessage().contains("previously loaded")) {
+                    return Class.forName(name, false, parent);
+                }
+                throw e;
+            }
+            return clazz;
+        } catch (IOException e) {
+            missingClasses.add(name);
+            throw new ClassNotFoundException(name, e);
+        }
+    }
+    public boolean isClassLoaded(String name) {
+        return this.classCache.containsKey(name);
+    }
     @Override
     public void addURL(final URL url) {
         super.addURL(url);
         sources.add(url);
     }
-
-    public List<URL> getSources() {
-        return sources;
+    private String toFileName(String name) {
+        return name.replace('.', '/').concat(".class");
     }
-
-    private byte @NotNull [] readFully(InputStream stream) {
-        try {
-            byte[] buffer = getOrCreateBuffer();
-
-            int read;
-            int totalLength = 0;
-            while ((read = stream.read(buffer, totalLength, buffer.length - totalLength)) != -1) {
-                totalLength += read;
-
-                // Extend our buffer
-                if (totalLength >= buffer.length - 1) {
-                    byte[] newBuffer = new byte[buffer.length + BUFFER_SIZE];
-                    System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
-                    buffer = newBuffer;
-                }
-            }
-
-            final byte[] result = new byte[totalLength];
-            System.arraycopy(buffer, 0, result, 0, totalLength);
-            return result;
-        } catch (Throwable t) {
-            LOGGER.warn("Problem loading class", t);
-            return new byte[0];
-        }
-    }
-
-    private byte[] getOrCreateBuffer() {
-        byte[] buffer = loadBuffer.get();
-        if (buffer == null) {
-            loadBuffer.set(new byte[BUFFER_SIZE]);
-            buffer = loadBuffer.get();
-        }
-        return buffer;
-    }
-
-    public List<IClassTransformer> getTransformers() {
-        return Collections.unmodifiableList(transformers);
-    }
-
     public void addClassLoaderExclusion(String toExclude) {
         classLoaderExceptions.add(toExclude);
     }
 
-    public void addTransformerExclusion(String toExclude) {
-        transformerExceptions.add(toExclude);
-    }
-
-    public byte[] getClassBytes(String name) throws IOException {
-        if (negativeResourceCache.contains(name)) {
-            return null;
-        } else if (resourceCache.containsKey(name)) {
-            return resourceCache.get(name);
-        }
-        if (name.indexOf('.') == -1) {
-            for (final String reservedName : RESERVED_NAMES) {
-                if (name.toUpperCase(Locale.ENGLISH).startsWith(reservedName)) {
-                    final byte[] data = getClassBytes("_" + name);
-                    if (data != null) {
-                        resourceCache.put(name, data);
-                        return data;
-                    }
-                }
-            }
-        }
-
-        InputStream classStream = null;
-        try {
-            final String resourcePath = name.replace('.', '/').concat(".class");
-            final URL classResource = findResource(resourcePath);
-
-            if (classResource == null) {
-                if (DEBUG) LOGGER.info("Failed to find class resource {}", resourcePath);
-                negativeResourceCache.add(name);
-                return null;
-            }
-            classStream = classResource.openStream();
-
-            if (DEBUG) LOGGER.info("Loading class {} from resource {}", name, classResource.toString());
-            final byte[] data = readFully(classStream);
-            resourceCache.put(name, data);
-            return data;
-        } finally {
-            closeSilently(classStream);
-        }
-    }
-
-    private static void closeSilently(Closeable closeable) {
-        if (closeable != null) {
-            try {
-                closeable.close();
-            } catch (IOException ignored) {
-            }
-        }
-    }
-
-    public void clearNegativeEntries(Set<String> entriesToClear) {
-        negativeResourceCache.removeAll(entriesToClear);
-    }
 }

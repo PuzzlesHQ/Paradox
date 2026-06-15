@@ -1,12 +1,19 @@
 --- a/finalforeach/cosmicreach/networking/packets/blocks/BlockReplacePacket.java
 +++ b/finalforeach/cosmicreach/networking/packets/blocks/BlockReplacePacket.java
+@@ -1,5 +_,6 @@
+ package finalforeach.cosmicreach.networking.packets.blocks;
+ 
++import finalforeach.cosmicreach.blocks.BlockPosition;
+ import finalforeach.cosmicreach.blocks.BlockState;
+ import finalforeach.cosmicreach.blocks.IReadBlockPosition;
+ import finalforeach.cosmicreach.blocks.MissingBlockStateResult;
 @@ -45,6 +_,10 @@
  	public void handle(NetworkIdentity identity, ChannelHandlerContext ctx) {
  		if (!identity.isServer()) {
  			if (this.blockPos.chunk() != null) {
-+				if(!com.github.puzzle.paradox.game.player.PlayerChecks.blockChecks(identity,blockPos))
++				if(!com.github.puzzle.paradox.game.player.PlayerChecks.blockChecks(identity, (BlockPosition) blockPos))
 +					return;
-+				if(!com.github.puzzle.paradox.game.player.PlayerChecks.blockBreakTimingCheck(identity.getPlayer().getParadoxPlayer(), blockPos))
++				if(!com.github.puzzle.paradox.game.player.PlayerChecks.blockBreakTimingCheck(identity.getPlayer().getParadoxPlayer(), (BlockPosition) blockPos))
 +					return;
  				BlockSetter.get().replaceBlock(this.zone, this.targetBlockState, this.blockPos);
  			}

@@ -1,0 +1,24 @@
+--- a/finalforeach/cosmicreach/gameevents/commonactions/ICommonAction.java
++++ b/finalforeach/cosmicreach/gameevents/commonactions/ICommonAction.java
+@@ -8,15 +_,16 @@
+ import finalforeach.cosmicreach.gameevents.itemevents.actions.IItemAction;
+ 
+ public interface ICommonAction extends IGameEventAction, IItemAction, IBlockAction {
+-	void act(GameEventArgs<?, ?> var1);
++	void act(GameEventArgs<?, ?> gameEventArgs);
+ 
+-	@Override
++	@Override // finalforeach.cosmicreach.gameevents.itemevents.actions.IItemAction
+ 	default void act(ItemEventArgs args) {
+-		this.act(args);
++		act((GameEventArgs<?, ?>) args);
+ 	}
+ 
+-	@Override
++	@Override // finalforeach.cosmicreach.gameevents.blockevents.actions.IBlockAction
+ 	default void act(BlockEventArgs args) {
+-		this.act(args);
++		act((GameEventArgs<?, ?>) args);
+ 	}
++
+ }

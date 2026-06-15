@@ -1,0 +1,20 @@
+--- a/finalforeach/cosmicreach/entities/ItemGameEntity.java
++++ b/finalforeach/cosmicreach/entities/ItemGameEntity.java
+@@ -34,7 +_,7 @@
+ 	public static SoundBuffer pickupSound;
+ 	public static SoundBuffer flickSound;
+ 	@CRBSerialized
+-	ItemStack itemStack;
++	public ItemStack itemStack;
+ 	@CRBSerialized
+ 	float maxAge = 300.0F;
+ 	@CRBSerialized
+@@ -46,7 +_,7 @@
+ 	boolean isFollowed;
+ 
+ 	public ItemGameEntity() {
+-		super("base:entity_item");
++		super(ENTITY_TYPE_ID);
+ 		this.setSize(0.3F);
+ 		this.randomHoverOffsetTime = MathUtils.random() * (float) (Math.PI * 2);
+ 		this.addTag(CommonEntityTags.PROJECTILE_IMMUNE);

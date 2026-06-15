@@ -8,9 +8,9 @@ import com.github.puzzle.paradox.api.impl.entity.*;
 import com.github.puzzle.paradox.api.interfaces.IParadoxZone;
 import com.github.puzzle.paradox.api.interfaces.entity.IParadoxEntity;
 import com.github.puzzle.paradox.api.interfaces.entity.util.IParadoxEntityUtil;
-import finalforeach.cosmicreach.entities.Entity;
-import finalforeach.cosmicreach.entities.EntityCreator;
-import finalforeach.cosmicreach.entities.ItemEntity;
+import finalforeach.cosmicreach.entities.GameEntity;
+import finalforeach.cosmicreach.entities.GameEntityCreator;
+import finalforeach.cosmicreach.entities.ItemGameEntity;
 import finalforeach.cosmicreach.entities.mobs.MobDroneTrap;
 import finalforeach.cosmicreach.entities.mobs.MobIncinerator;
 import finalforeach.cosmicreach.entities.mobs.MobInterceptor;
@@ -27,7 +27,7 @@ public class ParadoxEntityUtil implements IParadoxEntityUtil {
         classtoidentity.put(ParadoxPlayerEntity.class, PlayerEntity.ENTITY_TYPE_ID);
         classtoidentity.put(ParadoxDroneEntity.class, MobInterceptor.ENTITY_TYPE_ID);
         classtoidentity.put(ParadoxDroneTrapEntity.class, MobDroneTrap.ENTITY_TYPE_ID);
-        classtoidentity.put(ParadoxItemEntity.class, ItemEntity.ENTITY_TYPE_ID);
+        classtoidentity.put(ParadoxItemEntity.class, ItemGameEntity.ENTITY_TYPE_ID);
         classtoidentity.put(ParadoxIncinerator.class, MobIncinerator.ENTITY_TYPE_ID);
     }
     final Map<Class<? extends IParadoxEntity>,String> classtoidentity = new HashMap<>();
@@ -36,7 +36,7 @@ public class ParadoxEntityUtil implements IParadoxEntityUtil {
      * Returns a string id associated with the provided entity
      * @author repletsin5
      * @since API 1.0.0-Alpha
-     * @see Entity
+     * @see GameEntity
      * @see ParadoxEntity
      */
     public String getEntityIDByClass(@NotNull Class<? extends IParadoxEntity> e){
@@ -57,7 +57,7 @@ public class ParadoxEntityUtil implements IParadoxEntityUtil {
 
         if(classtoidentity.get(eClass) == null)
             return null;
-        var spawned = EntityCreator.get(classtoidentity.get(eClass));
+        var spawned = GameEntityCreator.get(classtoidentity.get(eClass));
         spawned.setPosition(position);
         var pe = spawned.getParadoxEntity();
         if(Paradox.getInstance().getEventBus().post(new EntityEvents.OnEntitySpawn(pe)).isCanceled())

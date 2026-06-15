@@ -1,0 +1,10 @@
+--- a/finalforeach/cosmicreach/world/ZoneEntities.java
++++ b/finalforeach/cosmicreach/world/ZoneEntities.java
+@@ -62,6 +_,7 @@
+ 
+ 	public void removeEntity(GameEntity e) {
+ 		if (e != null) {
++			((com.github.puzzle.paradox.api.impl.entity.util.ParadoxEntityUtil)com.github.puzzle.paradox.api.Paradox.getInstance().getEntityUtil()).uuidToParadoxEntity.remove(e.getParadoxEntity().getUUID());
+ 			EntityChunk entitychunk = e.currentChunk;
+ 			if (entitychunk != null && entitychunk.getZone() == this.zone) {
+ 				entitychunk.removeEntity(e);

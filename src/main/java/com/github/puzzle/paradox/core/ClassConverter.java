@@ -4,6 +4,8 @@ import com.github.puzzle.paradox.api.impl.ParadoxNetworkIdentity;
 import com.github.puzzle.paradox.api.impl.entity.*;
 import com.github.puzzle.paradox.api.impl.item.ParadoxItem;
 import com.github.puzzle.paradox.api.impl.item.ParadoxItemStack;
+import com.github.puzzle.paradox.api.impl.player.chat.ParadoxChat;
+import com.github.puzzle.paradox.api.impl.world.ParadoxWorld;
 import com.github.puzzle.paradox.api.interfaces.IParadoxNetworkIdentity;
 import com.github.puzzle.paradox.api.interfaces.block.blockentity.IParadoxBlockEntity;
 import com.github.puzzle.paradox.api.interfaces.entity.*;
@@ -15,6 +17,8 @@ import com.github.puzzle.paradox.api.interfaces.player.IParadoxPlayer;
 import finalforeach.cosmicreach.accounts.Account;
 import finalforeach.cosmicreach.accounts.AccountItch;
 import finalforeach.cosmicreach.accounts.AccountOffline;
+import finalforeach.cosmicreach.chat.Chat;
+import finalforeach.cosmicreach.chat.IChat;
 import finalforeach.cosmicreach.entities.*;
 import finalforeach.cosmicreach.entities.mobs.MobDroneTrap;
 import finalforeach.cosmicreach.entities.mobs.MobIncinerator;
@@ -27,6 +31,7 @@ import finalforeach.cosmicreach.items.Item;
 import finalforeach.cosmicreach.items.ItemStack;
 import finalforeach.cosmicreach.networking.NetworkIdentity;
 import finalforeach.cosmicreach.networking.server.ServerIdentity;
+import finalforeach.cosmicreach.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +45,7 @@ public class ClassConverter {
 
     public static final Logger LOGGER = LoggerFactory.getLogger("Paradox | Class Converter");
 
-    public record EntityInfo<E extends IParadoxEntity, C extends finalforeach.cosmicreach.entities.Entity>
+    public record EntityInfo<E extends IParadoxEntity, C extends finalforeach.cosmicreach.entities.GameEntity>
             (String id, Class<E> pEntity, Function<C,E> converter)
     {
 
@@ -75,10 +80,10 @@ public class ClassConverter {
     }
 
 
-    public static<E extends finalforeach.cosmicreach.entities.Entity> IParadoxEntity convertEntity(E toConvert){
+    public static<E extends finalforeach.cosmicreach.entities.GameEntity> IParadoxEntity convertEntity(E toConvert){
        EntityInfo<IParadoxEntity,E> c = (EntityInfo<IParadoxEntity, E>) ENTITY_CONVERTERS.get(toConvert.entityTypeId);
        if(c == null) {
-           LOGGER.warn("Can not convert Entity using ParadoxEntity as default, Entity: {}",toConvert.entityTypeId);
+           LOGGER.warn("Can not convert Entity, using ParadoxEntity as default, Entity: {}",toConvert.entityTypeId);
            return new ParadoxEntity(toConvert);
        }
       return c.converter().apply(toConvert);
@@ -101,8 +106,8 @@ public class ClassConverter {
     public static <E, R> R convertClass(E toConvert) {
         ClassInfo<R,E> c = (ClassInfo<R,E>) OTHER_CLASS_CONVERTERS.get(toConvert.getClass().getName());
         if(c == null) {
-            if (toConvert instanceof Entity e) {
-                LOGGER.warn("Can not convert Entity using ParadoxEntity as default, Entity: {}",e.entityTypeId);
+            if (toConvert instanceof GameEntity e) {
+                LOGGER.warn("Can not convert Entity, using ParadoxEntity as default, Entity: {}",e.entityTypeId);
                 return (R) new ParadoxEntity(e);
             }
             throw new RuntimeException("Can not convert class, Not an entity");
@@ -114,10 +119,11 @@ public class ClassConverter {
         registerEntityConverter(new EntityInfo<>(PlayerEntity.ENTITY_TYPE_ID, IParadoxPlayerEntity.class, ParadoxPlayerEntity::new));
         registerEntityConverter(new EntityInfo<>(MobInterceptor.ENTITY_TYPE_ID, IParadoxDroneEntity.class, ParadoxDroneEntity::new));
         registerEntityConverter(new EntityInfo<>(MobDroneTrap.ENTITY_TYPE_ID, IParadoxDroneTrapEntity.class, ParadoxDroneTrapEntity::new));
-        registerEntityConverter(new EntityInfo<>(ItemEntity.ENTITY_TYPE_ID, IParadoxItemEntity.class, ParadoxItemEntity::new));
+        registerEntityConverter(new EntityInfo<>(ItemGameEntity.ENTITY_TYPE_ID, IParadoxItemEntity.class, ParadoxItemEntity::new));
         registerEntityConverter(new EntityInfo<>(MobIncinerator.ENTITY_TYPE_ID, IParadoxIncinerator.class, ParadoxIncinerator::new));
         registerEntityConverter(new EntityInfo<>(MobLaserInterceptor.ENTITY_TYPE_ID, IParadoxLaserDroneEntity.class, ParadoxLaserDroneEntity::new));
         registerEntityConverter(new EntityInfo<>(EntityProjectileLaser.ENTITY_TYPE_ID, IParadoxLaserProjectileEntity.class, ParadoxLaserProjectileEntity::new));
+        registerEntityConverter(new EntityInfo<>(DamageTextGameEntity.ENTITY_TYPE_ID, IParadoxDamageText.class, ParadoxDamageText::new));
 
 
 
@@ -128,6 +134,8 @@ public class ClassConverter {
         registerClassConverter(new ClassInfo<>(Account.class.getName(), ParadoxAccount.class, ParadoxAccount::new));
         registerClassConverter(new ClassInfo<>(AccountItch.class.getName(), ParadoxAccount.class, ParadoxAccount::new));
         registerClassConverter(new ClassInfo<>(AccountOffline.class.getName(), ParadoxAccount.class, ParadoxAccount::new));
+        registerClassConverter(new ClassInfo<>(World.class.getName(), ParadoxWorld.class, ParadoxWorld::new));
+        registerClassConverter(new ClassInfo<>(Chat.class.getName(), ParadoxChat.class, ParadoxChat::new));
 //        registerClassConverter(new ClassInfo<>(Player.class.getName(), ParadoxPlayer.class, ParadoxPlayer::new));
     }
 

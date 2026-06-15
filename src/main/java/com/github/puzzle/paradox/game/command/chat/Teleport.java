@@ -1,7 +1,8 @@
 package com.github.puzzle.paradox.game.command.chat;
 
 import com.badlogic.gdx.math.Vector3;
-import com.github.puzzle.game.commands.CommandSource;
+import com.github.puzzle.paradox.api.commands.CommandSource;
+import com.github.puzzle.paradox.api.impl.player.ParadoxAccount;
 import com.github.puzzle.paradox.game.command.DefaultPuzzleCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -10,7 +11,6 @@ import finalforeach.cosmicreach.entities.player.Player;
 import finalforeach.cosmicreach.networking.packets.MessagePacket;
 import finalforeach.cosmicreach.networking.packets.entities.PlayerPositionPacket;
 import finalforeach.cosmicreach.networking.server.ServerSingletons;
-import finalforeach.cosmicreach.singletons.GameSingletons;
 
 import java.util.Objects;
 
@@ -33,16 +33,16 @@ public class Teleport {
                 packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
                 packet.setupAndSend(
                         ServerSingletons
-                                .getIdentityByAccount(context.getSource().getAccount()));
+                                .getIdentityByAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()));
                 return 0;
             }
             for(var id : ServerSingletons.SERVER.authenticatedConnections){
                 if (Objects.equals(ServerSingletons.getAccount(id).getDisplayName(), name)){
-                    Player playerToTp = context.getSource().getAccount().getPlayer();
+                    Player playerToTp = ((ParadoxAccount)context.getSource().getAccount()).getInternalAccount().getPlayer();
 
                     ServerSingletons.getAccount(id).addTpr(id,playerToTp);
 
-                    var packet = new MessagePacket(context.getSource().getAccount().displayname + " Request to tp");
+                    var packet = new MessagePacket(context.getSource().getAccount().getDisplayName() + " Request to tp");
                     packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
                     packet.setupAndSend(id);
 
@@ -54,7 +54,7 @@ public class Teleport {
                     packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
                     packet.setupAndSend(
                             ServerSingletons
-                                    .getIdentityByAccount(context.getSource().getAccount()));
+                                    .getIdentityByAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()));
                     return 0;
                 }
             }
@@ -62,7 +62,7 @@ public class Teleport {
             packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
             packet.setupAndSend(
                     ServerSingletons
-                            .getIdentityByAccount(context.getSource().getAccount()));
+                            .getIdentityByAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()));
             return 0;
         }
 
@@ -84,15 +84,15 @@ public class Teleport {
 
         @Override
         public int execute(CommandContext<CommandSource> context) throws CommandSyntaxException {
-            context.getSource().getAccount();
-            if (context.getSource().getAccount().tpRequst){
-                Player player = context.getSource().getAccount().getTprPlayer();
-                Player playerToTp = context.getSource().getAccount().getTprToPlayer();
+            var account = ((ParadoxAccount)context.getSource().getAccount()).getInternalAccount();
+            if (account.tpRequst){
+                Player player = account.getTprPlayer();
+                Player playerToTp = account.getTprToPlayer();
 
                 Vector3 vector3 = player.getPosition();
 
                 playerToTp.setPosition(vector3.x, vector3.y, vector3.z);
-                if (finalforeach.cosmicreach.singletons.GameSingletons.isHost && ServerSingletons.SERVER != null) {
+                if (finalforeach.cosmicreach.singletons.GameSingletons.isHost() && ServerSingletons.SERVER != null) {
                     ServerSingletons.SERVER.broadcastToAll(new PlayerPositionPacket(playerToTp));
                 }
                 return 0;
@@ -101,7 +101,7 @@ public class Teleport {
             packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
             packet.setupAndSend(
                     ServerSingletons
-                            .getIdentityByAccount(context.getSource().getAccount()));
+                            .getIdentityByAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()));
             return 0;
         }
 

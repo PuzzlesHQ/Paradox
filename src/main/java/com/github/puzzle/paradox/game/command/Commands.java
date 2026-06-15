@@ -1,8 +1,11 @@
 package com.github.puzzle.paradox.game.command;
 
 import com.github.puzzle.game.commands.CommandManager;
-import com.github.puzzle.game.commands.CommandSource;
+import com.github.puzzle.paradox.api.commands.CommandSource;
 import com.github.puzzle.paradox.api.Paradox;
+import com.github.puzzle.paradox.api.impl.player.ParadoxAccount;
+import com.github.puzzle.paradox.api.impl.player.chat.ParadoxChat;
+import com.github.puzzle.paradox.api.impl.world.ParadoxWorld;
 import com.github.puzzle.paradox.core.permissions.GlobalPermissions;
 import com.github.puzzle.paradox.game.command.chat.*;
 import com.github.puzzle.paradox.game.command.console.*;
@@ -41,8 +44,8 @@ public class Commands {
 
 
         com.mojang.brigadier.Command<CommandSource> command2 = (commandContext -> {
-            final Account account = commandContext.getSource().getAccount();
-            final IChat chat = commandContext.getSource().getChat();
+            final Account account = ((ParadoxAccount)commandContext.getSource().getAccount()).getInternalAccount();
+            final IChat chat = ((ParadoxChat)commandContext.getSource().getChat()).getInternalChat();
             if(account != null) {
                 if (!GlobalPermissions.getPlayerPermissions(account.getUniqueId()).hasPermission("default.command." + commandName) && !account.isOperator()) {
                     var packet = new MessagePacket("You do not have permission to use this command");
@@ -53,7 +56,7 @@ public class Commands {
                     return 0;
                 }
             }
-            final World world = commandContext.getSource().getWorld();
+//            final World world = ((ParadoxWorld)commandContext.getSource().getWorld()).getInternalWorld();
 
             String[] args = commandContext.getInput().substring(1).split(" ");
             String commandStr = args[0];
@@ -204,7 +207,7 @@ public class Commands {
             builder.append("player(s):\n");
             for (var plr : Paradox.getInstance().getPlayers()) {
                 var acc = plr.getAccount();
-                if(acc == context.getSource().getAccount().getParadoxAccount()){
+                if(acc == context.getSource().getAccount()){
                     builder.append("\t" + acc.getDisplayName() + " <- you\n");
                 }else {
                     builder.append("\t" + acc.getDisplayName() + "\n");
@@ -215,7 +218,7 @@ public class Commands {
             packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
             packet.setupAndSend(
                     ServerSingletons
-                            .getIdentityByAccount(context.getSource().getAccount()));
+                            .getIdentityByAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()));
             return 0;
         });
 
@@ -228,7 +231,7 @@ public class Commands {
             packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
             packet.setupAndSend(    
                     ServerSingletons
-                            .getIdentityByAccount(context.getSource().getAccount()));
+                            .getIdentityByAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()));
             return 0;
         });
 
@@ -241,7 +244,7 @@ public class Commands {
             for(String s : map.values()) {
                 builder.append("\t" + s + "\n");
             }
-            if(OP_LIST.hasAccount(context.getSource().getAccount()))
+            if(OP_LIST.hasAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()))
             {
                 builder.append("Operator Commands:\n");
                 Map<CommandNode<CommandSource>, String> mapconsole = CommandManager.CONSOLE_DISPATCHER.getSmartUsage(CommandManager.CONSOLE_DISPATCHER.getRoot(), context.getSource());
@@ -255,7 +258,7 @@ public class Commands {
             packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
             packet.setupAndSend(
                     ServerSingletons
-                            .getIdentityByAccount(context.getSource().getAccount()));
+                            .getIdentityByAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()));
             return 0;
         }));
 

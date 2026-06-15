@@ -1,19 +1,38 @@
 --- a/finalforeach/cosmicreach/singletons/GameSingletons.java
 +++ b/finalforeach/cosmicreach/singletons/GameSingletons.java
-@@ -78,7 +_,7 @@
- 	}
+@@ -55,6 +_,8 @@
+ import java.util.function.Consumer;
+ import java.util.function.Function;
+ 
++import static finalforeach.cosmicreach.util.GameProperties.isClient;
++
+ public class GameSingletons {
+ 	public static final GameSingletonPlayers PLAYERS = new GameSingletonPlayers();
+ 	public static World world;
+@@ -87,7 +_,7 @@
  
  	public static void create() {
--		Logger.info("Starting Cosmic Reach " + (isClient ? "Client" : "Server") + " version " + RuntimeInfo.version);
+ 		if (DynamicArrays.instantiator == null) {
+-			Logger.info("Starting Cosmic Reach " + (isClient() ? "Client" : "Server") + " version " + RuntimeInfo.version);
 +        org.slf4j.LoggerFactory.getLogger("Cosmic Reach").info("Starting Cosmic Reach {} version {} | Paradox {}", isClient ? "Client" : "Server", RuntimeInfo.version, com.github.puzzle.paradox.core.PuzzlePL.VERSION);
- 		DynamicArrays.instantiator = new IDynamicArrayInstantiator() {
- 			@Override
- 			public <E> IDynamicArray<E> create(Class<E> clazz) {
-@@ -187,6 +_,6 @@
+ 			DynamicArrays.instantiator = new IDynamicArrayInstantiator() {
+ 				@Override
+ 				public <E> IDynamicArray<E> create(Class<E> clazz) {
+@@ -237,7 +_,7 @@
  	}
  
  	public static <T extends CustomScreenInfoRemoteControl> void registerCustomScreenOpener(Class<T> clazz, Consumer<T> info) {
 -		infoScreenOpeners.put(clazz, info);
 +		infoScreenOpeners.put( clazz, ( Consumer<CustomScreenInfoRemoteControl>)info);
  	}
- }
+ 
+ 	public static boolean isDoneLoadingGameObjects() {
+@@ -245,7 +_,7 @@
+ 	}
+ 
+ 	public static boolean isClient() {
+-		return GameProperties.isClient;
++		return isClient;
+ 	}
+ 
+ 	public static void setClient(boolean isClient) {

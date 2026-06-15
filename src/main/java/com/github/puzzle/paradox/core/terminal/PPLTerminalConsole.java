@@ -1,6 +1,6 @@
 package com.github.puzzle.paradox.core.terminal;
 
-import com.github.puzzle.game.commands.CommandSource;
+import com.github.puzzle.paradox.api.commands.CommandSource;
 import com.github.puzzle.game.commands.PuzzleConsoleCommandSource;
 import com.github.puzzle.game.commands.CommandManager;
 import com.github.puzzle.paradox.util.AnsiColours;

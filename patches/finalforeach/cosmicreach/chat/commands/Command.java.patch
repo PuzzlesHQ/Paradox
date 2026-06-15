@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/chat/commands/Command.java
 +++ b/finalforeach/cosmicreach/chat/commands/Command.java
-@@ -22,7 +_,7 @@
+@@ -33,7 +_,7 @@
  import java.util.Map.Entry;
  import java.util.function.Supplier;
  
@@ -9,8 +9,8 @@
  	private static final HashMap<String, Supplier<Command>> REGISTERED_COMMANDS = new HashMap<>();
  	private static final HashMap<String, Supplier<Command>> REGISTERED_ALIAS_COMMANDS = new HashMap<>();
  	private static final HashMap<Supplier<Command>, Array<String>> REGISTERED_COMMAND_ALIAS_LIST = new HashMap<>();
-@@ -34,6 +_,8 @@
- 	private String[] args;
+@@ -70,6 +_,8 @@
+ 	}
  
  	public static void registerCommand(Supplier<Command> commandSupplier, String commandName, String... aliases) {
 +		com.github.puzzle.paradox.game.command.Commands.registerVanillaCommands(commandSupplier,commandName,aliases);
@@ -18,11 +18,11 @@
  		if (commandName == null) {
  			throw new IllegalArgumentException("Command cannot be null.");
  		} else if (commandSupplier == null) {
-@@ -69,6 +_,7 @@
+@@ -105,6 +_,7 @@
  				}
  			}
  		}
 +		 */
  	}
  
- 	public void run(IChat chat) {
+ 	private Object parseArgValue(String text, ArgumentType type) {

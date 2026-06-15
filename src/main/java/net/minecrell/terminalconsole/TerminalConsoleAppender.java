@@ -33,6 +33,7 @@ import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.apache.logging.log4j.util.PropertiesUtil;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jline.reader.LineReader;
 import org.jline.terminal.Terminal;
@@ -142,6 +143,9 @@ public final class TerminalConsoleAppender extends AbstractAppender {
     public synchronized static @Nullable Terminal getTerminal() {
         return terminal;
     }
+    public synchronized static void setTerminal(@NonNull Terminal newterminal) {
+        terminal = newterminal;
+    }
 
     /**
      * Returns the currently configured {@link LineReader} that is used to
@@ -211,7 +215,7 @@ public final class TerminalConsoleAppender extends AbstractAppender {
             // A system property can be used to override our automatic detection
             @Nullable Boolean jlineOverride = getOptionalBooleanProperty(JLINE_OVERRIDE_PROPERTY);
 
-            // By default, we disable JLine if there is no terminal attached
+            // By default, we disable JLine if there is no terminal attachedf
             // (e.g. if the program output is redirected to a file or if it's
             // started by some kind of control panel)
 

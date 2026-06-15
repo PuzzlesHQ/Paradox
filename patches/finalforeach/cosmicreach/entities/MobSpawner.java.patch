@@ -1,19 +1,19 @@
 --- a/finalforeach/cosmicreach/entities/MobSpawner.java
 +++ b/finalforeach/cosmicreach/entities/MobSpawner.java
-@@ -112,6 +_,7 @@
+@@ -122,6 +_,7 @@
  	}
  
  	public void tick(Zone zone) {
 +
  		if (DifficultySettings.isAtLeast(this.minDifficulty)) {
- 			this.countMobs(zone);
- 			if (this.numberOfMobs <= this.mobCap) {
-@@ -184,6 +_,8 @@
+ 			if (zone.zoneType == null || !zone.zoneType.tags.contains(TAG_NO_MOB_SPAWNING)) {
+ 				this.countMobs(zone);
+@@ -196,6 +_,8 @@
  	protected void spawnMob(Zone zone, MobSpawnRules mobToSpawn) {
- 		Entity entity = EntityCreator.get(mobToSpawn.entityTypeId);
- 		entity.setPosition(this.tmpSpawnPackLoc);
-+		if(com.github.puzzle.paradox.api.Paradox.getInstance().getEventBus().post(new com.github.puzzle.paradox.api.events.EntityEvents.OnEntitySpawn(entity.getParadoxEntity())).isCanceled())
+ 		GameEntity gameentity = GameEntityCreator.get(mobToSpawn.entityTypeId);
+ 		gameentity.setPosition(this.tmpSpawnPackLoc);
++		if(com.github.puzzle.paradox.api.Paradox.getInstance().getEventBus().post(new com.github.puzzle.paradox.api.events.EntityEvents.OnEntitySpawn(gameentity.getParadoxEntity())).isCanceled())
 +			return;
- 		zone.addEntity(entity);
+ 		zone.addEntity(gameentity);
  		this.numberOfMobs++;
  	}

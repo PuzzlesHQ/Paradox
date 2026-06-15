@@ -140,6 +140,7 @@ public class PluginLocator {
         for (File modFile : Objects.requireNonNull(modsFolder.listFiles())) {
             try {
                 LOGGER.info("Found Jar/Zip {}", modFile);
+
                 urls.add(modFile.toURI().toURL());
             } catch (Exception ignore) {}
         }

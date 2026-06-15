@@ -1,7 +1,7 @@
 package com.github.puzzle.paradox.core.util;
 
 import com.badlogic.gdx.utils.Array;
-import finalforeach.cosmicreach.entities.Entity;
+import finalforeach.cosmicreach.entities.GameEntity;
 import finalforeach.cosmicreach.entities.player.Player;
 import finalforeach.cosmicreach.util.Identifier;
 import finalforeach.cosmicreach.world.Zone;
@@ -9,12 +9,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class PuzzleEntityUtil {
 
-    public static Entity getClosestEntity(@NotNull Zone zone, @NotNull Entity sourceEntity) {
-        Entity closest = null;
+    public static GameEntity getClosestEntity(@NotNull Zone zone, @NotNull GameEntity sourceEntity) {
+        GameEntity closest = null;
         float closestDst = Float.MAX_VALUE;
         float range = sourceEntity.sightRange;
 
-        for (Entity entity : zone.getAllEntities()) {
+        for (GameEntity entity : zone.getAllEntities()) {
             if (entity != null) {
                 if (entity != sourceEntity) {
                     float dst = sourceEntity.position.dst(entity.position);
@@ -33,12 +33,12 @@ public class PuzzleEntityUtil {
         return closest;
     }
 
-    public static Entity getClosestEntity(@NotNull Zone zone, @NotNull Entity sourceEntity, Identifier entityId) {
-        Entity closest = null;
+    public static GameEntity getClosestEntity(@NotNull Zone zone, @NotNull GameEntity sourceEntity, Identifier entityId) {
+        GameEntity closest = null;
         float closestDst = Float.MAX_VALUE;
         float range = sourceEntity.sightRange;
 
-        for (Entity entity : zone.getAllEntities()) {
+        for (GameEntity entity : zone.getAllEntities()) {
             if (entity != null) {
                 if (entity != sourceEntity) {
                     if (entity.entityTypeId.equals(entityId.toString())) {
@@ -59,14 +59,14 @@ public class PuzzleEntityUtil {
         return closest;
     }
 
-    public static Entity getClosestPlayerToEntity(@NotNull Zone zone, @NotNull Entity sourceEntity) {
+    public static GameEntity getClosestPlayerToEntity(@NotNull Zone zone, @NotNull GameEntity sourceEntity) {
         Array<Player> players = zone.getPlayers();
-        Entity closest = null;
+        GameEntity closest = null;
         float closestDst = Float.MAX_VALUE;
         float range = sourceEntity.sightRange;
 
         for (Player p : players) {
-            Entity pe = p.getEntity();
+            GameEntity pe = p.getEntity();
             if (pe != null) {
                 float dst = sourceEntity.position.dst(pe.position);
                 if (!(dst > range)) {

@@ -1,13 +1,14 @@
 --- a/finalforeach/cosmicreach/networking/netty/NettyServer.java
 +++ b/finalforeach/cosmicreach/networking/netty/NettyServer.java
-@@ -17,57 +_,59 @@
+@@ -17,6 +_,7 @@
  import finalforeach.cosmicreach.networking.server.ServerSingletons;
  import finalforeach.cosmicreach.settings.ServerSettings;
  import finalforeach.cosmicreach.singletons.GameSingletons;
 +import finalforeach.cosmicreach.server.ServerLauncher;
  import finalforeach.cosmicreach.util.ArrayUtils;
+ import finalforeach.cosmicreach.util.Threads;
  import finalforeach.cosmicreach.util.logging.Logger;
- import finalforeach.cosmicreach.world.IZoneLoader;
+@@ -24,51 +_,52 @@
  import finalforeach.cosmicreach.world.Zone;
  import finalforeach.cosmicreach.world.ZoneLoaders;
  import io.netty.bootstrap.ServerBootstrap;
@@ -83,10 +84,10 @@
  
  		try {
  			ServerBootstrap serverbootstrap = new ServerBootstrap();
-@@ -77,9 +_,8 @@
- 				}
+@@ -79,9 +_,8 @@
  			}).option(ChannelOption.SO_BACKLOG, Integer.valueOf(128)).childOption(ChannelOption.SO_KEEPALIVE, true);
  			this.channelFuture = serverbootstrap.bind(this.port).sync();
+ 			LanServerListener.start(this.port);
 -			String s = null;
 -			Logger.info("Server started, type 'stop' to shutdown and 'help' for commands.");
 -
@@ -95,7 +96,7 @@
  			while (!this.isStopped && !"stop".equals(s) && this.channelFuture.channel().isActive()) {
  				if (!this.bufferRead.ready()) {
  					Thread.sleep(200L);
-@@ -88,15 +_,30 @@
+@@ -90,19 +_,35 @@
  					this.processCommand(s);
  				}
  			}
@@ -131,8 +132,14 @@
 +		LOGGER.info("Server closed.");
  	}
  
+ 	public void sendGUICommandInput(String inputString) {
+-		this.processCommand(inputString);
++//		this.processCommand(inputString);
++		ParadoxProccessServerSideCommands(inputString);
+ 	}
+ 
  	public void stop() {
-@@ -136,10 +_,12 @@
+@@ -145,10 +_,12 @@
  	public void broadcastToAll(GamePacket packet) {
  		packet.setupAndSendToAll(this.authenticatedConnections);
  	}
@@ -146,7 +153,7 @@
  
  	public void addContext(ChannelHandlerContext ctx) {
  		ServerIdentity serveridentity = new ServerIdentity(this, ctx);
-@@ -162,10 +_,15 @@
+@@ -171,10 +_,15 @@
  
  	public void removeContext(ChannelHandlerContext ctx) {
  		ServerIdentity serveridentity = this.contextToIdentity.get(ctx);
@@ -166,7 +173,7 @@
  		}
  
  		this.unauthenticatedConnections.removeValue(serveridentity, true);
-@@ -173,9 +_,6 @@
+@@ -182,9 +_,6 @@
  		this.contextToIdentity.remove(ctx);
  	}
  

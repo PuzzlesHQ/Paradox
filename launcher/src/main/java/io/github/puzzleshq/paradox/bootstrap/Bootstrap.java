@@ -45,7 +45,7 @@ public class Bootstrap {
         InputStream in = null;
         try {
             in = url.openStream();
-            System.out.println("Downloading : " + url);
+            System.out.println("Downloading : " + url + "\n");
             Files.copy(in, toPlace, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -54,15 +54,16 @@ public class Bootstrap {
 
     public static void main(String[] args) throws IOException {
         ClassLoader classLoader = Bootstrap.class.getClassLoader();
+        System.out.println("Checking dependencies...");
         InputStream inputStream = classLoader.getResourceAsStream("dependencies.json");
 //        String data = readFromInputStream(new BufferedReader(new InputStreamReader(inputStream)),);
         assert inputStream != null;
+
         var obj = JsonObject.readHjson(new BufferedReader(new InputStreamReader(inputStream)),new HjsonOptions());
 
 //        System.out.println(obj.toString(Stringify.FORMATTED));
         var depsObj = obj.asObject().get("dependencies").asArray();
         List<String> deps = new ArrayList<>();
-        System.out.println("Checking dependencies...");
         for (var _dep : depsObj) {
             var dep = _dep.asObject();
             String name = dep.get("name").asString();

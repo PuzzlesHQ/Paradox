@@ -2,7 +2,7 @@ package com.github.puzzle.paradox.api.impl.entity;
 
 import com.badlogic.gdx.math.Vector3;
 import com.github.puzzle.paradox.api.interfaces.entity.IParadoxDroneEntity;
-import finalforeach.cosmicreach.entities.Entity;
+import finalforeach.cosmicreach.entities.GameEntity;
 import finalforeach.cosmicreach.entities.mobs.MobInterceptor;
 
 public class ParadoxDroneEntity extends ParadoxEntity implements IParadoxDroneEntity {
@@ -27,7 +27,7 @@ public class ParadoxDroneEntity extends ParadoxEntity implements IParadoxDroneEn
      * @author repletsin5
      * @since API 1.0.0-Alpha
      * @see MobInterceptor
-     * @see Entity
+     * @see GameEntity
      */
     public MobInterceptor getInternalDroneEntity() {
         return droneEntity;

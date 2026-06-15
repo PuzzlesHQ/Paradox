@@ -1,6 +1,7 @@
 package com.github.puzzle.paradox.game.command.console;
 
-import com.github.puzzle.game.commands.CommandSource;
+import com.github.puzzle.paradox.api.commands.CommandSource;
+import com.github.puzzle.paradox.api.impl.world.ParadoxWorld;
 import com.github.puzzle.paradox.game.command.DefaultPuzzleCommand;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -19,6 +20,7 @@ public class Save {
         public int execute(CommandContext<CommandSource> context) throws CommandSyntaxException {
             TerminalConsoleAppender.print("save"+ "\n");
             Save.shouldSave = true;
+            ((ParadoxWorld)(context.getSource().getWorld())).getInternalWorld();
             return 0;
         }
 
@@ -35,7 +37,7 @@ public class Save {
 
     public static boolean shouldSave;
     public static boolean isSaveRequested() {
-        if (!GameSingletons.isHost) {
+        if (!GameSingletons.isHost()) {
             return false;
         } else {
             return shouldSave;

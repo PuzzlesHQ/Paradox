@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/chat/commands/moderation/CommandBan.java
 +++ b/finalforeach/cosmicreach/chat/commands/moderation/CommandBan.java
-@@ -27,4 +_,8 @@
+@@ -33,4 +_,8 @@
  	public String getShortDescription() {
  		return "Bans a player";
  	}

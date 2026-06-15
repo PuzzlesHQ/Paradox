@@ -19,20 +19,20 @@ public class ParadoxEntity implements IParadoxEntity {
 
 
 
-    public ParadoxEntity(Entity entity) {
+    public ParadoxEntity(GameEntity entity) {
         this.entity = entity;
         this.uuid = UUID.randomUUID();
         ((ParadoxEntityUtil) Paradox.getInstance().getEntityUtil()).uuidToParadoxEntity.put(uuid,this);
     }
-    Entity entity;
+    GameEntity entity;
     UUID uuid;
     /**
      * Avoid using this. Returns Cosmic Reach's internal entity class
      * @author repletsin5
      * @since API 1.0.0-Alpha
-     * @see Entity
+     * @see GameEntity
      */
-    public Entity getInternalEntity() {
+    public GameEntity getInternalEntity() {
         return entity;
     }
 

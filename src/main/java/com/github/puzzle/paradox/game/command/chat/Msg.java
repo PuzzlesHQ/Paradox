@@ -1,6 +1,7 @@
 package com.github.puzzle.paradox.game.command.chat;
 
-import com.github.puzzle.game.commands.CommandSource;
+import com.github.puzzle.paradox.api.commands.CommandSource;
+import com.github.puzzle.paradox.api.impl.player.ParadoxAccount;
 import com.github.puzzle.paradox.game.command.DefaultPuzzleCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -25,7 +26,7 @@ public class Msg extends DefaultPuzzleCommand {
             packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
             packet.setupAndSend(
                     ServerSingletons
-                            .getIdentityByAccount(context.getSource().getAccount()));
+                            .getIdentityByAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()));
             return 0;
         }
         if(message.length() > MessagePacket.MAX_MESSAGE_LENGTH){
@@ -33,7 +34,7 @@ public class Msg extends DefaultPuzzleCommand {
             packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
             packet.setupAndSend(
                     ServerSingletons
-                            .getIdentityByAccount(context.getSource().getAccount()));
+                            .getIdentityByAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()));
             return 0;
         }
 
@@ -41,7 +42,7 @@ public class Msg extends DefaultPuzzleCommand {
             var acc = ServerSingletons.SERVER.getAccount(id.ctx);
             if(acc.displayname.equals(name)) {
                 var packet = new MessagePacket("["
-                        + context.getSource().getAccount().displayname
+                        + context.getSource().getAccount().getDisplayName()
                         + " -> " + acc.displayname + "] " +
                         message);
                 packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
@@ -50,7 +51,7 @@ public class Msg extends DefaultPuzzleCommand {
                 packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
                 packet.setupAndSend(
                         ServerSingletons
-                                .getIdentityByAccount(context.getSource().getAccount()));
+                                .getIdentityByAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()));
 
                 return 0;
             }
@@ -59,7 +60,7 @@ public class Msg extends DefaultPuzzleCommand {
         packet.playerUniqueId = SERVER_ACCOUNT.getUniqueId();
         packet.setupAndSend(
                 ServerSingletons
-                        .getIdentityByAccount(context.getSource().getAccount()));
+                        .getIdentityByAccount(((ParadoxAccount)context.getSource().getAccount()).getInternalAccount()));
         return 0;
     }
 

@@ -2,7 +2,7 @@ package com.github.puzzle.paradox.api.impl;
 
 import com.github.puzzle.paradox.api.impl.entity.ParadoxEntity;
 import com.github.puzzle.paradox.api.interfaces.entity.IParadoxEntity;
-import finalforeach.cosmicreach.entities.Entity;
+import finalforeach.cosmicreach.entities.GameEntity;
 import finalforeach.cosmicreach.world.Zone;
 import org.jetbrains.annotations.NotNull;
 

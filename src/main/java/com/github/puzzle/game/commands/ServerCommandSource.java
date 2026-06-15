@@ -1,5 +1,13 @@
 package com.github.puzzle.game.commands;
 
+import com.github.puzzle.paradox.api.commands.CommandSource;
+import com.github.puzzle.paradox.api.impl.player.ParadoxPlayer;
+import com.github.puzzle.paradox.api.interfaces.IParadoxNetworkIdentity;
+import com.github.puzzle.paradox.api.interfaces.IParadoxWorld;
+import com.github.puzzle.paradox.api.interfaces.player.IParadoxAccount;
+import com.github.puzzle.paradox.api.interfaces.player.IParadoxChat;
+import com.github.puzzle.paradox.api.interfaces.player.IParadoxPlayer;
+import finalforeach.cosmicreach.chat.Chat;
 import finalforeach.cosmicreach.singletons.GameSingletonPlayers;
 import finalforeach.cosmicreach.accounts.Account;
 import finalforeach.cosmicreach.chat.IChat;
@@ -30,28 +38,28 @@ public class ServerCommandSource implements CommandSource {
     }
 
     @Override
-    public NetworkIdentity getIdentity() {
-        return identity;
+    public IParadoxNetworkIdentity getIdentity() {
+        return identity.getParadoxNetworkIdentity();
     }
 
     @Override
-    public Player getPlayer() {
+    public IParadoxPlayer getPlayer() {
         return getIdentity().getPlayer();
     }
 
     @Override
-    public Account getAccount() {
-        return GameSingletonPlayers.getAccountFromPlayer(getIdentity().getPlayer());
+    public IParadoxAccount getAccount() {
+        return GameSingletonPlayers.getAccountFromPlayer(((ParadoxPlayer)getIdentity().getPlayer()).getInternalPlayer()).getParadoxAccount();
     }
 
     @Override
-    public IChat getChat() {
-        return chat;
+    public IParadoxChat getChat() {
+        return ((Chat)chat).getParadoxChat();
     }
 
     @Override
-    public World getWorld() {
-        return world;
+    public IParadoxWorld getWorld() {
+        return world.getParadoxWorld();
     }
 
     public boolean hasOperator() {

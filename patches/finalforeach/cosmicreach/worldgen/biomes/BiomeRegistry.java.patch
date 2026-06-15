@@ -1,0 +1,11 @@
+--- a/finalforeach/cosmicreach/worldgen/biomes/BiomeRegistry.java
++++ b/finalforeach/cosmicreach/worldgen/biomes/BiomeRegistry.java
+@@ -42,7 +_,7 @@
+ 	}
+ 
+ 	static {
+-		registerBiomeCreator("base:grasslands", id -> worldGen -> ((GrassyBiome)new GrassyBiome(id, worldGen).setTemperature(10.0F)).setPrecipitation(50.0F));
++		registerBiomeCreator("base:grasslands", id -> worldGen -> new GrassyBiome(id, worldGen).setTemperature(10.0F).setPrecipitation(50.0F));
+ 		registerBiomeCreator(
+ 			"base:cornfields",
+ 			id -> worldGen -> ((GrassyBiome)((GrassyBiome)new CornfieldsBiome(id, worldGen).setTemperature(22.0F)).setPrecipitation(50.0F)).setMinTemperature(10.0F)

@@ -1,0 +1,11 @@
+--- a/finalforeach/cosmicreach/chat/commands/CommandChunkMemory.java
++++ b/finalforeach/cosmicreach/chat/commands/CommandChunkMemory.java
+@@ -65,7 +_,7 @@
+ 							} else {
+ 								object = chunk.blockData;
+ 								if (object instanceof LayeredBlockData) {
+-									LayeredBlockData<?> layeredblockdata = (LayeredBlockData<?>)object;
++									LayeredBlockData layeredblockdata = (LayeredBlockData)object;
+ 									long j6 = 5L;
+ 
+ 									for (int k6 = 0; k6 < layeredblockdata.getPaletteSize(); k6++) {

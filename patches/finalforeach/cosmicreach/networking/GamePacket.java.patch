@@ -1,20 +1,21 @@
 --- a/finalforeach/cosmicreach/networking/GamePacket.java
 +++ b/finalforeach/cosmicreach/networking/GamePacket.java
-@@ -64,11 +_,11 @@
- import finalforeach.cosmicreach.networking.packets.sounds.PlaySound3DPacket;
- import finalforeach.cosmicreach.networking.packets.sounds.SetMusicTagsPacket;
+@@ -15,12 +_,12 @@
+ import finalforeach.cosmicreach.io.ByteArrayUtils;
+ import finalforeach.cosmicreach.io.CompressionUtils;
  import finalforeach.cosmicreach.networking.server.ServerIdentity;
 +import finalforeach.cosmicreach.networking.server.ServerSingletons;
  import finalforeach.cosmicreach.savelib.IByteArray;
  import finalforeach.cosmicreach.savelib.crbin.CRBinSerializer;
  import finalforeach.cosmicreach.util.ArrayUtils;
+ import finalforeach.cosmicreach.util.GameProperties;
  import finalforeach.cosmicreach.util.GameTagList;
 -import finalforeach.cosmicreach.util.logging.Logger;
  import finalforeach.cosmicreach.world.Zone;
  import io.netty.buffer.ByteBuf;
- import io.netty.channel.ChannelFuture;
-@@ -78,7 +_,7 @@
- import java.nio.charset.StandardCharsets;
+ import io.netty.channel.ChannelHandlerContext;
+@@ -31,7 +_,7 @@
+ import java.util.Set;
  import java.util.function.Supplier;
  
 -public abstract class GamePacket {
@@ -22,7 +23,7 @@
  	public static final Json JSON = new Json();
  	protected static final IntMap<Supplier<? extends GamePacket>> idsToPackets = new IntMap<>();
  	protected static final ObjectIntMap<Class<? extends GamePacket>> packetsToIntIds = new ObjectIntMap<>();
-@@ -150,6 +_,10 @@
+@@ -54,6 +_,10 @@
  	}
  
  	public static <T extends GamePacket> void registerPacket(Class<T> packetClass) {
@@ -33,7 +34,7 @@
  		String s = packetClass.getCanonicalName();
  		if (s == null) {
  			String s1 = "Packet class must have a canonical name";
-@@ -167,7 +_,7 @@
+@@ -71,7 +_,7 @@
  		}
  	}
  
@@ -42,7 +43,7 @@
  		try {
  			Constructor<T> constructor = packetClass.getDeclaredConstructor();
  			Supplier<T> supplier = () -> {
-@@ -185,15 +_,15 @@
+@@ -89,25 +_,31 @@
  				packetsToIntIds.put(packetClass, numId);
  				packetNamesToIntIds.put(strId, numId);
  				packetNamesToClasses.put(strId, packetClass);
@@ -55,12 +56,15 @@
  	}
  
  	public GamePacket() {
--		this.packetID = (short)packetsToIntIds.get((Class<? extends GamePacket>)this.getClass(), 0);
 +		this.packetID = (short)packetsToIntIds.get(this.getClass(), 0);
  		if (this.packetID == 0) {
  			throw new RuntimeException("Cannot send packet for " + this.getClass() + " without registering it first!");
  		}
-@@ -204,7 +_,12 @@
+-	}
+ 
++	}
+ 	public abstract void receive(ByteBuf var1);
+ 
  	public static GamePacket getPacket(short packetId) {
  		Supplier<? extends GamePacket> supplier = idsToPackets.get(packetId);
  		if (supplier == null) {
@@ -74,7 +78,11 @@
  		} else {
  			GamePacket gamepacket = supplier.get();
  			gamepacket.packetID = packetId;
-@@ -315,14 +_,18 @@
+@@ -215,21 +_,25 @@
+ 		this.setupForSend();
+ 		this.flushToContext(ctx);
+ 	}
+-
  	public void setupAndSendToAll(Array<ServerIdentity> connections) {
  		if (!connections.isEmpty()) {
  			this.setupForSend();
@@ -94,3 +102,13 @@
  				if (c != identity) {
  					this.flushToContext(c.ctx);
  				}
++
+ 			});
+ 		}
+ 	}
+@@ -425,4 +_,4 @@
+ 			this.numRefs--;
+ 		}
+ 	}
+-}
++};

@@ -1,17 +1,17 @@
 --- a/finalforeach/cosmicreach/singletons/GameSingletonPlayers.java
 +++ b/finalforeach/cosmicreach/singletons/GameSingletonPlayers.java
-@@ -1,6 +_,7 @@
- package finalforeach.cosmicreach.singletons;
+@@ -2,6 +_,7 @@
  
+ import com.badlogic.gdx.utils.Array;
  import com.badlogic.gdx.utils.ObjectMap;
 +
  import finalforeach.cosmicreach.accounts.Account;
  import finalforeach.cosmicreach.entities.player.Player;
  import finalforeach.cosmicreach.entities.player.skins.IPlayerSkin;
-@@ -13,8 +_,8 @@
- 
+@@ -15,8 +_,8 @@
  public class GameSingletonPlayers {
  	private static ObjectMap<String, Player> uniqueIdsToPlayers = new ObjectMap<>();
+ 	private static final Array<String> playerJoinOrder = new Array<>();
 -	private static WeakHashMap<Player, String> playersToUniqueIds = new WeakHashMap<>();
 -	private static WeakHashMap<Player, Account> playersToAccounts = new WeakHashMap<>();
 +	public static WeakHashMap<Player, String> playersToUniqueIds = new WeakHashMap<>();
@@ -19,19 +19,19 @@
  
  	public static Player getPlayerFromUniqueId(String playerAccountUniqueId) {
  		return uniqueIdsToPlayers.get(playerAccountUniqueId);
-@@ -29,6 +_,7 @@
- 			uniqueIdsToPlayers.put(account.getUniqueId(), player);
- 			playersToUniqueIds.put(player, account.getUniqueId());
- 			playersToAccounts.put(player, account);
+@@ -34,6 +_,7 @@
+ 			if (!playerJoinOrder.contains(account.getUniqueId(), false)) {
+ 				playerJoinOrder.add(account.getUniqueId());
+ 			}
 +			((com.github.puzzle.paradox.api.Paradox)com.github.puzzle.paradox.api.Paradox.getInstance()).addPlayer(player);
  		}
  	}
  
-@@ -52,6 +_,7 @@
- 	public static void unregisterPlayer(Player player) {
+@@ -59,6 +_,7 @@
  		synchronized (getPlayerLock()) {
  			String s = playersToUniqueIds.get(player);
+ 			if (s != null) {
 +			((com.github.puzzle.paradox.api.Paradox)com.github.puzzle.paradox.api.Paradox.getInstance()).removePlayer(player);
- 			playersToUniqueIds.remove(player);
- 			uniqueIdsToPlayers.remove(s);
- 			Account account = playersToAccounts.remove(player);
+ 				playersToUniqueIds.remove(player);
+ 				uniqueIdsToPlayers.remove(s);
+ 				playerJoinOrder.removeValue(s, false);

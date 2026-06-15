@@ -1,0 +1,14 @@
+--- a/finalforeach/cosmicreach/entities/DamageTextGameEntity.java
++++ b/finalforeach/cosmicreach/entities/DamageTextGameEntity.java
+@@ -15,9 +_,9 @@
+ 	@CRBSerialized
+ 	private float lifespan = 1.0F;
+ 	@CRBSerialized
+-	String text;
++	public String text;
+ 	private transient ITextModelInstance textModel;
+-	private final Color color = new Color(1.0F, 0.0F, 0.0F, 1.0F);
++	public final Color color = new Color(1.0F, 0.0F, 0.0F, 1.0F);
+ 
+ 	public DamageTextGameEntity() {
+ 		super("base:entity_damage_text");

@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/gameevents/GameEvents.java
 +++ b/finalforeach/cosmicreach/gameevents/GameEvents.java
-@@ -26,7 +_,7 @@
+@@ -28,7 +_,7 @@
  		json.readField(this, "triggers", this.getTriggerClass(), jsonData);
  
  		for (Entry<String, T[]> entry : this.triggers) {

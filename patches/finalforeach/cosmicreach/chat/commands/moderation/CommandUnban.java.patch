@@ -1,8 +1,8 @@
 --- a/finalforeach/cosmicreach/chat/commands/moderation/CommandUnban.java
 +++ b/finalforeach/cosmicreach/chat/commands/moderation/CommandUnban.java
-@@ -25,4 +_,8 @@
+@@ -32,4 +_,8 @@
  	public String getShortDescription() {
- 		return "Bans a player";
+ 		return "Unbans a player";
  	}
 +
 +	public boolean doesRequireOP(){

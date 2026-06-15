@@ -1,0 +1,53 @@
+--- a/finalforeach/cosmicreach/util/assets/GameAssetLoader.java
++++ b/finalforeach/cosmicreach/util/assets/GameAssetLoader.java
+@@ -21,6 +_,8 @@
+ 	private static final JsonReader JSON_READER = new JsonReader();
+ 	private static final HashMap<String, FileHandle> ALL_ASSETS = new HashMap<>();
+ 
++	private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger("Cosmic Reach | AssetLoader");
++
+ 	public static <ASSET_TYPE> ASSET_TYPE getAssetOfType(GameAssetCache<ASSET_TYPE> assetCache, String fileName) {
+ 		return GameAssetLoaderUtils.get(loadAsset(fileName), assetCache.allAssetsOfType, assetCache.instantiator);
+ 	}
+@@ -79,37 +_,24 @@
+ 		} else {
+ 			FileHandle filehandle1 = Gdx.files.absolute(SaveLocation.getSaveFolderLocation() + "/mods/" + location.toPath());
+ 			if (filehandle1.exists()) {
+-				Logger.info("Loading " + AnsiColours.CYAN + "\"" + location.getName() + "\"" + AnsiColours.RESET + " from Mods Folder");
++                LOGGER.info("Loading {}\"{}\"{} from Mods Folder", AnsiColours.CYAN, location.getName(), AnsiColours.RESET);
+ 				locationCache.put(location, filehandle1);
+ 				return filehandle1;
+ 			} else {
+ 				FileHandle filehandle2 = Gdx.files.classpath("assets/%s/%s".formatted(location.getNamespace(), location.getName()));
+ 				if (filehandle2.exists()) {
+-					Logger.info(
+-						"Loading "
+-							+ AnsiColours.PURPLE
+-							+ "\""
+-							+ location.getName()
+-							+ "\""
+-							+ AnsiColours.RESET
+-							+ " from Java Mod "
+-							+ AnsiColours.GREEN
+-							+ "\""
+-							+ location.getNamespace()
+-							+ "\""
+-							+ AnsiColours.WHITE
+-					);
++                    LOGGER.info("Loading {}\"{}\"{} from Java Mod {}\"{}\"{}", AnsiColours.PURPLE, location.getName(), AnsiColours.RESET, AnsiColours.GREEN, location.getNamespace(), AnsiColours.WHITE);
+ 					locationCache.put(location, filehandle2);
+ 					return filehandle2;
+ 				} else {
+ 					FileHandle filehandle3 = Gdx.files.internal(location.toPath());
+ 					if (filehandle3.exists()) {
+-						Logger.info("Loading " + AnsiColours.YELLOW + "\"" + location.getName() + "\"" + AnsiColours.RESET + " from the base game");
++                        LOGGER.info("Loading {}\"{}\"{} from the base game", AnsiColours.YELLOW, location.getName(), AnsiColours.RESET);
+ 						locationCache.put(location, filehandle3);
+ 						return filehandle3;
+ 					} else {
+ 						if (warnIfNull) {
+-							Logger.warn("Cannot find the resource " + location + " (Expected path: " + location.toPath() + ")");
++                            LOGGER.warn("Cannot find the resource {} (Expected path: {})", location, location.toPath());
+ 						}
+ 
+ 						return null;

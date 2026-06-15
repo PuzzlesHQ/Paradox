@@ -1,27 +1,36 @@
 --- a/finalforeach/cosmicreach/networking/server/ServerSingletons.java
 +++ b/finalforeach/cosmicreach/networking/server/ServerSingletons.java
-@@ -2,10 +_,7 @@
- 
+@@ -3,10 +_,7 @@
  import com.badlogic.gdx.math.Vector3;
+ import com.badlogic.gdx.utils.Array;
  import com.badlogic.gdx.utils.ObjectMap;
+-import com.badlogic.gdx.utils.ObjectMap.Keys;
 -import finalforeach.cosmicreach.BlockEntityScreenInfo;
 -import finalforeach.cosmicreach.EntityPathfinder;
--import finalforeach.cosmicreach.Threads;
 -import finalforeach.cosmicreach.TickRunner;
 +import finalforeach.cosmicreach.*;
  import finalforeach.cosmicreach.accounts.Account;
  import finalforeach.cosmicreach.blocks.BlockState;
  import finalforeach.cosmicreach.blocks.blockentities.BlockEntity;
-@@ -44,6 +_,8 @@
+@@ -50,6 +_,8 @@
  
- public class ServerSingletons {
+ public final class ServerSingletons {
  	public static NettyServer SERVER;
 +
 +  	public static com.github.puzzle.paradox.core.PuzzlePL puzzle;
  	private static ObjectMap<NetworkIdentity, Account> netIdsToAccounts = new ObjectMap<>();
  	private static ObjectMap<Account, NetworkIdentity> accountsToNetIds = new ObjectMap<>();
  	private static ObjectMap<String, Account> uniqueIdsToAccounts = new ObjectMap<>();
-@@ -153,6 +_,7 @@
+@@ -61,7 +_,7 @@
+ 	static Array<Consumer<Account>> joinListeners = new Array<>();
+ 	static Array<Consumer<Account>> leaveListeners = new Array<>();
+ 
+-	public static Keys<NetworkIdentity> getAllNetIds() {
++	public static ObjectMap.Keys<NetworkIdentity> getAllNetIds() {
+ 		return netIdsToAccounts.keys();
+ 	}
+ 
+@@ -181,6 +_,7 @@
  			World world = GameSingletons.world;
  
  			for (Zone zone : world.getZones()) {
@@ -29,15 +38,19 @@
  				zone.update(deltaTime);
  			}
  
-@@ -164,6 +_,7 @@
- 		});
- 		registerCustomScreenInfoOpeners();
+@@ -194,6 +_,7 @@
  		registerBlockEntityOpeners();
+ 		Command.initServerCommands();
+ 		ZoneType.loadZoneTypes();
 +		puzzle = new com.github.puzzle.paradox.core.PuzzlePL();
  		GameSingletons.postCreate();
  	}
  
-@@ -205,11 +_,10 @@
+@@ -225,15 +_,13 @@
+ 		};
+ 		GameSingletons.registerBlockEntityScreenOpener("base:custom_ui_block_entity", consumer);
+ 	}
+-
  	public static Account getAccount(NetworkIdentity identity) {
  		return identity == null ? null : netIdsToAccounts.get(identity);
  	}
@@ -50,7 +63,7 @@
  
  	public static ServerIdentity getConnection(Player player) {
  		Account account = GameSingletonPlayers.getAccountFromPlayer(player);
-@@ -219,4 +_,9 @@
+@@ -243,6 +_,11 @@
  	public static Account getAccountByUniqueId(String playerUniqueId) {
  		return uniqueIdsToAccounts.get(playerUniqueId);
  	}
@@ -59,4 +72,6 @@
 +		return (ServerIdentity)accountsToNetIds.get(account);
 +	}
 +
- }
+ 
+ 	public static void addAccountJoinListener(Consumer<Account> consumer) {
+ 		joinListeners.add(consumer);

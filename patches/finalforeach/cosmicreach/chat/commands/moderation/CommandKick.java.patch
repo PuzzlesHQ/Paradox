@@ -1,6 +1,6 @@
 --- a/finalforeach/cosmicreach/chat/commands/moderation/CommandKick.java
 +++ b/finalforeach/cosmicreach/chat/commands/moderation/CommandKick.java
-@@ -25,4 +_,8 @@
+@@ -32,4 +_,8 @@
  	public String getShortDescription() {
  		return "Kicks a player";
  	}

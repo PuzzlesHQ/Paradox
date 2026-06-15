@@ -1,0 +1,8 @@
+--- a/finalforeach/cosmicreach/chat/IChat.java
++++ b/finalforeach/cosmicreach/chat/IChat.java
+@@ -4,4 +_,5 @@
+ 
+ public interface IChat {
+ 	void addMessage(Account var1, String var2);
++
+ }
